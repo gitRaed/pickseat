@@ -1,0 +1,108 @@
+<div class="message">
+    {{message}}
+</div>
+
+<br>
+
+<table>
+
+    <tr class="colorie">
+        <th>Index</th>
+        <th>ID</th>
+        <th>Nom</th>
+        <th>Prénom</th>
+        <th>Email</th>
+        <th>Numéro</th>
+        <th>Type d'utilisateur</th>
+        <th>Mot de passe</th>
+        <th>Options</th>
+    </tr>
+
+     <tr *ngFor="let item of data; let i=index;">
+            
+        <td> {{i}} </td>
+
+        <td id="id_utilisateur"> {{item.id_utilisateur}} </td>
+
+        <td id="nom_user"> {{item.nom}} </td>
+
+        <td id="prenom_user"> {{item.prenom}} </td>
+
+        <td id="email_user"> {{item.email}} </td>
+
+        <td id="numero_user"> {{item.numero}} </td>
+
+        <td id="type_user"> {{item.typeUser}} </td>
+
+        <td id="mdp_user"> {{item.motDePasse}} </td>
+
+        <td>
+            <button title="Modifier l'utilisateur" (click)="modal(modifier)"><i class="fas fa-retweet"></i></button>
+            <button title="Supprimer l'utilisateur" (click)="modal(supprimer)"><i class="fas fa-trash"></i></button>
+        </td>
+
+        <ng-template #modifier let-modal>
+
+            <div class="modal-header">
+                <h4 id="modal-basic-title">Update user</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-body">
+                <form (submit) = "update($event)"> 
+                    <div class="form-group">
+                        <input type="text" id="id_user" value="{{item.id_utilisateur}}" disabled style="background-color: #dfe4ea;">
+                        <input required type="text" name="nom" id="nom_user" value="{{item.nom}}" pattern="^[a-zA-Z]{3,}$" title="minimum 3 lettres">
+                        <input required type="text" name="prenom" id="prenom_user" value="{{item.prenom}}" pattern="^[a-zA-Z]{3,}$" title="minimum 3 lettres">
+                        <input required type="email" name="email" id="email_user" value="{{item.email}}" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+                        <input required type="tel" name="numero" id="numero_user" value="{{item.numero}}" pattern="^[0-9]{8,}$" title="minimum 8 chiffres">
+                        <select required name="type" id="type_user">
+                            <option value="" disabled selected>User actuel est {{item.typeUser}}</option>
+                            <option value="chauffeur">Chauffeur</option>
+                            <option value="piéton">Piéton</option>
+                        </select>
+                        <input required type="password" name="mdp" id="mdp_user" placeholder="Mot de passe" pattern="^(?=.*[a-z])(?=.*[A-Z]).{6,}$" title="1 lettre majuscule et 1 lettre minuscule au moins,minimun 6 caractères">
+                        <input required type="password" name="mdp" id="confirm_mdp_user" placeholder="Confirmer Mot de passe" pattern="^(?=.*[a-z])(?=.*[A-Z]).{6,}$" title="1 lettre majuscule et 1 lettre minuscule au moins,minimun 6 caractères">
+                        <input type="submit" value="Valider">    
+                    </div>
+                </form>
+            </div>
+            
+            <div class="modal-footer">
+                <p *ngFor="let item of errors;">
+                    {{item}}
+                </p>
+            </div>
+        
+        </ng-template>
+
+        <ng-template #supprimer let-modal>
+            <div class="modal-header">
+                <h4 id="modal-basic-title">Delete user</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-body">
+            <p><strong>Are you sure you want to delete <span class="text-primary">{{item.nom}} {{item.prenom}}</span> profile?</strong></p>
+                <p>All information associated to this user profile will be permanently deleted.
+                <span class="text-danger">This operation can not be undone !!</span>
+                </p>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="delete(item.id_utilisateur, item.nom, item.prenom);">Delete</button>
+            </div>
+        
+        </ng-template>
+
+    </tr>
+</table>
+
+
+
+
+

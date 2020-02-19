@@ -1,0 +1,26 @@
+body {
+    font: 95% Arial, Helvetica, sans-serif;
+    margin: 0 0 0 0 ;
+}
+
+header{
+    background-color:#ffffff;
+    border: 1px solid #dfe4ea;
+    box-shadow: 0 0 5px 4px #dfe4ea;
+    margin-bottom:3%;
+    height: 100%;
+}
+
+.ecriture {
+    bottom: 80px;
+    font-size: 170%;
+    left: 33%;
+    position: relative;
+    text-align: center;
+    width: 35%;
+}
+
+.logo {
+    padding: 1%;
+    width: 8%;
+}
