@@ -10,7 +10,7 @@ var config = {
     "options": {
         "encrypt": true,
         "enableArithAbort": true
-        },
+    },
 };
 
 export async function registerUser(nom, prenom, email, numero, typeUser, motDePasse) {

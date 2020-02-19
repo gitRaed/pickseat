@@ -52,7 +52,7 @@ route.post("/", async (req, res, next) => {
     mailOptions = {
         to: email,
         subject: "Please confirm your Email account",
-        html: "Hello,<br> Please Click on the link to verify your email.<br><a href=" + link + ">Click here to verify</a>"
+        html: 'Hello ' + nom +' ' + prenom + ',<br> Please Click on the link bellow to validate your account.<br><a href=" + link + ">Click here to verify</a>'
     };
     // console.log('mailOptions.to : ' + mailOptions.to + ' \n mailOptions.subject ' + mailOptions.subject +' \n mailOptions.html' + mailOptions.html);
 
@@ -78,7 +78,7 @@ route.get('/verify', async function (req, res) {
             // console.log("email is verified \n");
             recupererData(nom, prenom, email, numero, typeUser, motDePasse).then(() => {
                 res.json({
-                    message: "Email " + mailOptions.to + " is been Successfully verified, yout account has been registered",
+                    message: 'Your account has been registered ! Click here to authenticate urself',
                 });
             });
         } else {

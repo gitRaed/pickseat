@@ -9,7 +9,7 @@ var config = {
     "options": {
         "encrypt": true,
         "enableArithAbort": true
-        },
+    },
 };
 
 export async function getUserData() {

@@ -9,6 +9,8 @@ import { InscriptionComponent } from './inscription/inscription.component';
 import { GererUsersComponent } from './gerer-users/gerer-users.component';
 
 import { UserService } from './user.service';
+import { DbService } from './db.service';
+
 
 
 
@@ -24,7 +26,7 @@ import { UserService } from './user.service';
     HttpClientModule,
     NgbModule
   ],
-  providers: [UserService, HttpClient],
+  providers: [UserService,DbService, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

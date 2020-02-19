@@ -1,18 +1,18 @@
 "use strict";
 
 import {
-    getUserData, updateDbUser, deleteDbUser
+    getUserData,
+    updateDbUser,
+    deleteDbUser
 } from '../dataAccessLayer/requete_data.mjs';
-import { encrypt } from './crypter.mjs';
+import {
+    encrypt
+} from './crypter.mjs';
 
 
 export function getUser() {
 
-    return getUserData().then( (data) => {
-
-        return data;
-    });
-
+    return getUserData();
 }
 
 export function updateUser(id, nom, prenom, email, numero, typeUser, motDePasse) {
@@ -23,6 +23,6 @@ export function updateUser(id, nom, prenom, email, numero, typeUser, motDePasse)
 }
 
 export function deleteUser(id) {
- 
+
     return deleteDbUser(id);
 }

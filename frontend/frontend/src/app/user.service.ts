@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { DbService } from './db.service';
 
 @Injectable({
   providedIn: 'root'
@@ -7,48 +8,19 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
 
 
-  constructor(private http: HttpClient) {}
-
-  registerUser(nom: string, prenom: string, email: string, numero: string, typeUser: string, mdp: string) {
-
-    console.log(nom, prenom, email, numero, typeUser, mdp);
-    return this.http.post < any > ('http://localhost:9500/register', {
-      nom : '' + nom,
-      prenom: '' + prenom,
-      email: '' + email,
-      numero: '' + numero,
-      typeUser: '' + typeUser,
-      motDePasse: '' + mdp
-    });
-
-  }
-
-  getUsersData() {
-
-    return this.http.get <any>('http://localhost:9500/data/getData');
-  }
-
-  updateUser(id: any, nom: string, prenom: string, email: string, numero: string, typeUser: string, mdp: string) {
-
-  console.log(id, nom, prenom, email, numero, typeUser, mdp);
-  return this.http.post<any>('http://localhost:9500/data/updateData', {
-    id,
-    nom : '' + nom,
-    prenom: '' + prenom,
-    email: '' + email,
-    numero: '' + numero,
-    typeUser: '' + typeUser,
-    motDePasse: '' + mdp
-  });
-  }
-
-  deleteUser(id: any) {
-
-    return this.http.post('http://localhost:9500/data/deleteData', {
-      id
-    });
-  }
-
+  constructor(private db: DbService) {}
+  //#region variables
+    id;
+    nom;
+    prenom;
+    email;
+    numero;
+    typeUser;
+    password;
+    confirmPassword;
+    target;
+    message;
+  //#endregion
 
   // verif valide le mot de passe et le mail entrés
   verif(email, password, confirmPassword) {
@@ -67,6 +39,44 @@ export class UserService {
     }
 
     return errors;
+  }
+
+  options(type, event) {
+
+      event.preventDefault();
+      this.target = event.target;
+      this.nom = this.target.querySelector('#nom_user').value;
+      this.prenom = this.target.querySelector('#prenom_user').value;
+      this.email = this.target.querySelector('#email_user').value;
+      this.numero = this.target.querySelector('#numero_user').value;
+      this.typeUser = this.target.querySelector('#type_user').value;
+      this.password = this.target.querySelector('#mdp_user').value;
+      this.confirmPassword = this.target.querySelector('#confirm_mdp_user').value;
+
+      const verif = this.verif(this.email, this.password, this.confirmPassword);
+
+      if (verif.length === 0 && type === 'update') {
+
+        this.id = this.target.querySelector('#id_user').value;
+
+        console.log('Data envoyées : \n', this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password);
+
+
+        this.db.updateUser(this.id, this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password).subscribe(() => {
+
+          console.log('Data Updated! ');
+          this.message = 'Utilisateur ' + this.nom + ' ' + this.prenom + ' modifié!';
+        });
+
+      } else if ( verif.length === 0 && type === 'register') {
+
+          this.message = 'Valider votre compte en cliquant sur le lien envoyé dans votre boîte de réception email';
+          this.db.registerUser(this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password).subscribe(() => {
+            console.log('Data sent ');
+          });
+      }
+
+      return this.message;
   }
 
 }

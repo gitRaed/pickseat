@@ -3,11 +3,16 @@ import express from "express";
 import bodyParser from "body-parser";
 
 import {
-    getUser, updateUser, deleteUser
+    getUser,
+    updateUser,
+    deleteUser
 } from '../../serviceLayer/code_data.mjs';
 
 const route = express.Router();
 
+//#region variables
+let id, nom, prenom, email, numero, typeUser, motDePasse;
+//#endregion
 
 route.use(function (req, res, next) {
     // console.log("Request", req.url, req.body, req.method);
@@ -37,33 +42,33 @@ route.get("/getData", async function (req, res) {
 
 route.post('/updateData', async function (req, res) {
 
-    const id = req.body.id;
-    const nom = req.body.nom;
-    const prenom = req.body.prenom;
-    const email = req.body.email;
-    const numero = req.body.numero;
-    const typeUser = req.body.typeUser;
-    const motDePasse = req.body.motDePasse;
+    id = req.body.id;
+    nom = req.body.nom;
+    prenom = req.body.prenom;
+    email = req.body.email;
+    numero = req.body.numero;
+    typeUser = req.body.typeUser;
+    motDePasse = req.body.motDePasse;
 
     res.status(200);
 
     // console.log(id, nom, prenom, email, numero, typeUser, motDePasse);
-    updateUser(id, nom, prenom, email, numero, typeUser, motDePasse).then(() => 
+    updateUser(id, nom, prenom, email, numero, typeUser, motDePasse).then(() =>
         res.json({
             message: 'Donnée reçues ' + nom + ' ' + prenom
         }));
-    
+
 });
 
 route.post('/deleteData', async function (req, res) {
 
-    const id = req.body.id;
-    const nom = req.body.nom;
-    const prenom = req.body.prenom;
+    id = req.body.id;
+    nom = req.body.nom;
+    prenom = req.body.prenom;
 
     res.status(200);
 
-    deleteUser(id).then(() => 
+    deleteUser(id).then(() =>
         res.json({
             message: 'Utilisateur ' + nom + ' ' + prenom + ' supprimé !'
         }));
