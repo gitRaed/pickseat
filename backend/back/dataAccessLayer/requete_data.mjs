@@ -27,7 +27,6 @@ export async function getUserData() {
 export async function updateDbUser(id, nom, prenom, email, numero, typeUser, motDePasse) {
 
     try {
-        console.log('Update user db');
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
             .input('id', id)
