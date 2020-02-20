@@ -55,18 +55,22 @@ export class UserService {
 
       const verif = this.verif(this.email, this.password, this.confirmPassword);
 
-      if (verif.length === 0 && type === 'update') {
+      if (verif.length > 0 ) {
 
-        this.id = this.target.querySelector('#id_user').value;
+          this.message = verif;
 
-        console.log('Data envoyées : \n', this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password);
+      } else if (verif.length === 0 && type === 'update') {
 
+          this.id = this.target.querySelector('#id_user').value;
 
-        this.db.updateUser(this.id, this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password).subscribe(() => {
+          console.log('Data envoyées : \n', this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password);
 
-          console.log('Data Updated! ');
           this.message = 'Utilisateur ' + this.nom + ' ' + this.prenom + ' modifié!';
-        });
+
+          this.db.updateUser(this.id, this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password).subscribe(() => {
+
+            console.log('Data Updated! ');
+          });
 
       } else if ( verif.length === 0 && type === 'register') {
 

@@ -29,7 +29,9 @@ export class GererUsersComponent implements OnInit {
   update(event) {
 
     this.message = this.user.options('update', event);
-    this.getData();
+    if (this.message.length > 0 ) {
+      this.getData();
+    }
   }
 
   delete(id, nom, prenom) {
