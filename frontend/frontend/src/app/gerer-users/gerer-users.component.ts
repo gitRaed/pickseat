@@ -37,8 +37,39 @@ export class GererUsersComponent implements OnInit {
   delete(id, nom, prenom) {
 
     this.db.deleteUser(id).subscribe(() => {
+
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' supprimé !';
       console.log('User deleted !');
+      this.getData();
+    });
+  }
+
+  ban(id, nom, prenom) {
+
+    this.db.banUser(id, nom, prenom).subscribe(() => {
+
+      this.message = 'Utilisateur ' + nom + ' ' + prenom + ' banni !';
+      console.log('User banned!');
+      this.getData();
+    });
+  }
+
+  suspend(id, nom, prenom) {
+
+    this.db.suspendUser(id, nom, prenom).subscribe(() => {
+
+      this.message = 'Utilisateur ' + nom + ' ' + prenom + ' suspendu !';
+      console.log('User suspended!');
+      this.getData();
+    });
+  }
+
+  normal(id, nom, prenom) {
+
+    this.db.normalUser(id, nom, prenom).subscribe(() => {
+
+      this.message = 'Utilisateur ' + nom + ' ' + prenom + ' est de retour !';
+      console.log('User is back!');
       this.getData();
     });
   }

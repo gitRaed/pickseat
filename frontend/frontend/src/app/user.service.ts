@@ -26,17 +26,13 @@ export class UserService {
   verif(email, password, confirmPassword) {
 
     let errors = [];
-
+    // si email ou mdp existe déjà, auth = false
     if (password !== confirmPassword) {
         errors = [];
         errors.push('Vos deux mots de passe ne sont pas identiques');
-    // tslint:disable-next-line: max-line-length
-    } else if (!email.match(/^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
-        errors = [];
-        errors.push('Email invalide');
-    } else {
-        errors = [];
-    }
+      } else {
+          errors = [];
+      }
 
     return errors;
   }
@@ -64,15 +60,12 @@ export class UserService {
           this.id = this.target.querySelector('#id_user').value;
 
           console.log('Data envoyées : \n', this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password);
-
           this.message = 'Utilisateur ' + this.nom + ' ' + this.prenom + ' modifié!';
-
           this.db.updateUser(this.id, this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password).subscribe(() => {
-
             console.log('Data Updated! ');
           });
 
-      } else if ( verif.length === 0 && type === 'register') {
+      } else if (verif.length === 0 && type === 'register') {
 
           this.message = 'Valider votre compte en cliquant sur le lien envoyé dans votre boîte de réception email';
           this.db.registerUser(this.nom, this.prenom, this.email, this.numero, this.typeUser, this.password).subscribe(() => {

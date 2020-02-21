@@ -8,12 +8,13 @@
 
     <tr class="colorie">
         <th>Index</th>
-        <th>ID</th>
         <th>Nom</th>
         <th>Prénom</th>
         <th>Email</th>
         <th>Numéro</th>
         <th>Type d'utilisateur</th>
+        <th>Statut validation</th>
+        <th>Statut compte</th>
         <th>Mot de passe</th>
         <th>Options</th>
     </tr>
@@ -21,8 +22,6 @@
      <tr *ngFor="let item of data; let i=index;">
             
         <td> {{i}} </td>
-
-        <td id="id_utilisateur"> {{item.id_utilisateur}} </td>
 
         <td id="nom_user"> {{item.nom}} </td>
 
@@ -34,11 +33,18 @@
 
         <td id="type_user"> {{item.typeUser}} </td>
 
+        <td id="status_validation">{{item.status_validation}}</td>
+
+        <td id="status_compte">{{item.status_compte}}</td>
+
         <td id="mdp_user"> {{item.motDePasse}} </td>
 
         <td>
             <button title="Modifier l'utilisateur" (click)="modal(modifier)"><i class="fas fa-retweet"></i></button>
             <button title="Supprimer l'utilisateur" (click)="modal(supprimer)"><i class="fas fa-trash"></i></button>
+            <button title="Bannir l'utilisateur" (click)="modal(bannir)"><i class="fas fa-ban"></i></button>
+            <button title="Suspendre l'utilisateur" (click)="modal(suspendre)"><i class="fas fa-history"></i></button>
+            <button title="Rendre actif l'utilisateur" (click)="modal(normal)"><i class="fas fa-check-circle"></i></button>
         </td>
 
         <ng-template #modifier let-modal>
@@ -71,8 +77,8 @@
             </div>
             
             <div class="modal-footer">
-                <p *ngFor="let item of errors;">
-                    {{item}}
+                <p>
+                    {{message}}
                 </p>
             </div>
         
@@ -99,6 +105,65 @@
         
         </ng-template>
 
+        <ng-template #bannir let-modal>
+            <div class="modal-header">
+                <h4 id="modal-basic-title">Ban user</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-body">
+            <p><strong>Are you sure you want to Ban <span class="text-primary">{{item.nom}} {{item.prenom}}</span> profile?</strong></p>
+                <p>
+                    <span class="text-danger">{{item.nom}} {{item.prenom}} won't be able to use your application!</span>
+                </p>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="ban(item.id_utilisateur, item.nom, item.prenom);">Ban</button>
+            </div>
+        
+        </ng-template>
+
+        <ng-template #suspendre let-modal>
+            <div class="modal-header">
+                <h4 id="modal-basic-title">Suspend user</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-body">
+            <p><strong>Are you sure you want to suspend <span class="text-primary">{{item.nom}} {{item.prenom}}</span> profile?</strong></p>
+                <p>
+                    <span class="text-danger">{{item.nom}} {{item.prenom}} won't be able to use your application correctly!</span>
+                </p>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="normal(item.id_utilisateur, item.nom, item.prenom);">Ban</button>
+            </div>
+        
+        </ng-template>
+
+        <ng-template #normal let-modal>
+            <div class="modal-header">
+                <h4 id="modal-basic-title">BackToActif user</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-body">
+            <p><strong>Are you sure you want to put  <span class="text-primary">{{item.nom}} {{item.prenom}}</span> profile back?</strong></p>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="normal(item.id_utilisateur, item.nom, item.prenom);">Ban</button>
+            </div>
+        
+        </ng-template>
     </tr>
 </table>
 

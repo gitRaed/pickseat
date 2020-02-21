@@ -1,5 +1,5 @@
 {
-  "name": "pixil",
+  "name": "pickseat",
   "version": "1.0.0",
   "description": "Ma premiere application!",
   "main": "./back./controller/serveur.js",
