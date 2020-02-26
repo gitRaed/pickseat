@@ -1,0 +1,22 @@
+
+<div class="form">
+    <form (submit) = "authentification($event)">   
+        
+        <h1>Authentification</h1>
+        
+        <input required type="email" name="email" id="email_user" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+
+        <input required type="password" name="mdp" id="mdp_user" placeholder="Votre mot de passe" pattern="^(?=.*[a-z])(?=.*[A-Z]).{6,}$" title="1 lettre majuscule et 1 lettre minuscule au moins,minimun 6 caractères">
+        
+
+        <input type="submit" value="Valider"> <br> <br>
+
+        <p> <a href="#">Pas de compte?</a> <a href="#">Mot de passe oublié?</a>  </p>
+
+    </form>
+
+</div>
+
+<div class="error">
+<p> {{message}} </p>
+</div>

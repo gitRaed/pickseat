@@ -14,7 +14,7 @@ import { DbService } from '../db.service';
 })
 export class InscriptionComponent implements OnInit {
 
-  message = '';
+  message;
 
   constructor(private user: UserService, private db: DbService) {}
 
@@ -23,7 +23,32 @@ export class InscriptionComponent implements OnInit {
 
   register(event) {
 
-    this.message = this.user.options('register', event);
+    event.preventDefault();
+    const target = event.target;
+
+    const data = {
+      nom : target.querySelector('#nom_user').value,
+      prenom: target.querySelector('#prenom_user').value,
+      email: target.querySelector('#email_user').value,
+      numero: target.querySelector('#numero_user').value,
+      typeUser: target.querySelector('#type_user').value,
+      password: target.querySelector('#mdp_user').value,
+      confirmPassword: target.querySelector('#confirm_mdp_user').value
+    };
+
+    this.user.appelUnicite(data.email, data.password).subscribe( (result) => {
+
+      console.log('appel unicite result.auth ' + result.auth);
+      const verif = this.user.verif(data.email, data.password, data.confirmPassword, result.auth);
+      this.message = this.user.test(data, verif, 'register');
+
+      if (this.message === 'Valider votre compte en cliquant sur le lien envoyé dans votre mail') {
+        this.db.registerUser(data.nom, data.prenom, data.email, data.numero, data.typeUser, data.password).subscribe(() => {
+          console.log('Data sent ');
+        });
+      }
+    });
+
   }
 
 }

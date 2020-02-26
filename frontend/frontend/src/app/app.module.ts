@@ -10,6 +10,8 @@ import { GererUsersComponent } from './gerer-users/gerer-users.component';
 
 import { UserService } from './user.service';
 import { DbService } from './db.service';
+import { AuthentificationComponent } from './authentification/authentification.component';
+import { RouterModule } from '@angular/router';
 
 
 
@@ -18,15 +20,28 @@ import { DbService } from './db.service';
   declarations: [
     AppComponent,
     InscriptionComponent,
-    GererUsersComponent
+    GererUsersComponent,
+    AuthentificationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    NgbModule
+    NgbModule,
+    RouterModule.forRoot([
+      {
+        path: 'register',
+        component : InscriptionComponent
+      }, {
+        path: 'gerer-users',
+        component: GererUsersComponent
+      }, {
+        path: 'login',
+        component: AuthentificationComponent
+      }
+    ])
   ],
-  providers: [UserService,DbService, HttpClient],
+  providers: [UserService, DbService, HttpClient],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

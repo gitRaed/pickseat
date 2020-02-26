@@ -4,7 +4,7 @@ import {
     getUserData,
     updateDbUser,
     deleteDbUser,
-    authDb,
+    authDbEmail,
     statusDb
 } from '../dataAccessLayer/requete_data.mjs';
 import {
@@ -24,11 +24,10 @@ export function getUser() {
     });
 }
 
-export function updateUser(id, nom, prenom, email, numero, typeUser, motDePasse) {
+export function updateUser(id, nom, prenom, email, numero, typeUser) {
 
-    motDePasse = encrypt(motDePasse);
 
-    return updateDbUser(id, nom, prenom, email, numero, typeUser, motDePasse);
+    return updateDbUser(id, nom, prenom, email, numero, typeUser);
 }
 
 export function deleteUser(id) {
@@ -38,24 +37,28 @@ export function deleteUser(id) {
 
 export function authCode(email, motDePasse) {
 
-    let statusAuth = '';
+    let data = {
+        auth : false,
+        nom: '',
+        prenom: ''
+    };
 
-    return authDb(email).then( (result) => {
+    // check la disponibilité du mdp, ensuite le mail et renvoyer un objet
+    return getUserData().then( (result) => {
 
-        console.log('T passé par la ');
-        for(let i = 0, n = result.length; i < n; i++) {
+        for (let i = 0, n  = result.length; i < n && !data.auth; i++) {
 
             result[i].motDePasse = decrypt(result[i].motDePasse);
-            if(result[i].motDePasse === motDePasse)
-                statusAuth = {statusAuth : false};
-            else 
-                statusAuth = {statusAuth: true};
-            
-        }
-        
-        return statusAuth;
-    });
 
+            if(result[i].email === email || result[i].motDePasse === motDePasse) {
+                data.auth = true;
+                data.nom = result[i].nom;
+                data.prenom = result[i].prenom;
+            }
+                
+        }
+        return data;
+    });
 }
 
 export function banCode(id) {
