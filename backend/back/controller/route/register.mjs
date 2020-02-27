@@ -1,7 +1,8 @@
 "use strict";
 import {
     registerData,
-    registerFinalCode
+    registerFinalCode,
+    resetPasswordcode
 } from '../../serviceLayer/code_register.mjs';
 import * as nodemailer from 'nodemailer';
 
@@ -83,11 +84,10 @@ route.get('/verify', async function (req, res) {
     
             status_validation = "Accepté";
             status_compte = "Actif";
+            link =  "http://localhost:4200"; 
             console.log("\n", email, status_validation, status_compte);
             registerFinalCode(email, status_validation, status_compte).then ( () => {
-                res.json({
-                    message: 'Your account has been registered ! Click here to authenticate urself',
-                });
+                res.send('Your account has been registered ! Click <a href=' + link + '> here </a> to authenticate urself');
             });
             
         } else {
@@ -96,7 +96,7 @@ route.get('/verify', async function (req, res) {
             console.log("\n", email, status_validation, status_compte);
             registerFinalCode(email, status_validation, status_compte).then ( () => {
                 res.json({
-                    message: 'Bad request, your accounst has not been registered',
+                    message: 'Bad request, your account has not been registered',
                 });
             });
         }
@@ -107,6 +107,43 @@ route.get('/verify', async function (req, res) {
     }
 });
 
+route.post('/forgotPassword', async (req, res, next) => {
+
+    email = req.body.email;
+    res.status(200);
+
+    host = req.get('host');
+    link = "http://localhost:4200/mdpForgot/" + email;
+    mailOptions = {
+        to: email,
+        subject: "Reset password",
+        html: "Hello,<br> Please Click on the link bellow to reset your password<br><a href=" + link + ">Click here</a>"
+    };
+    // console.log('mailOptions.to : ' + mailOptions.to + ' \n mailOptions.subject ' + mailOptions.subject +' \n mailOptions.html' + mailOptions.html);
+
+    smtpTransport.sendMail(mailOptions, function (error, response) {
+
+        if (error) {
+            console.log('Erreur sendMail forgot password: ' + error + ' \n');
+            res.end("error");
+        } else {
+            res.end("sent");
+        }
+    });
+});
+
+route.post('/resetPassword', async (req, res, next) => {
+
+    res.status(200);
+
+    email = req.body.email;
+    motDePasse = req.body.motDePasse;
+    link = "http://localhost:4200";
+
+    resetPasswordcode(email, motDePasse).then( () => {
+        res.send(email + ', votre mot de passe a été modifié ! Appuyer <a href=' + link + '>ici</a> pour vous authentifier ! ');
+    });
+});
 
 export {
     route as register

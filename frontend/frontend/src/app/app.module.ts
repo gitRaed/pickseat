@@ -2,6 +2,7 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { RouterModule } from '@angular/router';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -11,7 +12,10 @@ import { GererUsersComponent } from './gerer-users/gerer-users.component';
 import { UserService } from './user.service';
 import { DbService } from './db.service';
 import { AuthentificationComponent } from './authentification/authentification.component';
-import { RouterModule } from '@angular/router';
+import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
+import { AuthGuard } from './auth.guard';
+import { NotFoundComponent } from './not-found/not-found.component';
+
 
 
 
@@ -21,7 +25,9 @@ import { RouterModule } from '@angular/router';
     AppComponent,
     InscriptionComponent,
     GererUsersComponent,
-    AuthentificationComponent
+    AuthentificationComponent,
+    ForgotPasswordComponent,
+    NotFoundComponent
   ],
   imports: [
     BrowserModule,
@@ -30,18 +36,29 @@ import { RouterModule } from '@angular/router';
     NgbModule,
     RouterModule.forRoot([
       {
+        path: '',
+        component: AuthentificationComponent
+      },
+      {
         path: 'register',
         component : InscriptionComponent
-      }, {
+      },
+      {
         path: 'gerer-users',
-        component: GererUsersComponent
-      }, {
-        path: 'login',
-        component: AuthentificationComponent
+        component: GererUsersComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'mdpForgot/:email',
+        component: ForgotPasswordComponent
+      },
+      {
+        path: '**',
+        component: NotFoundComponent
       }
     ])
   ],
-  providers: [UserService, DbService, HttpClient],
+  providers: [UserService, DbService, HttpClient, AuthGuard],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

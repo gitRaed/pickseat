@@ -8,6 +8,8 @@
 	background: #c8d6e5;
 }
 
+
+
 .form h1{
 	background: #48dbfb;
 	padding: 20px 0;
@@ -82,4 +84,39 @@
 .error {
 	color: red;
 	text-align: center;
+}
+
+.modal-header,.modal-header button{
+	background: #48dbfb;
+	color: white;
+	font-weight: 300;
+	text-align: center;
+}
+
+.modal-header button:hover {
+	background-color: white;
+	color: #48dbfb;
+}
+
+.modal-body .form {
+	background-color: white;
+}
+
+.modal-body .form input[type="email"] {
+	border-radius: 30px;
+}
+
+.modal-body .form input[type="submit"] {
+	margin: 0;
+	width: 100%;
+}
+
+.modal-footer button {
+	border: 1px solid #48dbfb;
+	color: #48dbfb;
+	transition: all 0.5s;
+}
+
+.modal-footer button:hover {
+	color:white;
 }

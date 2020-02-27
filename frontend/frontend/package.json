@@ -23,6 +23,7 @@
     "@types/crypto-js": "^3.1.43",
     "bootstrap": "^4.4.1",
     "crypto-js": "^4.0.0",
+    "express-session": "^1.17.0",
     "ngb-modal": "^2.0.3",
     "rxjs": "^6.4.0",
     "tslib": "^1.10.0",

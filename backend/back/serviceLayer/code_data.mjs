@@ -8,7 +8,6 @@ import {
     statusDb
 } from '../dataAccessLayer/requete_data.mjs';
 import {
-    encrypt,
     decrypt
 } from './crypter.mjs';
 
@@ -43,20 +42,39 @@ export function authCode(email, motDePasse) {
         prenom: ''
     };
 
-    // check la disponibilité du mdp, ensuite le mail et renvoyer un objet
+    // check le mot de passe et l'email
     return getUserData().then( (result) => {
 
         for (let i = 0, n  = result.length; i < n && !data.auth; i++) {
 
             result[i].motDePasse = decrypt(result[i].motDePasse);
 
-            if(result[i].email === email || result[i].motDePasse === motDePasse) {
+            if(result[i].email === email && result[i].motDePasse === motDePasse) {
                 data.auth = true;
                 data.nom = result[i].nom;
                 data.prenom = result[i].prenom;
             }
                 
         }
+        return data;
+    });
+}
+
+export function authCodeEmail(email) {
+
+    let data = {
+        auth: false
+    };
+
+    return authDbEmail(email).then( (result) => {
+
+        for(let i = 0, n = result.length; i < n && !data.auth; i++){
+
+            if (result[i].email === email) {
+                data.auth = true;
+            }
+        }
+
         return data;
     });
 }

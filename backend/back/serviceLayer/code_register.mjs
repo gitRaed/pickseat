@@ -1,7 +1,8 @@
 "use strict";
 import {
     registerUser,
-    registerFinal
+    registerFinal,
+    resetPasswordDb
 } from "../dataAccessLayer/requete_register.mjs";
 import {
     encrypt
@@ -19,4 +20,10 @@ export async function registerData(nom, prenom, email, numero, typeUser, status_
 export async function registerFinalCode(email, status_validation, status_compte) {
 
     return registerFinal(email, status_validation, status_compte);
+}
+
+export async function resetPasswordcode(email, motDePasse) {
+
+    motDePasse = encrypt(motDePasse);
+    return resetPasswordDb(email, motDePasse);
 }

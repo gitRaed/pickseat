@@ -1,12 +1,14 @@
 "use strict";
 import express from "express";
 import bodyParser from "body-parser";
+import * as session from "express-session";
 
 import {
     getUser,
     updateUser,
     deleteUser,
     authCode,
+    authCodeEmail,
     banCode,
     suspendCode,
     normalCode
@@ -15,7 +17,7 @@ import {
 const route = express.Router();
 
 //#region variables
-let id, nom, prenom, email, numero, typeUser, motDePasse;
+let id, nom, prenom, email, numero, typeUser, motDePasse, type;
 //#endregion
 
 route.use(function (req, res, next) {
@@ -32,7 +34,6 @@ route.use(bodyParser.urlencoded({
     extended: true
 }));
 route.use(express.json());
-
 
 
 route.get("/getData", async function (req, res) {
@@ -86,15 +87,32 @@ route.post('/normal', async function (req, res) {
     }));
 });
 
-route.get('/auth/:email/:mdp', async function (req, res) {
+route.get('/auth/:email/:mdp/:type', async function (req, res) {
 
     email = req.params.email;
     motDePasse = req.params.mdp;
+    type = req.params.type;
 
     res.status(200);
-    authCode(email,motDePasse).then( (result) => {
-        res.send(result);
-    });
+    // si type === auth, check si le mdp et email sont bien disponible, si type === register, juste check si l'email est disponible
+    if (type === 'auth') {
+        authCode(email,motDePasse).then( (result) => {
+
+            res.send(result);
+    
+            if (result.auth) {
+    
+                // session params
+                
+            }
+        });
+    } else if (type === 'register') {
+
+        authCodeEmail(email).then( (result) => {
+
+            res.send(result);
+        });
+    }
 });
 
 route.post('/updateData', async function (req, res) {

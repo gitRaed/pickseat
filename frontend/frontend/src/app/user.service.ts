@@ -16,9 +16,9 @@ export class UserService {
 
 
   // renvoie true si le mot de passe et l'email sont indisponibles
-  appelUnicite(email, password) {
+  appelUnicite(email, password, type) {
 
-    return this.db.unicite(email, password);
+    return this.db.unicite(email, password, type);
   }
 
     // verif valide le mot de passe et le mail entrés
@@ -33,7 +33,7 @@ export class UserService {
         errors.push('Vos deux mots de passe ne sont pas identiques');
     } else if (auth === true ) {
         errors = [];
-        errors.push('Email ou mot de passe déjà disponible');
+        errors.push('Email déjà disponible');
     } else {
         errors = [];
     }

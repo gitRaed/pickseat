@@ -1,22 +1,45 @@
-
 <div class="form">
-    <form (submit) = "authentification($event)">   
-        
-        <h1>Authentification</h1>
-        
-        <input required type="email" name="email" id="email_user" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+  <form (submit)="authentification($event)">
 
-        <input required type="password" name="mdp" id="mdp_user" placeholder="Votre mot de passe" pattern="^(?=.*[a-z])(?=.*[A-Z]).{6,}$" title="1 lettre majuscule et 1 lettre minuscule au moins,minimun 6 caractères">
-        
+    <h1>Authentification</h1>
 
-        <input type="submit" value="Valider"> <br> <br>
+    <input required type="email" name="email" id="email_user" placeholder="Votre email"
+      pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
 
-        <p> <a href="#">Pas de compte?</a> <a href="#">Mot de passe oublié?</a>  </p>
+    <input required type="password" name="mdp" id="mdp_user" placeholder="Votre mot de passe"
+      pattern="^(?=.*[a-z])(?=.*[A-Z]).{6,}$"
+      title="1 lettre majuscule et 1 lettre minuscule au moins,minimun 6 caractères">
 
-    </form>
+
+    <input type="submit" value="Valider"> <br> <br>
+
+    <p> <a routerLink='/register'>Pas de compte?</a> <a href="#" (click)="modal(forgotPassword)">Mot de passe oublié?</a>
+
+  </form>
 
 </div>
 
 <div class="error">
-<p> {{message}} </p>
+  <p> {{message}} </p>
 </div>
+
+
+<ng-template #forgotPassword let-modal>
+    <div class="modal-header">
+        <h4 id="modal-basic-title"> <i class="fas fa-lock"></i>  Mot de passe oublié</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <h6><strong>Un email vous sera envoyé avec les détails nécessaires</strong></h6>
+
+        <form (submit) = "mdpForgot($event)" class="form">
+            <input required type="email" name="email" id="email_user" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+            <input type="submit" value="Reset password">
+        </form>
+        <p class="error">{{messageResetPassword}}</p>
+    </div>
+    
+</ng-template>

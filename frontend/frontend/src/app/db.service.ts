@@ -31,10 +31,27 @@ export class DbService {
     return this.http.get <any>('http://localhost:9500/data/getData');
   }
 
-  unicite(email: string, motDePasse: string) {
+  unicite(email: string, motDePasse: string, type: string) {
 
-    return this.http.get<any>('http://localhost:9500/data/auth/' + email + '/' + motDePasse);
+    return this.http.get<any>('http://localhost:9500/data/auth/' + email + '/' + motDePasse + '/' + type);
   }
+
+  sendMailResetPassword(email) {
+
+    return this.http.post('http://localhost:9500/register/forgotPassword', {
+      email
+    });
+  }
+
+  resetPassword(email, motDePasse) {
+
+    return this.http.post('http://localhost:9500/register/resetPassword', {
+      email,
+      motDePasse
+    });
+  }
+
+  //#region options
   banUser(id: any, nom: string, prenom: string) {
 
     return this.http.post('http://localhost:9500/data/ban', {
@@ -81,4 +98,6 @@ export class DbService {
       id
     });
   }
+
+  //#endregion
 }

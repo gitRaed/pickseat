@@ -36,7 +36,7 @@ export class InscriptionComponent implements OnInit {
       confirmPassword: target.querySelector('#confirm_mdp_user').value
     };
 
-    this.user.appelUnicite(data.email, data.password).subscribe( (result) => {
+    this.user.appelUnicite(data.email, data.password, 'register').subscribe( (result) => {
 
       console.log('appel unicite result.auth ' + result.auth);
       const verif = this.user.verif(data.email, data.password, data.confirmPassword, result.auth);

@@ -47,3 +47,16 @@ export async function registerFinal(email, status_validation, status_compte,) {
         console.log('register final error : ' + error);
     }
 }
+
+export async function resetPasswordDb(email, motDePasse) {
+
+    try {
+        const pool = await new sql.ConnectionPool(config).connect();
+        await pool.request()
+            .input('email', email)
+            .input('motDePasse', motDePasse)
+            .query('UPDATE utilisateurs SET motDePasse = @motDePasse WHERE email = @email');
+    } catch (error) {
+        console.log('register final error : ' + error);
+    }
+}
