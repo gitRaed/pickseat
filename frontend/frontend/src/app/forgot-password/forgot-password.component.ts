@@ -27,14 +27,31 @@ export class ForgotPasswordComponent implements OnInit {
     const password = target.querySelector('#mdp_user').value;
     const confirmPassword = target.querySelector('#confirm_mdp_user').value;
 
-    this.message = this.user.verif(email, password, confirmPassword, false);
 
-    if (this.message.length === 0 ) {
+    this.user.appelUnicite(email, 'mdp', 'register').subscribe( (result) => {
 
-      this.message = 'Mot de passe modifié! Vous allez être renvoyé à la page d\'authentification';
-      this.db.resetPassword(email, password).subscribe();
-      this.router.navigate(['']);
+      if (result.auth) {
+
+          this.message = this.user.verif(password, confirmPassword, false);
+          if (this.message.length === 0 ) {
+
+            this.message = 'Mot de passe modifié! Vous allez être renvoyé à la page d\'authentification';
+            this.db.resetPassword(email, password).subscribe();
+            this.navigate();
+            }
+      } else {
+        this.message = 'Email inexistant. \n Vous allez être renvoyé à la page d\'authentification';
+        this.navigate();
+      }
+    });
+
     }
-  }
 
-}
+
+    navigate() {
+
+      setInterval(() => {
+        this.router.navigate(['']);
+      }, 4000);
+      }
+    }

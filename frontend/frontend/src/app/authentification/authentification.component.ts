@@ -54,9 +54,18 @@ export class AuthentificationComponent implements OnInit {
     event.preventDefault();
     const target = event.target;
     const email = target.querySelector('#email_user').value;
-    this.messageResetPassword = 'Message envoyé dans votre boîte mail, suivez les instructions ! ';
 
-    this.db.sendMailResetPassword(email).subscribe();
+
+    this.user.appelUnicite(email, 'mdp', 'register').subscribe( (result) => {
+
+      if (result.auth) {
+        this.db.sendMailResetPassword(email).subscribe();
+        this.messageResetPassword = 'Message envoyé dans votre boîte mail, suivez les instructions ! ';
+      } else {
+        this.messageResetPassword = 'Email inexistant';
+      }
+    });
+
   }
 
 }

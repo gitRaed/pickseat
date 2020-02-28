@@ -22,7 +22,7 @@ export class UserService {
   }
 
     // verif valide le mot de passe et le mail entrés
-  verif(email, password, confirmPassword, auth) {
+  verif(password, confirmPassword, auth) {
 
     let errors = [];
 

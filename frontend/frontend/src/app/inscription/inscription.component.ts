@@ -39,7 +39,7 @@ export class InscriptionComponent implements OnInit {
     this.user.appelUnicite(data.email, data.password, 'register').subscribe( (result) => {
 
       console.log('appel unicite result.auth ' + result.auth);
-      const verif = this.user.verif(data.email, data.password, data.confirmPassword, result.auth);
+      const verif = this.user.verif(data.password, data.confirmPassword, result.auth);
       this.message = this.user.test(data, verif, 'register');
 
       if (this.message === 'Valider votre compte en cliquant sur le lien envoyé dans votre mail') {

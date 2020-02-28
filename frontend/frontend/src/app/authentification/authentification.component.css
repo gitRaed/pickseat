@@ -6,6 +6,7 @@
 
 .form {
 	background: #c8d6e5;
+	border-radius: 15px;
 }
 
 
@@ -77,7 +78,7 @@
 
 .form p a:first-child{
     margin-left: 2%;
-    margin-right: 35%;
+    margin-right: 33%;
 }
 
 
