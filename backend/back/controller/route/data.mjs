@@ -141,12 +141,7 @@ route.get('/auth/:email/:mdp/:type', async function (req, res) {
 
             // si le user est authentifié, envoyer un accessToken en reponse normal et un refreshToken en cookie
             if (result.auth === true) {
-
-
-                res.cookie('token', createAccessToken(), {
-                    httpOnly: true,
-                    path: '/logout'
-                });
+                result.token = createAccessToken();
             }
 
             res.send(result);
@@ -159,16 +154,6 @@ route.get('/auth/:email/:mdp/:type', async function (req, res) {
         });
     }
 });
-
-
-route.post('/logout', async (_req, res) =>{
-    
-    res.clearCookie('token');
-    res.send({
-        message: 'Logged out'
-    });
-});
-
 
 export {
     route as data
