@@ -1,3 +1,13 @@
+.donnee {
+	bottom: 80px;
+    font-size: 170%;
+    left: 33%;
+    position: relative;
+    text-align: center;
+    width: 35%;
+}
+
+
 .message{
 	color: red;
 	left: 5%;

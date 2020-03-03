@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
+import { CookieService } from 'ngx-cookie-service';
+import { AuthService } from './auth.service';
+
 
 
 @Component({
@@ -8,5 +11,7 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AppComponent {
 
+
   constructor() {}
+  
 }

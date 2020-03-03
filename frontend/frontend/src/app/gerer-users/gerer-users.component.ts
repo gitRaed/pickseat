@@ -1,7 +1,8 @@
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { UserService } from '../user.service';
 import { DbService } from '../db.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-gerer-users',
@@ -12,13 +13,15 @@ import { DbService } from '../db.service';
 
 export class GererUsersComponent implements OnInit {
 
-  constructor(private user: UserService, private modalService: NgbModal, private db: DbService) { }
+  constructor(private user: UserService, private modalService: NgbModal, private db: DbService, private auth: AuthService) { }
 
   data = [];
   message = '';
+  donnee;
 
   ngOnInit() {
     this.getData();
+    this.donnee = this.auth.getData();
   }
 
 
@@ -96,5 +99,10 @@ export class GererUsersComponent implements OnInit {
     this.db.getUsersData().subscribe( (result) => {
       this.data = result;
     });
+  }
+
+  ngOnDestroy(): void {
+
+    this.auth.setLogStatus(false);
   }
 }

@@ -40,9 +40,12 @@ export class AuthentificationComponent implements OnInit {
       console.log(result);
       if (result.auth === true) {
         this.message = 'Bienvenue ' + result.nom + ' ' + result.prenom;
+        this.auth.setData(result.nom, result.prenom, result.token);
         console.log(this.message);
         this.auth.setLogStatus(true);
-        this.router.navigate(['gerer-users']);
+        setInterval(() => {
+          this.router.navigate(['gerer-users']);
+        }, 1000);
       } else {
         this.message = 'Email ou mot de passe non existant';
       }
