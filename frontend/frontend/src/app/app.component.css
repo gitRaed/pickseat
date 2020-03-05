@@ -8,16 +8,18 @@ header{
     border: 1px solid #dfe4ea;
     box-shadow: 0 0 5px 4px #dfe4ea;
     margin-bottom:3%;
-    height: 120px;
+    height: 70px;
 }
 
 .logo {
+    position: absolute;
     padding: 1%;
-    width: 8%;
+    width: 10%;
+    overflow: auto;
 }
 
 .ecriture {
-    bottom: 80px;
+    top: 15px;
     font-size: 170%;
     left: 33%;
     position: relative;
@@ -26,12 +28,12 @@ header{
 }
 
 .auth {
-    bottom: 165px;
+    bottom: 40px;
     font-size: 120%;
     height: 100%;
     left: 89%;
-    padding: 2% 0 0 0;
+    padding: 0.5% 0 0 0;
     position: relative;
     text-align: center;
-    width: 10%;
+    width: 11%;
 }

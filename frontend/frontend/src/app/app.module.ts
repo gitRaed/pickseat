@@ -16,6 +16,7 @@ import { AuthentificationComponent } from './authentification/authentification.c
 import { ForgotPasswordComponent } from './forgot-password/forgot-password.component';
 import { AuthGuard } from './auth.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
+import { CoreComponent } from './core/core.component';
 
 
 
@@ -28,7 +29,8 @@ import { NotFoundComponent } from './not-found/not-found.component';
     GererUsersComponent,
     AuthentificationComponent,
     ForgotPasswordComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    CoreComponent
   ],
   imports: [
     BrowserModule,
@@ -52,6 +54,11 @@ import { NotFoundComponent } from './not-found/not-found.component';
       {
         path: 'mdpForgot/:email',
         component: ForgotPasswordComponent
+      },
+      {
+        path: 'map',
+        component: CoreComponent,
+        canActivate: [AuthGuard]
       },
       {
         path: '**',

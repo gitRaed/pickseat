@@ -13,6 +13,7 @@ export class DbService {
     observable : 'response'
 };
 
+  
   registerUser(nom: string, prenom: string, email: string, numero: string, typeUser: string, mdp: string) {
 
     return this.http.post < any > ('http://localhost:9500/register', {
@@ -26,6 +27,7 @@ export class DbService {
 
   }
 
+  //#region  db
   getUsersData() {
 
     return this.http.get <any>('http://localhost:9500/data/getData');
@@ -100,4 +102,15 @@ export class DbService {
   }
 
   //#endregion
+
+  //#endregion
+
+  //#region geojson
+  getStatesShapes() {
+
+    return this.http.get('../assets/data/gz_2010_us_outline_5m.json');
+  }
+  //#endregion
+
+
 }

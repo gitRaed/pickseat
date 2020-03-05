@@ -1,5 +1,5 @@
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { DbService } from '../db.service';
 import { AuthService } from '../auth.service';
@@ -17,11 +17,10 @@ export class GererUsersComponent implements OnInit {
 
   data = [];
   message = '';
-  donnee;
 
   ngOnInit() {
     this.getData();
-    this.donnee = this.auth.getData();
+    // this.donnee = this.auth.getData();
   }
 
 
@@ -101,8 +100,4 @@ export class GererUsersComponent implements OnInit {
     });
   }
 
-  ngOnDestroy(): void {
-
-    this.auth.setLogStatus(false);
-  }
 }
