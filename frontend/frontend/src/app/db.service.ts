@@ -1,19 +1,16 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
+import { AuthService } from './auth.service';
+
 
 @Injectable({
   providedIn: 'root'
 })
 export class DbService {
 
-  constructor(private http: HttpClient) {}
-  options = {
-    headers: new HttpHeaders().set('Content-Type', 'application/x-www-form-urlencoded'),
-    observable : 'response'
-};
+  constructor(private http: HttpClient, private auth: AuthService) {}
 
-  
+
   registerUser(nom: string, prenom: string, email: string, numero: string, typeUser: string, mdp: string) {
 
     return this.http.post < any > ('http://localhost:9500/register', {
@@ -103,14 +100,23 @@ export class DbService {
 
   //#endregion
 
-  //#endregion
+  sendMessage(email: string, message: string) {
 
-  //#region geojson
-  getStatesShapes() {
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : this.auth.getData().token,
+    });
 
-    return this.http.get('../assets/data/gz_2010_us_outline_5m.json');
+    const options = {
+      headers,
+      observable : 'response',
+  };
+
+    console.log(email, message);
+    return this.http.post < any > ('http://localhost:9500/map/contactUs', {
+      email,
+      message
+    }, options);
   }
-  //#endregion
-
 
 }

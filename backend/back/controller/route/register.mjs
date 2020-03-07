@@ -22,16 +22,7 @@ let rand, mailOptions, host, link;
 let nom, prenom, email, numero, typeUser,status_validation, status_compte, motDePasse;
 //#endregion
 
-route.use(function (req, res, next) {
-    // console.log("Request", req.url, req.body, req.method);
-    res.header("Access-Control-Allow-Origin", "*");
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    if (req.method === 'OPTIONS') {
-        res.end();
-    } else {
-        next();
-    }
-});
+
 route.use(bodyParser.urlencoded({
     extended: true
 })); // suuport url-encoded bodies
