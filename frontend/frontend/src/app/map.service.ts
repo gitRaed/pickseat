@@ -9,65 +9,43 @@ export class MapService {
 
   constructor(private auth: AuthService) { }
 
-  map: L.Map | L.LayerGroup<any>;
-  private data = this.auth.getData();
-  private location = {
-    latitude : 51.509865,
-    longitude : -0.118092,
-    zoom : 3
+  //#region  variables
+  private options = {
+    layers: [
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+    })
+  ],
+    zoom: 2,
+    center: L.latLng([ 51.509865,  -0.118092 ])
   };
 
+  private layer = [];
+  private layersControl = {
+    overlays: { }
+  };
+  //#endregion
 
+  //#region function
+  getOptions() {
 
-   // déclaration de la map avec les coordonnées du centre et du zoom
-  initMap() {
-
-    this.map = L.map('map').setView([this.location.latitude, this.location.longitude], this.location.zoom);
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-    }).addTo(this.map);
+    return this.options;
   }
 
-  findUser(position) {
-
-    this.location.latitude = position.coords.latitude;
-    this.location.longitude = position.coords.longitude;
-    this.location.zoom = 15;
-    this.initMap();
-    // console.log('Coordonnées : [' + position.coords.latitude + ', ' + position.coords.longitude + ']');
-    this.addPoppup(this.map, position.coords.latitude, position.coords.longitude);
-    return this.map;
+  setOptions(zoom, latitude, longitude) {
+    this.options.zoom = zoom;
+    this.options.center = L.latLng([latitude, longitude]);
   }
 
-  didNotFindUser() {
+  setLayersControl(latitude, longitude, message) {
 
-    console.log('Uh.. ok, i will still find your location even if it is not accurate');
-    fetch('https://ipapi.co/json')
-      .then(res => res.json())
-      .then(result => {
-        this.location.latitude = result.latitude;
-        this.location.longitude = result.longitude;
-        this.location.zoom = 15;
-        this.initMap();
-        // console.log('Coordonnées : [' + result.latitude + ', ' + result.longitude + ']');
-        this.addPoppup(this.map, this.location.latitude, this.location.longitude);
-        return this.map;
-      });
+    this.layersControl.overlays['Your position'] = L.marker([latitude, longitude]).bindPopup(message);
   }
 
-  addPoppup(map, latitude, longitude) {
+  getLayersControl() {
 
-      // déclaration de l'icon du popup
-      const icon = L.icon({
-        iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.2.0/images/marker-icon.png'
-      });
-
-      // déclaration du popup
-      L.marker([latitude, longitude], {icon})
-        .bindPopup('This is where you are ' + this.data.nom + ' ' + this.data.prenom)
-        .addTo(map);
+    return this.layersControl;
   }
 
-
+  //#endregion
 }

@@ -1,32 +1,71 @@
-import { Component, AfterViewInit } from '@angular/core';
-import * as L from 'leaflet';
+import { Component, AfterViewInit, OnInit } from '@angular/core';
 import { MapService } from '../map.service';
 import { DbService } from '../db.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
+import * as L from 'leaflet';
 
 @Component({
   selector: 'app-core',
   templateUrl: './core.component.html',
   styleUrls: ['./core.component.css']
 })
-export class CoreComponent implements  AfterViewInit {
+export class CoreComponent implements  OnInit {
 
-  // tslint:disable-next-line: max-line-length
-  constructor(private mapService: MapService, private db: DbService, private modalService: NgbModal, private user: UserService, private auth: AuthService) { }
+  constructor(private mapService: MapService,
+              private db: DbService,
+              private modalService: NgbModal,
+              private user: UserService,
+              private auth: AuthService) { }
 
   message = 'Merci d\'utiliser Pickseat !';
 
-  ngAfterViewInit() {
 
-    navigator.geolocation.getCurrentPosition( (position) => this.mapService.findUser(position), () => this.mapService.didNotFindUser());
+  ngOnInit(): void {
+
+    navigator.geolocation.getCurrentPosition( (position) => {
+
+      // si l'user accepte de donner sa position
+      this.mapService.setOptions(15, position.coords.latitude, position.coords.longitude);
+      this.mapService.setLayersControl(position.coords.latitude, position.coords.longitude, 'This is where you are');
+    }, () => {
+      // s'il n'accepte pas
+      console.log('Uh.. ok, i will still find your location even if it is not accurate');
+      fetch('https://ipapi.co/json')
+      .then(res => res.json())
+      .then(result => {
+        this.mapService.setOptions(15, result.latitude, result.longitude);
+        this.mapService.setLayersControl(result.latitude, result.longitude, 'Approximation of your position');
+      });
+    });
   }
+
+
+  //#region mapFunction
+  onMapReady(map: L.Map) {
+    setTimeout(() => {
+      map.invalidateSize();
+    }, 0);
+ }
+
+  mapOptions() {
+      return this.mapService.getOptions();
+  }
+
+  mapLayersControl() {
+
+    return this.mapService.getLayersControl();
+  }
+
+  recup(event) {
+    console.log(event.latlng.lat);
+  }
+  //#endregion
 
   modal(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
-
   contactUs(event) {
 
     event.preventDefault();
@@ -59,4 +98,5 @@ export class CoreComponent implements  AfterViewInit {
     }
 
   }
+
 }

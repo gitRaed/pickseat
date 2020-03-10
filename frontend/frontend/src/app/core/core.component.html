@@ -1,10 +1,39 @@
-<div id="map">
+<div class="map" 
+    leaflet
+    (leafletMapReady)="onMapReady($event)"
+    [leafletOptions] = "mapOptions()"
+    [(leafletCenter)] = "mapOptions().center"
+    [(leafletZoom)] = "mapOptions().zoom"
+    [leafletLayersControl] = "mapLayersControl()"
+    (leafletClick) = "recup($event)">
 
 </div>
 
 <button class="contactUs" (click) = "modal(ContactUs)">Contact us!</button>
+<button class="mapOptions"><i class="fas fa-map-marker-alt"></i></button>
 
 <ng-template #ContactUs let-modal>
+    <div class="modal-header">
+        <h4 id="modal-basic-title">Contact Us</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+        <p>Hésitez pas à nous faire des retours !!!</p>
+
+        <form class="form" (submit) = "contactUs($event)">
+            <input required type="email" name="email" id="email_user" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+            <input required type="textarea" name="message" id="message_user" placeholder="Votre message">
+            <input type="submit" value="Envoyer">
+        </form>
+        <p class="error">{{message}}</p>
+    </div>
+    
+</ng-template>
+
+<ng-template #test let-modal>
     <div class="modal-header">
         <h4 id="modal-basic-title">Contact Us</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">

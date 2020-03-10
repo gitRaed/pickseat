@@ -9,6 +9,7 @@ header{
     box-shadow: 0 0 5px 4px #dfe4ea;
     margin-bottom:3%;
     height: 70px;
+    z-index: 999;
 }
 
 .logo {

@@ -1,25 +1,37 @@
-#map {
+.map {
     bottom: 30px;
     height: 545px;
     margin: 0;
     width: 100%;
 }
 
-.contactUs {
+
+.contactUs, .mapOptions {
     background-color: white;
     border: none;
     border-radius: 10px;
-    color: #48dbfb;
-    padding: 0.5%;
-    position: absolute;
-    right: 10px;
-    top: 90px;
-    z-index: 999;
+	color: #48dbfb;
+	position: absolute;
+	z-index: 999;
 }
 
-.contactUs:hover {
+.contactUs {
+	padding: 0.5%;
+	right: 10px;
+    top: 90px;
+}
+
+
+.contactUs:hover, .mapOptions:hover {
     background-color: #48dbfb;
     color: white;
+}
+
+.mapOptions {
+	left: 9px;
+	padding: 0.3%;
+	top: 160px;
+	width: 30px;
 }
 
 
