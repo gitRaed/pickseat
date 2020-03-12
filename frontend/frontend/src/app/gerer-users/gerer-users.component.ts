@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserService } from '../user.service';
 import { DbService } from '../db.service';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-gerer-users',
@@ -13,16 +14,18 @@ import { AuthService } from '../auth.service';
 
 export class GererUsersComponent implements OnInit {
 
-  constructor(private user: UserService, private modalService: NgbModal, private db: DbService, private auth: AuthService) { }
+  constructor(private user: UserService,
+              private modalService: NgbModal,
+              private db: DbService,
+              private router: Router,
+              private auth: AuthService) { }
 
   data = [];
   message = '';
 
   ngOnInit() {
     this.getData();
-    // this.donnee = this.auth.getData();
   }
-
 
   modal(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});

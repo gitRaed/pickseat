@@ -21,7 +21,7 @@ export class AuthentificationComponent implements OnInit {
   ngOnInit() {
 
     this.auth.setLogStatus(false);
-    this.auth.setData('Connectez', 'vous', '');
+    this.auth.setData('Connectez', 'vous', '', '');
   }
 
   modal(content) {
@@ -43,11 +43,9 @@ export class AuthentificationComponent implements OnInit {
       console.log(result);
       if (result.auth === true) {
         this.message = 'Bienvenue ' + result.nom + ' ' + result.prenom;
-        this.auth.setData(result.nom, result.prenom, result.token);
+        this.auth.setData(result.nom, result.prenom, result.email, result.token);
         this.auth.setLogStatus(true);
-        setInterval(() => {
-          this.router.navigate(['map']);
-        }, 1000);
+        this.router.navigate(['/map']);
       } else {
         this.message = 'Email ou mot de passe non existant';
       }

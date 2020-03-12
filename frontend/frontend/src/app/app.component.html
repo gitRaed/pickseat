@@ -1,35 +1,35 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
-  <title>Pickseat</title>
-</head>
-<body>
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link href="https://fonts.googleapis.com/css?family=Roboto&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.0/css/all.css" integrity="sha384-lZN37f5QGtY3VHgisS14W3ExzMWZxybE1SJSEsQp9S+oqd12jhcu+A56Ebc1zFSJ" crossorigin="anonymous">
+    <title>Pickseat</title>
+  </head>
+  <body>
 
-  <header>
-      <img src="assets/img/linkedin_banner_pickseat.png" alt="Logo de Pickseat" class="logo">
-      
-      <div class="ecriture">
-        <span> Pickseat - votre partenaire covoiturage</span>
-      </div>
-      
-      <div class="auth">
-        <span>{{data.nom}} <br> {{data.prenom}}</span>
-      </div>
+    <header>
+        <img src="assets/img/linkedin_banner_pickseat.png" alt="Logo de Pickseat" class="logo">
+        
+        <div class="ecriture">
+          <span> Pickseat - votre partenaire covoiturage</span>
+        </div>
+        
+        <div class="auth">
+          <span>{{data.nom}} <br> {{data.prenom}}</span>
+        </div>
 
-  </header>
+    </header>
 
-  <!--
+    <!--
+      <router-outlet></router-outlet>
+      <app-core></app-core>
+    -->
+    
     <router-outlet></router-outlet>
-    <app-core></app-core>
-  -->
-  
-  <app-core></app-core>
-  
+    
 
-</body>
+  </body>
 </html>

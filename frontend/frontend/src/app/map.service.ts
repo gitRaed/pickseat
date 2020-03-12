@@ -1,15 +1,16 @@
 import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { AuthService } from './auth.service';
+import { DbService } from './db.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class MapService {
 
-  constructor(private auth: AuthService) { }
+  constructor(private auth: AuthService,
+              private db: DbService) { }
 
-  //#region  variables
   private options = {
     layers: [
       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -20,15 +21,15 @@ export class MapService {
     center: L.latLng([ 51.509865,  -0.118092 ])
   };
 
-  private layer = [];
+  layer = [];
   private layersControl = {
     overlays: { }
   };
-  //#endregion
 
-  //#region function
+
+
+ //#region mapOptions
   getOptions() {
-
     return this.options;
   }
 
@@ -37,15 +38,54 @@ export class MapService {
     this.options.center = L.latLng([latitude, longitude]);
   }
 
-  setLayersControl(latitude, longitude, message) {
+ //#endregion
 
-    this.layersControl.overlays['Your position'] = L.marker([latitude, longitude]).bindPopup(message);
-  }
-
+//#region layersControl
   getLayersControl() {
-
     return this.layersControl;
   }
 
-  //#endregion
+  setLayersControl(libelle, latitude, longitude, message) {
+    this.layersControl.overlays[libelle] = L.marker([latitude, longitude]).bindPopup(message);
+  }
+
+//#endregion
+
+//#region layer
+  getLayer() {
+    return this.layer;
+  }
+
+  setLayer(item) {
+    this.layer.push(item);
+  }
+
+  getLayerDb() {
+
+    this.layer = [];
+    this.db.getPointImportant(this.auth.getData().email).subscribe( (result) => {
+
+      for (let i = 0, n = result.message.length; i < n; i++) {
+        this.setLayer(result.message[i]);
+      }
+    });
+  }
+//#endregion
+
+//#region pointImportant
+  getPointImportant() {
+
+    this.db.getPointImportant(this.auth.getData().email).subscribe( (result) => {
+
+      for (let i = 0, n  = result.message.length; i < n ; i ++) {
+
+        this.setLayersControl(result.message[i].message,
+                              result.message[i].latitude,
+                              result.message[i].longitude,
+                              result.message[i].message);
+      }
+    });
+  }
+//#endregion
+
 }

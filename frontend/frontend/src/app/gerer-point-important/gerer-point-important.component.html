@@ -1,0 +1,82 @@
+<div class="message">
+    {{message}}
+</div>
+
+<br>
+<a routerLink="/map">Retour</a>
+<br>
+
+<table>
+    <tr class="colorie">
+        <th>Index</th>
+        <th>Libellé</th>
+        <th>Options</th>
+    </tr>
+
+    <tr *ngFor="let item of layer; let i=index;">
+
+        <td>{{i}}</td>
+
+        <td id="message_user">{{item.message}}</td>
+
+        <td>
+            <button [ngbTooltip] = "tooltipModifierPointImportant" (click)="modal(modifierPointImportant)"><i class="fas fa-retweet"></i></button>
+            <button [ngbTooltip] = "tooltipSupprimerPointImportant" (click)="modal(supprimerPointImportant)"><i class="fas fa-trash"></i></button>
+        </td>
+
+        <ng-template #tooltipModifierPointImportant>
+            Modifier le point important {{item.message}}
+        </ng-template>
+
+        <ng-template #tooltipSupprimerPointImportant>
+            Supprimer le point important {{item.message}}
+        </ng-template>
+
+        <ng-template #modifierPointImportant let-modal>
+
+            <div class="modal-header">
+                <h4 id="modal-basic-title">Modifier le point {{item.message}}</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-body">
+                <form (submit) = "updatePointImportant($event)"> 
+                    <div class="form-group">
+                        <input type="password" name="id_user" id="id_user" value="{{item.id_points}}" disabled style="display: none;">
+                        <input required type="email" name="email" id="email_user" value="{{email}}" disabled style="background-color: gray;color: whitesmoke;">
+                        <input type="text" name="message" id="message_user" placeholder="Nouveau libelle" value="{{item.message}}">
+                        <input type="submit" value="Valider">    
+                    </div>
+                </form>
+            </div>
+        </ng-template>
+
+        <ng-template #supprimerPointImportant let-modal>
+
+            <div class="modal-header">
+                <h4 id="modal-basic-title">Supprimer le point {{item.message}}</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-body">
+                <p><strong>Are you sure you want to delete the location<span class="text-primary">{{item.message}}</span> from your profile?</strong></p>
+                <p>All information associated to this location will be permanently deleted.
+                <span class="text-danger">This operation can not be undone !!</span>
+                </p>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click)="deletePointImportant(item.id_points);">Delete</button>
+            </div>
+        </ng-template>
+        
+
+    </tr>
+
+</table>
+
+

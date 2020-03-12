@@ -4,7 +4,7 @@ import { DbService } from '../db.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
-import * as L from 'leaflet';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-core',
@@ -17,18 +17,26 @@ export class CoreComponent implements  OnInit {
               private db: DbService,
               private modalService: NgbModal,
               private user: UserService,
-              private auth: AuthService) { }
+              private auth: AuthService,
+              private router: Router) { }
 
   message = 'Merci d\'utiliser Pickseat !';
+  private pointImportant = false;
+  private coordonnees = {
+    lat : 0,
+    lng : 0
+  };
 
 
   ngOnInit(): void {
 
+    // trouver la localisation de l'utilisateur
     navigator.geolocation.getCurrentPosition( (position) => {
 
       // si l'user accepte de donner sa position
       this.mapService.setOptions(15, position.coords.latitude, position.coords.longitude);
-      this.mapService.setLayersControl(position.coords.latitude, position.coords.longitude, 'This is where you are');
+      this.mapService.setLayersControl('Your position', position.coords.latitude, position.coords.longitude,
+                                      'This is where you are ' + this.auth.getData().nom + ' ' + this.auth.getData().prenom);
     }, () => {
       // s'il n'accepte pas
       console.log('Uh.. ok, i will still find your location even if it is not accurate');
@@ -36,9 +44,12 @@ export class CoreComponent implements  OnInit {
       .then(res => res.json())
       .then(result => {
         this.mapService.setOptions(15, result.latitude, result.longitude);
-        this.mapService.setLayersControl(result.latitude, result.longitude, 'Approximation of your position');
+        this.mapService.setLayersControl('Your position', result.latitude, result.longitude, 'Approximation of your position');
       });
     });
+
+    // afficher les points importants
+    this.mapService.getPointImportant();
   }
 
 
@@ -47,7 +58,7 @@ export class CoreComponent implements  OnInit {
     setTimeout(() => {
       map.invalidateSize();
     }, 0);
- }
+  }
 
   mapOptions() {
       return this.mapService.getOptions();
@@ -58,28 +69,35 @@ export class CoreComponent implements  OnInit {
     return this.mapService.getLayersControl();
   }
 
-  recup(event) {
-    console.log(event.latlng.lat);
+  recupCoordonnees(event) {
+
+      this.coordonnees.lat = event.latlng.lat;
+      this.coordonnees.lng = event.latlng.lng;
   }
+
   //#endregion
 
+  //#region options
   modal(content) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
   contactUs(event) {
 
+    this.message = 'Merci d\'utiliser Pickseat !';
     event.preventDefault();
     const target = event.target;
 
     const data = {
-      email: target.querySelector('#email_user').value,
-      message: target.querySelector('#message_user').value,
+      email: target.querySelector('#email_user_contactUs').value,
+      message: target.querySelector('#message_user_contactUs').value,
     };
 
+    // verifier si le token existe
     if (this.auth.getData().token !== null) {
       this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe( (result) => {
 
-        console.log(result);
+        // verifier si l'email est disponible
+        // result = true si l'email existe
         if (result.auth === true) {
 
           this.message = 'Message envoyé !';
@@ -98,5 +116,70 @@ export class CoreComponent implements  OnInit {
     }
 
   }
+
+  redirectionProfil() {
+
+    this.router.navigate(['/gerer-users']);
+  }
+  //#endregion
+
+//#region pointImportant
+
+  getPointImportant() {
+    return this.pointImportant;
+  }
+
+  setPointImportant() {
+
+    this.pointImportant = !this.pointImportant;
+    console.log('Point important : ' + this.pointImportant);
+  }
+
+  enregistrerPointImportant(event) {
+
+    this.message = 'Merci d\'utiliser Pickseat !';
+    if (this.pointImportant === true) {
+
+      event.preventDefault();
+      const target = event.target;
+      const data = {
+        email : target.querySelector('#email_user_point_important').value,
+        message: target.querySelector('#message_user_point_important').value,
+        latitude : this.coordonnees.lat,
+        longitude : this.coordonnees.lng,
+      };
+
+      // verifier si le token existe
+      if (this.auth.getData().token !== null) {
+        // sil existe, verifier si lemail est disponible
+        this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe( (result) => {
+
+            // result = true si email es disponible
+            if (result.auth === true) {
+
+              this.message = 'Point important enregistré !';
+              this.db.sendPointImportant(data.email, data.message, data.latitude, data.longitude).subscribe((resSendMessage) => {
+                this.message = resSendMessage.message;
+                this.mapService.getPointImportant();
+              } );
+            } else {
+
+              this.message = 'Email non existant';
+            }
+          });
+
+      } else {
+
+        this.message = 'Vous devez vous connectez ';
+      }
+    }
+  }
+
+  redirectionGererPoint() {
+
+    this.router.navigate(['gerer-point-important']);
+  }
+//#endregion
+
 
 }

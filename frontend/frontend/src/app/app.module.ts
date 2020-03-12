@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
@@ -17,6 +17,7 @@ import { ForgotPasswordComponent } from './forgot-password/forgot-password.compo
 import { AuthGuard } from './auth.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CoreComponent } from './core/core.component';
+import { GererPointImportantComponent } from './gerer-point-important/gerer-point-important.component';
 
 
 
@@ -28,7 +29,8 @@ import { CoreComponent } from './core/core.component';
     AuthentificationComponent,
     ForgotPasswordComponent,
     NotFoundComponent,
-    CoreComponent
+    CoreComponent,
+    GererPointImportantComponent
   ],
   imports: [
     BrowserModule,
@@ -57,6 +59,11 @@ import { CoreComponent } from './core/core.component';
       {
         path: 'map',
         component: CoreComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'gerer-point-important',
+        component: GererPointImportantComponent,
         canActivate: [AuthGuard]
       },
       {

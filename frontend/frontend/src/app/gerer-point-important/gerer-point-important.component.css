@@ -1,69 +1,79 @@
-.map {
-    bottom: 30px;
-    height: 545px;
-    margin: 0;
-    width: 100%;
+.message{
+	color: red;
+	left: 5%;
+	margin: 1%;
+	padding: 1%;
+	position: relative;
 }
 
-
-.contactUs, .mapOptionsSetPoint, .mapOptionsGererPoint, .mapOptionsProfil {
+a {
 	background-color: white;
-	box-shadow: 0 0 2px black;
-    border: none;
+	border: 1px solid white;
 	color: #48dbfb;
-	position: absolute;
-	z-index: 999;
+	cursor: pointer;
+	padding: 1%;
 }
 
-.contactUs {
-	border-radius: 10px;
-	padding: 0.5%;
-	right: 10px;
-    top: 90px;
+a:hover {
+	background-color: #48dbfb;
+	color: white;
 }
 
 
-.contactUs:hover, .mapOptionsSetPoint:hover, .mapOptionsGererPoint:hover, .mapOptionsProfil:hover {
-    background-color: #48dbfb;
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 0.5%;
+    text-align: center;
+    width: 4%;
+}
+
+tr {
+    color: black;
+}
+
+
+tr:nth-child(odd),
+tr:nth-child(odd) button {
+    background-color: #c8d6e5;
+    color: black;
+}
+
+
+table .colorie {
+    background-color: #17c0eb;
     color: white;
 }
 
-.mapOptionsSetPoint, .mapOptionsGererPoint, .mapOptionsProfil {
-	border-radius: 2px;
-	left: 9px;
-	padding: 0.3%;
-	width: 30px;
+
+
+button {
+    border: 1px solid black;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
 }
 
-.mapOptionsSetPoint {
-	top: 160px;
+button:hover, tr:nth-child(odd) button:hover {
+    background-color: #48dbfb;
+    border-radius: 5px;
+    color: white;
 }
 
-.mapOptionsGererPoint {
-	top: 190px;
-}
-
-.mapOptionsProfil {
-	top:220px;
-}
-
-
-/* Fenetre modal */
-
-.form, .error {
-	max-width: 450px;
-	margin: 10px auto;
-	padding: 16px;
-}
-
-.form {
+form {
 	background: #c8d6e5;
 	border-radius: 15px;
 }
 
-.form input[type="email"],
-.form input[type="textarea"],
-.form input[type="text"]
+form input[type="email"],
+form input[type="textarea"],
+form input[type="text"]
 {
 	-webkit-transition: all 0.30s ease-in-out;
 	-moz-transition: all 0.30s ease-in-out;
@@ -83,17 +93,17 @@
 	font: 95% Arial, Helvetica, sans-serif;
 }
 
-.form input[type="email"]:focus,
-.form input[type="textarea"]:focus,
-.form input[type="text"]:focus
+form input[type="email"]:focus,
+form input[type="textarea"]:focus,
+form input[type="text"]:focus
 {
     border: 1px solid #48dbfb;
     box-shadow: 0 0 5px #48dbfb;
 	padding: 3%;
 }
 
-.form input[type="submit"],
-.form input[type="button"]{
+form input[type="submit"],
+form input[type="button"]{
 	-webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
@@ -111,8 +121,8 @@
 }
 
 
-.form input[type="submit"]:hover,
-.form input[type="button"]:hover{
+form input[type="submit"]:hover,
+form input[type="button"]:hover{
 	background: #28d1f7;
 }
 
@@ -134,7 +144,7 @@
 	color: #48dbfb;
 }
 
-.modal-body .form {
+.modal-body form {
 	background-color: white;
 }
 
@@ -142,11 +152,11 @@
     padding: 0 0 0 5%;
 }
 
-.modal-body .form input[type="email"], .modal-body .form input[type="textarea"], .modal-body .form input[type="text"] {
+.modal-body form input[type="email"], .modal-body form input[type="textarea"], .modal-body form input[type="text"] {
 	border-radius: 30px;
 }
 
-.modal-body .form input[type="submit"] {
+.modal-body form input[type="submit"] {
 	margin: 0;
 	width: 100%;
 }

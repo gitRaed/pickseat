@@ -24,25 +24,26 @@ export class DbService {
 
   }
 
-  //#region  db
+
   getUsersData() {
 
     return this.http.get <any>('http://localhost:9500/data/getData');
   }
+
 
   unicite(email: string, motDePasse: string, type: string) {
 
     return this.http.get<any>('http://localhost:9500/data/auth/' + email + '/' + motDePasse + '/' + type);
   }
 
-  sendMailResetPassword(email) {
+  sendMailResetPassword(email: any) {
 
     return this.http.post('http://localhost:9500/register/forgotPassword', {
       email
     });
   }
 
-  resetPassword(email, motDePasse) {
+  resetPassword(email: any, motDePasse: any) {
 
     return this.http.post('http://localhost:9500/register/resetPassword', {
       email,
@@ -104,7 +105,7 @@ export class DbService {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
-      authorization : this.auth.getData().token,
+      authorization : 'Bearer ' + this.auth.getData().token,
     });
 
     const options = {
@@ -119,4 +120,79 @@ export class DbService {
     }, options);
   }
 
+  //#region pointImportant
+  getPointImportant(email: string) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const options = {
+      headers,
+      observable : 'response',
+  };
+
+    return this.http.post <any>('http://localhost:9500/map/getPointImportant', {
+      email
+    }, options);
+  }
+
+  sendPointImportant(email: string, message: string, latitude: number, longitude: number) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const options = {
+      headers,
+      observable : 'response',
+  };
+
+    return this.http.post < any > ('http://localhost:9500/map/pointImportant', {
+      email,
+      message,
+      latitude,
+      longitude
+    }, options);
+  }
+
+  updatePointImportant(id, email, message: string) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const options = {
+      headers,
+      observable : 'response',
+  };
+
+    return this.http.post< any > ('http://localhost:9500/map/updatePoint', {
+      id,
+      email,
+      message
+    }, options);
+  }
+
+  supprimerPointImportant(id) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const options = {
+      headers,
+      observable : 'response',
+  };
+
+    return this.http.post<any>('http://localhost:9500/map/deletePoint', {
+      id
+    }, options);
+  }
+
+  //#endregion
 }

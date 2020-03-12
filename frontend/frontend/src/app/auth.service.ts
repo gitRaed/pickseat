@@ -12,6 +12,7 @@ export class AuthService {
   private data = {
     nom : '',
     prenom : '',
+    email : '',
     token: ''
   };
 
@@ -23,9 +24,10 @@ export class AuthService {
     this.logStatus = value;
   }
 
-  setData(nom, prenom, token) {
+  setData(nom, prenom, email, token) {
     this.data.nom = nom;
     this.data.prenom = prenom;
+    this.data.email = email;
     this.data.token = token;
   }
 

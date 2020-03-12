@@ -5,12 +5,18 @@
     [(leafletCenter)] = "mapOptions().center"
     [(leafletZoom)] = "mapOptions().zoom"
     [leafletLayersControl] = "mapLayersControl()"
-    (leafletClick) = "recup($event)">
+    (leafletClick) = "!getPointImportant() || recupCoordonnees($event)"
+    (click)="!getPointImportant() || modal(enregistrerPoint)"
+    >
 
+    
 </div>
 
 <button class="contactUs" (click) = "modal(ContactUs)">Contact us!</button>
-<button class="mapOptions"><i class="fas fa-map-marker-alt"></i></button>
+<button class="mapOptionsSetPoint" (click) = "setPointImportant()" [ngbTooltip] = "tooltipSetPoint"><i class="fas fa-map-marker-alt"></i></button>
+<button class="mapOptionsGererPoint" (click) = "redirectionGererPoint()" [ngbTooltip] = "tooltipGererPointImportant"><i class="fas fa-map-marked-alt"></i></button>
+<button class="mapOptionsProfil" (click)= "redirectionProfil()" [ngbTooltip] = "tooltipProfil"><i class="fas fa-user"></i></button>
+
 
 <ng-template #ContactUs let-modal>
     <div class="modal-header">
@@ -24,8 +30,8 @@
         <p>Hésitez pas à nous faire des retours !!!</p>
 
         <form class="form" (submit) = "contactUs($event)">
-            <input required type="email" name="email" id="email_user" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-            <input required type="textarea" name="message" id="message_user" placeholder="Votre message">
+            <input required type="email" name="email" id="email_user_contactUs" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+            <input required type="textarea" name="message" id="message_user_contactUs" placeholder="Votre message">
             <input type="submit" value="Envoyer">
         </form>
         <p class="error">{{message}}</p>
@@ -33,24 +39,36 @@
     
 </ng-template>
 
-<ng-template #test let-modal>
+<ng-template #enregistrerPoint let-modal>
     <div class="modal-header">
-        <h4 id="modal-basic-title">Contact Us</h4>
+        <h4 id="modal-basic-title">Enregistrer point</h4>
         <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
         <span aria-hidden="true">&times;</span>
         </button>
     </div>
 
     <div class="modal-body">
-        <p>Hésitez pas à nous faire des retours !!!</p>
+        <p>Cet endroit sera enregistré, écrivez un message pour l'ajouter au point</p>
 
-        <form class="form" (submit) = "contactUs($event)">
-            <input required type="email" name="email" id="email_user" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
-            <input required type="textarea" name="message" id="message_user" placeholder="Votre message">
+        <form class="form" (submit) = "enregistrerPointImportant($event)">
+            <input required type="email" name="email" id="email_user_point_important" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+            <input required type="textarea" name="message" id="message_user_point_important" placeholder="Libellé du point">
             <input type="submit" value="Envoyer">
         </form>
         <p class="error">{{message}}</p>
     </div>
     
+</ng-template>
+
+<ng-template #tooltipSetPoint>
+    Enregistrer point important <b>Attention!</b> Tous points que vous allez clicker sur la map ouvrira un formulaire! Rappuyer pour désactiver
+</ng-template>
+
+<ng-template #tooltipGererPointImportant>
+    Gestion de vos points importants
+</ng-template>
+
+<ng-template #tooltipProfil> 
+    Gestion des profils
 </ng-template>
 
