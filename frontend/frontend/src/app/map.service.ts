@@ -38,6 +38,10 @@ export class MapService {
     this.options.center = L.latLng([latitude, longitude]);
   }
 
+  destroy() {
+    L.map('#map').remove();
+  }
+
  //#endregion
 
 //#region layersControl

@@ -1,4 +1,4 @@
-.map {
+#map {
     bottom: 30px;
     height: 545px;
     margin: 0;
@@ -6,157 +6,175 @@
 }
 
 
-.contactUs, .mapOptionsSetPoint, .mapOptionsGererPoint, .mapOptionsProfil {
-	background-color: white;
-	box-shadow: 0 0 2px black;
+.contactUs,
+.mapOptionsSetPoint,
+.mapOptionsGererPoint,
+.mapOptionsProfil,
+.mapOptionsChat {
+    background-color: white;
+    box-shadow: 0 0 2px black;
     border: none;
-	color: #48dbfb;
-	position: absolute;
-	z-index: 999;
+    color: #48dbfb;
+    position: absolute;
+    z-index: 999;
 }
 
 .contactUs {
-	border-radius: 10px;
-	padding: 0.5%;
-	right: 10px;
+    border-radius: 10px;
+    padding: 0.5%;
+    right: 10px;
     top: 90px;
 }
 
 
-.contactUs:hover, .mapOptionsSetPoint:hover, .mapOptionsGererPoint:hover, .mapOptionsProfil:hover {
+.contactUs:hover,
+.mapOptionsSetPoint:hover,
+.mapOptionsGererPoint:hover,
+.mapOptionsProfil:hover,
+.mapOptionsChat:hover {
     background-color: #48dbfb;
     color: white;
 }
 
-.mapOptionsSetPoint, .mapOptionsGererPoint, .mapOptionsProfil {
-	border-radius: 2px;
-	left: 9px;
-	padding: 0.3%;
-	width: 30px;
+.mapOptionsSetPoint,
+.mapOptionsGererPoint,
+.mapOptionsProfil,
+.mapOptionsChat {
+    border-radius: 2px;
+    left: 9px;
+    padding: 0.3%;
+    width: 30px;
 }
 
 .mapOptionsSetPoint {
-	top: 160px;
+    top: 160px;
 }
 
 .mapOptionsGererPoint {
-	top: 190px;
+    top: 190px;
+}
+
+.mapOptionsChat {
+
+    top: 240px;
 }
 
 .mapOptionsProfil {
-	top:220px;
+    top: 290px;
 }
 
 
 /* Fenetre modal */
 
-.form, .error {
-	max-width: 450px;
-	margin: 10px auto;
-	padding: 16px;
+.form,
+.error {
+    max-width: 450px;
+    margin: 10px auto;
+    padding: 16px;
 }
 
 .form {
-	background: #c8d6e5;
-	border-radius: 15px;
+    background: #c8d6e5;
+    border-radius: 15px;
 }
 
 .form input[type="email"],
 .form input[type="textarea"],
-.form input[type="text"]
-{
-	-webkit-transition: all 0.30s ease-in-out;
-	-moz-transition: all 0.30s ease-in-out;
-	transition: all 0.30s ease-in-out;
-	-o-transition: all 0.30s ease-in-out;
-	outline: none;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 100%;
-	background: #fff;
-	margin-top: 2%;
-	margin-bottom: 4%;
-	border: 1px solid #ccc;
-	padding: 3%;
-	color: #555;
-	font: 95% Arial, Helvetica, sans-serif;
+.form input[type="text"] {
+    -webkit-transition: all 0.30s ease-in-out;
+    -moz-transition: all 0.30s ease-in-out;
+    transition: all 0.30s ease-in-out;
+    -o-transition: all 0.30s ease-in-out;
+    outline: none;
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    width: 100%;
+    background: #fff;
+    margin-top: 2%;
+    margin-bottom: 4%;
+    border: 1px solid #ccc;
+    padding: 3%;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
 }
 
 .form input[type="email"]:focus,
 .form input[type="textarea"]:focus,
-.form input[type="text"]:focus
-{
+.form input[type="text"]:focus {
     border: 1px solid #48dbfb;
     box-shadow: 0 0 5px #48dbfb;
-	padding: 3%;
+    padding: 3%;
 }
 
 .form input[type="submit"],
-.form input[type="button"]{
-	-webkit-box-sizing: border-box;
+.form input[type="button"] {
+    -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box;
-	background: #48dbfb;
-	border-bottom: 2px solid #3fd8fa;
-	border-top-style: none;
-	border-right-style: none;
-    border-left-style: none;	
+    background: #48dbfb;
+    border-bottom: 2px solid #3fd8fa;
+    border-top-style: none;
+    border-right-style: none;
+    border-left-style: none;
     border-radius: 30px;
-	color: #fff;
-	font-size: 100%;
+    color: #fff;
+    font-size: 100%;
     margin-left: 35%;
-    padding: 3% ;
+    padding: 3%;
     width: 30%;
 }
 
 
 .form input[type="submit"]:hover,
-.form input[type="button"]:hover{
-	background: #28d1f7;
+.form input[type="button"]:hover {
+    background: #28d1f7;
 }
 
 
 .error {
-	color: red;
-	text-align: center;
+    color: red;
+    text-align: center;
 }
 
-.modal-header,.modal-header button{
-	background: #48dbfb;
-	color: white;
-	font-weight: 300;
-	text-align: center;
+.modal-header,
+.modal-header button {
+    background: #48dbfb;
+    color: white;
+    font-weight: 300;
+    text-align: center;
 }
 
 .modal-header button:hover {
-	background-color: white;
-	color: #48dbfb;
+    background-color: white;
+    color: #48dbfb;
 }
 
 .modal-body .form {
-	background-color: white;
+    background-color: white;
 }
 
 .modal-body p {
     padding: 0 0 0 5%;
 }
 
-.modal-body .form input[type="email"], .modal-body .form input[type="textarea"], .modal-body .form input[type="text"] {
-	border-radius: 30px;
+.modal-body .form input[type="email"],
+.modal-body .form input[type="textarea"],
+.modal-body .form input[type="text"] {
+    border-radius: 30px;
 }
 
 .modal-body .form input[type="submit"] {
-	margin: 0;
-	width: 100%;
+    margin: 0;
+    width: 100%;
 }
 
 .modal-footer button {
-	border: 1px solid #48dbfb;
-	color: #48dbfb;
-	transition: all 0.5s;
+    border: 1px solid #48dbfb;
+    color: #48dbfb;
+    transition: all 0.5s;
 }
 
 .modal-footer button:hover {
-	color:white;
+    color: white;
 }

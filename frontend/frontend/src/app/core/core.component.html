@@ -1,4 +1,4 @@
-<div class="map" 
+<div id="map" 
     leaflet
     (leafletMapReady)="onMapReady($event)"
     [leafletOptions] = "mapOptions()"
@@ -16,7 +16,7 @@
 <button class="mapOptionsSetPoint" (click) = "setPointImportant()" [ngbTooltip] = "tooltipSetPoint"><i class="fas fa-map-marker-alt"></i></button>
 <button class="mapOptionsGererPoint" (click) = "redirectionGererPoint()" [ngbTooltip] = "tooltipGererPointImportant"><i class="fas fa-map-marked-alt"></i></button>
 <button class="mapOptionsProfil" (click)= "redirectionProfil()" [ngbTooltip] = "tooltipProfil"><i class="fas fa-user"></i></button>
-
+<button class="mapOptionsChat" [ngbTooltip] = "tooltipChat"><i class="far fa-comments"></i></button>
 
 <ng-template #ContactUs let-modal>
     <div class="modal-header">
@@ -66,6 +66,10 @@
 
 <ng-template #tooltipGererPointImportant>
     Gestion de vos points importants
+</ng-template>
+
+<ng-template #tooltipChat>
+    Vos discussions
 </ng-template>
 
 <ng-template #tooltipProfil> 

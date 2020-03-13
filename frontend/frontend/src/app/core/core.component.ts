@@ -1,17 +1,16 @@
-import { Component, AfterViewInit, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { MapService } from '../map.service';
 import { DbService } from '../db.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
 import { Router } from '@angular/router';
-
 @Component({
   selector: 'app-core',
   templateUrl: './core.component.html',
   styleUrls: ['./core.component.css']
 })
-export class CoreComponent implements  OnInit {
+export class CoreComponent implements  OnInit, OnDestroy {
 
   constructor(private mapService: MapService,
               private db: DbService,
@@ -26,6 +25,7 @@ export class CoreComponent implements  OnInit {
     lat : 0,
     lng : 0
   };
+  map: L.Map;
 
 
   ngOnInit(): void {
@@ -55,6 +55,7 @@ export class CoreComponent implements  OnInit {
 
   //#region mapFunction
   onMapReady(map: L.Map) {
+    this.map = map;
     setTimeout(() => {
       map.invalidateSize();
     }, 0);
@@ -182,4 +183,7 @@ export class CoreComponent implements  OnInit {
 //#endregion
 
 
+ngOnDestroy() {
+  this.map.remove();
+}
 }

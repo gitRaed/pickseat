@@ -6,20 +6,6 @@
 	position: relative;
 }
 
-a {
-	background-color: white;
-	border: 1px solid white;
-	color: #48dbfb;
-	cursor: pointer;
-	padding: 1%;
-}
-
-a:hover {
-	background-color: #48dbfb;
-	color: white;
-}
-
-
 
 table {
     border-collapse: collapse;

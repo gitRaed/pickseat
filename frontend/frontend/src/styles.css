@@ -5,3 +5,21 @@ html, body {
     padding: 0;
     overflow: hidden;
 }
+
+.retour {
+	background-color: white;
+	border: 1px solid #48dbfb;
+	border-radius: 10px;
+	color: #48dbfb;
+	cursor: pointer;
+	padding: 1%;
+	position: absolute;
+	left: 93%;
+	top: 16%;
+}
+
+.retour:hover {
+	background-color: #48dbfb;
+	color: white;
+	text-decoration: none;
+}
