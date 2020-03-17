@@ -28,9 +28,7 @@
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "node_modules/leaflet/dist/leaflet.css"
             ],
-            "scripts": [
-              "../frontend/node_modules/crypto-js/crypto-js.js"
-            ]
+            "scripts": []
           },
           "configurations": {
             "production": {

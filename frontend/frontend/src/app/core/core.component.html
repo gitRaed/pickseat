@@ -6,7 +6,7 @@
     [(leafletZoom)] = "mapOptions().zoom"
     [leafletLayersControl] = "mapLayersControl()"
     (leafletClick) = "!getPointImportant() || recupCoordonnees($event)"
-    (click)="!getPointImportant() || modal(enregistrerPoint)"
+    (click) = "!getPointImportant() || modal(enregistrerPoint)"
     >
 
     

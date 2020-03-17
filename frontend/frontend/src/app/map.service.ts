@@ -38,10 +38,6 @@ export class MapService {
     this.options.center = L.latLng([latitude, longitude]);
   }
 
-  destroy() {
-    L.map('#map').remove();
-  }
-
  //#endregion
 
 //#region layersControl
@@ -79,6 +75,7 @@ export class MapService {
 //#region pointImportant
   getPointImportant() {
 
+    this.layersControl.overlays = {};
     this.db.getPointImportant(this.auth.getData().email).subscribe( (result) => {
 
       for (let i = 0, n  = result.message.length; i < n ; i ++) {

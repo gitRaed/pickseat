@@ -2,8 +2,70 @@
 html, body {
     height: 100%;
     margin: 0;
-    padding: 0;
-    overflow: hidden;
+	padding: 0;
+	overflow: hidden;
+}
+
+
+#map > div.leaflet-control-container > div.bar {
+
+	cursor: auto;
+	display: block;
+	height: auto;
+	left: 12%;
+	margin: 10px auto 0;
+	position: relative; 
+    width: 50%; 
+    z-index: 1000;
+}
+
+#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > input {
+
+	border: none;
+	border-radius: 0 4px 4px 0;
+	box-shadow: 0 0 2px black;
+	font-size: 12px;
+	height: 30px;
+	margin: 0;
+	min-width: 200px;
+	outline: none;
+	padding: 0;
+	text-indent: 8px;
+    width: 50%;
+}
+
+#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > a {
+
+	border: none;
+	color: black;
+	cursor: pointer;
+    position: absolute;
+    line-height: 30px;
+    padding: 0 8px;
+    right: 50%;
+    top: 0;
+}
+
+#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > a:hover {
+	color: #48dbfb;
+}
+
+#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > div {
+	background-color: white;
+	line-height: 26px;
+	width: 50%;
+}
+
+#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > div > div {
+
+	border: 1px solid transparent;
+	cursor: pointer;
+	padding: 1%;
+}
+
+#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > div > div:hover {
+	background-color: #f5f6fa;
+	border-color: grey;
 }
 
 .retour {

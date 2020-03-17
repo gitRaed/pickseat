@@ -48,6 +48,7 @@ export class GererPointImportantComponent implements OnInit {
     this.db.updatePointImportant(id, email, message).subscribe( (result) => {
       this.message = result.message;
       this.getLayer();
+      this.mapService.getPointImportant();
     });
   }
 
@@ -56,6 +57,7 @@ export class GererPointImportantComponent implements OnInit {
     this.db.supprimerPointImportant(id).subscribe( (result) => {
       this.message = result.message;
       this.getLayer();
+      this.mapService.getPointImportant();
     });
   }
   //#endregion

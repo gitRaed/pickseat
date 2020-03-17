@@ -1,10 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
 import { MapService } from '../map.service';
 import { DbService } from '../db.service';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UserService } from '../user.service';
 import { AuthService } from '../auth.service';
-import { Router } from '@angular/router';
+
+import * as L from 'leaflet';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+
+
 @Component({
   selector: 'app-core',
   templateUrl: './core.component.html',
@@ -37,6 +43,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
       this.mapService.setOptions(15, position.coords.latitude, position.coords.longitude);
       this.mapService.setLayersControl('Your position', position.coords.latitude, position.coords.longitude,
                                       'This is where you are ' + this.auth.getData().nom + ' ' + this.auth.getData().prenom);
+      this.mapService.setCoordone(position.coords.latitude, position.coords.longitude);
     }, () => {
       // s'il n'accepte pas
       console.log('Uh.. ok, i will still find your location even if it is not accurate');
@@ -55,10 +62,15 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
   //#region mapFunction
   onMapReady(map: L.Map) {
+
     this.map = map;
+    // this.map.addControl(this.searchAddress());
+    this.searchAddress();
+
     setTimeout(() => {
       map.invalidateSize();
     }, 0);
+
   }
 
   mapOptions() {
@@ -74,6 +86,21 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
       this.coordonnees.lat = event.latlng.lat;
       this.coordonnees.lng = event.latlng.lng;
+  }
+
+  searchAddress() {
+
+    const provider = new OpenStreetMapProvider();
+    const searchControl = new GeoSearchControl({
+      provider,
+      searchLabel: 'Entrer une addresse',
+      style: 'bar',
+      classNames : {
+
+      }
+    }).addTo(this.map);
+
+
   }
 
   //#endregion
@@ -183,7 +210,8 @@ export class CoreComponent implements  OnInit, OnDestroy {
 //#endregion
 
 
-ngOnDestroy() {
-  this.map.remove();
-}
+  ngOnDestroy() {
+
+    this.map.remove();
+  }
 }
