@@ -15,8 +15,11 @@
 <button class="contactUs" (click) = "modal(ContactUs)">Contact us!</button>
 <button class="mapOptionsSetPoint" (click) = "setPointImportant()" [ngbTooltip] = "tooltipSetPoint"><i class="fas fa-map-marker-alt"></i></button>
 <button class="mapOptionsGererPoint" (click) = "redirectionGererPoint()" [ngbTooltip] = "tooltipGererPointImportant"><i class="fas fa-map-marked-alt"></i></button>
+<button class="mapOptionsSearch" (click) = "setItineraire()" [ngbTooltip] = "tooltipSearch"><i class="far fa-compass"></i></button>
 <button class="mapOptionsProfil" (click)= "redirectionProfil()" [ngbTooltip] = "tooltipProfil"><i class="fas fa-user"></i></button>
 <button class="mapOptionsChat" [ngbTooltip] = "tooltipChat"><i class="far fa-comments"></i></button>
+
+
 
 <ng-template #ContactUs let-modal>
     <div class="modal-header">
@@ -68,11 +71,18 @@
     Gestion de vos points importants
 </ng-template>
 
-<ng-template #tooltipChat>
-    Vos discussions
+<ng-template #tooltipSearch>
+    Trouver une adresse <br><b>Cliquez</b> ouvrira la recherche d'itinéraire <br><b>Recliquez</b> pour la refaire disparaître
 </ng-template>
 
 <ng-template #tooltipProfil> 
     Gestion des profils
 </ng-template>
+
+<ng-template #tooltipChat>
+    Vos discussions
+</ng-template>
+
+
+
 

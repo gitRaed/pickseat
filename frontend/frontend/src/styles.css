@@ -12,10 +12,9 @@ html, body {
 	cursor: auto;
 	display: block;
 	height: auto;
-	left: 12%;
 	margin: 10px auto 0;
 	position: relative; 
-    width: 50%; 
+    width: 30%; 
     z-index: 1000;
 }
 
@@ -31,7 +30,7 @@ html, body {
 	outline: none;
 	padding: 0;
 	text-indent: 8px;
-    width: 50%;
+    width: 100%;
 }
 
 #map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > a {
@@ -42,7 +41,7 @@ html, body {
     position: absolute;
     line-height: 30px;
     padding: 0 8px;
-    right: 50%;
+    right: 1%;
     top: 0;
 }
 
@@ -67,6 +66,25 @@ html, body {
 	background-color: #f5f6fa;
 	border-color: grey;
 }
+
+#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div.leaflet-routing-container.leaflet-bar.leaflet-control > div.leaflet-routing-geocoders > div > input {
+	padding: 1%;
+}
+
+#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div.leaflet-routing-container.leaflet-bar.leaflet-control > div.leaflet-routing-geocoders > button {
+
+	border-color: #48dbfb;
+	color: #48dbfb;
+	margin: 1%;
+}
+
+#map > div.leaflet-control-container > div.leaflet-top.leaflet-right > div.leaflet-routing-container.leaflet-bar.leaflet-control > div.leaflet-routing-geocoders > button:hover {
+
+	background-color: #48dbfb;
+	border-color: white;
+	color: white;
+}
+
 
 .retour {
 	background-color: white;

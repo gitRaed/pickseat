@@ -21,12 +21,24 @@ export class MapService {
     center: L.latLng([ 51.509865,  -0.118092 ])
   };
 
+  private coordone = {
+    libelle : 'Your position',
+    latitude: 0,
+    longitude: 0,
+    message: 'This is where you are ' + this.auth.getData().nom + ' ' + this.auth.getData().prenom
+  };
   layer = [];
   private layersControl = {
     overlays: { }
   };
 
 
+  //#region this.coordonne
+  setCoordone(latitude, longitude) {
+    this.coordone.latitude = latitude;
+    this.coordone.longitude = longitude;
+  }
+  //#endregion
 
  //#region mapOptions
   getOptions() {
@@ -76,8 +88,16 @@ export class MapService {
   getPointImportant() {
 
     this.layersControl.overlays = {};
+
     this.db.getPointImportant(this.auth.getData().email).subscribe( (result) => {
 
+      // pour rajouter la position de l'utilisateur au layers
+      this.setLayersControl(this.coordone.libelle,
+                            this.coordone.latitude,
+                            this.coordone.longitude,
+                            this.coordone.message);
+
+      // ajouter les points enregistrer de l'utilisateur à l'overlay
       for (let i = 0, n  = result.message.length; i < n ; i ++) {
 
         this.setLayersControl(result.message[i].message,

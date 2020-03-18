@@ -9,6 +9,8 @@ import { AuthService } from '../auth.service';
 
 import * as L from 'leaflet';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import 'leaflet-control-geocoder';
+import 'leaflet-routing-machine';
 
 
 @Component({
@@ -27,6 +29,8 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
   message = 'Merci d\'utiliser Pickseat !';
   private pointImportant = false;
+  private itineraire = false;
+  private routing = null;
   private coordonnees = {
     lat : 0,
     lng : 0
@@ -64,13 +68,13 @@ export class CoreComponent implements  OnInit, OnDestroy {
   onMapReady(map: L.Map) {
 
     this.map = map;
-    // this.map.addControl(this.searchAddress());
+
+    // option rechercher
     this.searchAddress();
 
     setTimeout(() => {
       map.invalidateSize();
     }, 0);
-
   }
 
   mapOptions() {
@@ -101,6 +105,25 @@ export class CoreComponent implements  OnInit, OnDestroy {
     }).addTo(this.map);
 
 
+  }
+
+  findItineraire() {
+
+      // marche malgré l'erreur
+      this.routing = L.Routing.control({
+        geocoder: L.Control.Geocoder.nominatim(),
+        lineOptions: {
+          styles: [{
+            color: '#48dbfb',
+            weight: 7
+          }]
+        },
+      }).addTo(this.map);
+
+  }
+
+  removeItineraire() {
+    this.map.removeControl(this.routing);
   }
 
   //#endregion
@@ -149,9 +172,22 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
     this.router.navigate(['/gerer-users']);
   }
+
+  setItineraire() {
+
+    this.itineraire = !this.itineraire;
+
+    if (this.itineraire) {
+
+      this.findItineraire();
+    } else {
+
+      this.removeItineraire();
+    }
+  }
   //#endregion
 
-//#region pointImportant
+  //#region pointImportant
 
   getPointImportant() {
     return this.pointImportant;

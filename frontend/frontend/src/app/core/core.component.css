@@ -9,6 +9,7 @@
 .contactUs,
 .mapOptionsSetPoint,
 .mapOptionsGererPoint,
+.mapOptionsSearch,
 .mapOptionsProfil,
 .mapOptionsChat {
     background-color: white;
@@ -23,13 +24,14 @@
     border-radius: 10px;
     padding: 0.5%;
     right: 10px;
-    top: 90px;
+    top: 560px;
 }
 
 
 .contactUs:hover,
 .mapOptionsSetPoint:hover,
 .mapOptionsGererPoint:hover,
+.mapOptionsSearch:hover,
 .mapOptionsProfil:hover,
 .mapOptionsChat:hover {
     background-color: #48dbfb;
@@ -38,6 +40,7 @@
 
 .mapOptionsSetPoint,
 .mapOptionsGererPoint,
+.mapOptionsSearch,
 .mapOptionsProfil,
 .mapOptionsChat {
     border-radius: 2px;
@@ -47,20 +50,24 @@
 }
 
 .mapOptionsSetPoint {
-    top: 160px;
+    top: 26%;
 }
 
 .mapOptionsGererPoint {
-    top: 190px;
+    top: 30.5%;
+}
+
+.mapOptionsSearch {
+    top: 38%;
 }
 
 .mapOptionsChat {
 
-    top: 240px;
+    top: 46%;
 }
 
 .mapOptionsProfil {
-    top: 290px;
+    top: 53%;
 }
 
 
