@@ -16,9 +16,7 @@ export class GererUsersComponent implements OnInit {
 
   constructor(private user: UserService,
               private modalService: NgbModal,
-              private db: DbService,
-              private router: Router,
-              private auth: AuthService) { }
+              private db: DbService) { }
 
   data = [];
   message = '';
@@ -27,7 +25,8 @@ export class GererUsersComponent implements OnInit {
     this.getData();
   }
 
-  modal(content) {
+  modal(content: any) {
+
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
 
@@ -54,9 +53,9 @@ export class GererUsersComponent implements OnInit {
         });
       }
 
-}
+  }
 
-  delete(id, nom, prenom) {
+  delete(id: any, nom: string, prenom: string) {
 
     this.db.deleteUser(id).subscribe(() => {
 
@@ -66,7 +65,7 @@ export class GererUsersComponent implements OnInit {
     });
   }
 
-  ban(id, nom, prenom) {
+  ban(id: any, nom: string, prenom: string) {
 
     this.db.banUser(id, nom, prenom).subscribe(() => {
 
@@ -76,7 +75,7 @@ export class GererUsersComponent implements OnInit {
     });
   }
 
-  suspend(id, nom, prenom) {
+  suspend(id: any, nom: string, prenom: string) {
 
     this.db.suspendUser(id, nom, prenom).subscribe(() => {
 
@@ -86,7 +85,7 @@ export class GererUsersComponent implements OnInit {
     });
   }
 
-  normal(id, nom, prenom) {
+  normal(id: any, nom: string, prenom: string) {
 
     this.db.normalUser(id, nom, prenom).subscribe(() => {
 
@@ -96,8 +95,8 @@ export class GererUsersComponent implements OnInit {
     });
   }
 
-
   getData() {
+
     this.db.getUsersData().subscribe( (result) => {
       this.data = result;
     });

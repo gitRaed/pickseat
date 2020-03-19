@@ -8,6 +8,7 @@ import { UserService } from '../user.service';
   templateUrl: './forgot-password.component.html',
   styleUrls: ['./forgot-password.component.css']
 })
+
 export class ForgotPasswordComponent implements OnInit {
 
   constructor(private route: ActivatedRoute, private db: DbService, private user: UserService, private router: Router) { }
@@ -15,7 +16,10 @@ export class ForgotPasswordComponent implements OnInit {
   message;
   emailValue;
   link =  'http://localhost:4200';
+
+
   ngOnInit() {
+
     this.emailValue = this.route.snapshot.paramMap.get('email');
   }
 
@@ -40,18 +44,18 @@ export class ForgotPasswordComponent implements OnInit {
             this.navigate();
             }
       } else {
+
         this.message = 'Email inexistant. \n Vous allez être renvoyé à la page d\'authentification';
         this.navigate();
       }
     });
 
-    }
+  }
 
 
-    navigate() {
+  navigate() {
 
-      setInterval(() => {
-        this.router.navigate(['']);
-      }, 4000);
-      }
-    }
+    this.router.navigate(['']);
+  }
+
+}

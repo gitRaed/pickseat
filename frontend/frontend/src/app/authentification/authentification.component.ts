@@ -12,19 +12,23 @@ import { DbService } from '../db.service';
 })
 export class AuthentificationComponent implements OnInit {
 
-  // tslint:disable-next-line: max-line-length
-  constructor(private user: UserService, private modalService: NgbModal, private auth: AuthService, private router: Router, private db: DbService) { }
+  constructor(private user: UserService,
+              private modalService: NgbModal,
+              private auth: AuthService,
+              private router: Router,
+              private db: DbService) { }
 
 
   message = '';
   messageResetPassword = '';
+
+
   ngOnInit() {
 
     this.auth.setLogStatus(false);
-    this.auth.setData('Connectez', 'vous', '', '');
   }
 
-  modal(content) {
+  modal(content: any) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
 
@@ -40,10 +44,8 @@ export class AuthentificationComponent implements OnInit {
 
     this.user.appelUnicite(data.email, data.password, 'auth').subscribe( (result) => {
 
-      console.log(result);
       if (result.auth === true) {
-        this.message = 'Bienvenue ' + result.nom + ' ' + result.prenom;
-        this.auth.setData(result.nom, result.prenom, result.email, result.token);
+        this.auth.setData(result.nom, result.prenom, result.email, result.numero, result.typeUser, result.token);
         this.auth.setLogStatus(true);
         this.router.navigate(['/map']);
       } else {

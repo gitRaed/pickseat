@@ -45,7 +45,6 @@ route.post("/getPointImportant", async (req, res) => {
              // verifier si l'email est disponible dans la bdd
             authCodeEmail(email).then((result) => {
 
-                console.log(result.auth);
                 if (result.auth === true) {
                     // enregister dans la bdd et envoyer le résultat
                     codeGetPointImportant(email).then((result) => {
@@ -95,7 +94,6 @@ route.post("/contactUs", async (req, res) => {
             // verifier si l'email est disponible dans la bdd
             authCodeEmail(email).then((result) => {
 
-                console.log(result.auth);
                 if (result.auth === true) {
                     // enregister dans la bdd et envoyer le résultat
                     codeRegisterMessage(email, message).then((result) => {
@@ -147,7 +145,6 @@ route.post("/pointImportant", async (req, res) => {
             // verifier si l'email est disponible dans la bdd
             authCodeEmail(email).then((result) => {
 
-                console.log(result.auth);
                 if (result.auth === true) {
                     // enregister dans la bdd et envoyer le résultat
                     codePointImportant(email, message, latitude, longitude).then((result) => {
@@ -199,7 +196,6 @@ route.post("/updatePoint", async (req, res) => {
         }   // verifier si l'email est disponible dans la bdd
         authCodeEmail(email).then((result) => {
 
-            console.log(result.auth);
             if (result.auth === true) {
                 // enregister dans la bdd et envoyer le résultat
                 codeUpdatePointImportant(id, message).then((result) => {

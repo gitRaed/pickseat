@@ -52,6 +52,8 @@ export function authCode(email, motDePasse) {
                 data.nom = result[i].nom;
                 data.prenom = result[i].prenom;
                 data.email = result[i].email;
+                data.numero = result[i].numero;
+                data.typeUser = result[i].typeUser;
             }
                 
         }

@@ -14,7 +14,7 @@ import { DbService } from '../db.service';
 })
 export class InscriptionComponent implements OnInit {
 
-  message;
+  message: string;
 
   constructor(private user: UserService, private db: DbService) {}
 

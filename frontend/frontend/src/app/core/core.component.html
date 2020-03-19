@@ -6,10 +6,11 @@
     [(leafletZoom)] = "mapOptions().zoom"
     [leafletLayersControl] = "mapLayersControl()"
     (leafletClick) = "!getPointImportant() || recupCoordonnees($event)"
+    (leafletClick) = "!getItineraire() || reverse($event)"
     (click) = "!getPointImportant() || modal(enregistrerPoint)"
     >
 
-    
+
 </div>
 
 <button class="contactUs" (click) = "modal(ContactUs)">Contact us!</button>

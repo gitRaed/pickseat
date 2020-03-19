@@ -25,7 +25,8 @@ export class GererPointImportantComponent implements OnInit {
     this.getLayer();
   }
 
-  modal(content) {
+  modal(content: any) {
+
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
 
@@ -35,7 +36,7 @@ export class GererPointImportantComponent implements OnInit {
     this.layer = this.mapService.getLayer();
   }
 
-  //#region pointImportant
+
   updatePointImportant(event) {
 
     event.preventDefault();
@@ -52,7 +53,7 @@ export class GererPointImportantComponent implements OnInit {
     });
   }
 
-  deletePointImportant(id) {
+  deletePointImportant(id: any) {
 
     this.db.supprimerPointImportant(id).subscribe( (result) => {
       this.message = result.message;
@@ -60,6 +61,5 @@ export class GererPointImportantComponent implements OnInit {
       this.mapService.getPointImportant();
     });
   }
-  //#endregion
 
 }

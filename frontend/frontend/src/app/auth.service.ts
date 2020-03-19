@@ -13,6 +13,8 @@ export class AuthService {
     nom : '',
     prenom : '',
     email : '',
+    numero : '',
+    typeUser : '',
     token: ''
   };
 
@@ -24,11 +26,15 @@ export class AuthService {
     this.logStatus = value;
   }
 
-  setData(nom, prenom, email, token) {
+  setData(nom: string, prenom: string, email: string, numero: string, typeUser: string, token: string) {
     this.data.nom = nom;
     this.data.prenom = prenom;
     this.data.email = email;
+    this.data.numero = numero;
+    this.data.typeUser = typeUser;
     this.data.token = token;
+
+    console.log(this.data.token);
   }
 
   getData() {

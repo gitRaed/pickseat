@@ -63,6 +63,37 @@ export class CoreComponent implements  OnInit, OnDestroy {
     this.mapService.getPointImportant();
   }
 
+  createButton(label, container) {
+
+    const btn = L.DomUtil.create('button', '', container);
+    btn.setAttribute('type', 'button');
+    btn.innerHTML = label;
+    return btn;
+  }
+
+  reverse(event) {
+
+    const container = L.DomUtil.create('div');
+    const startBtn = this.createButton('Start here?', container);
+    const endBtn = this.createButton('End here?', container);
+
+    L.popup()
+      .setContent(container)
+      .setLatLng(event.latlng)
+      .openOn(this.map);
+
+    L.DomEvent.on(startBtn, 'click', () => {
+
+      this.routing.spliceWaypoints(0, 1, event.latlng);
+      this.map.closePopup();
+    });
+
+    L.DomEvent.on(endBtn, 'click', () => {
+
+      this.routing.spliceWaypoints(this.routing.getWaypoints().length - 1, 1, event.latlng);
+      this.map.closePopup();
+    });
+  }
 
   //#region mapFunction
   onMapReady(map: L.Map) {
@@ -78,7 +109,8 @@ export class CoreComponent implements  OnInit, OnDestroy {
   }
 
   mapOptions() {
-      return this.mapService.getOptions();
+
+    return this.mapService.getOptions();
   }
 
   mapLayersControl() {
@@ -88,14 +120,14 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
   recupCoordonnees(event) {
 
-      this.coordonnees.lat = event.latlng.lat;
-      this.coordonnees.lng = event.latlng.lng;
+    this.coordonnees.lat = event.latlng.lat;
+    this.coordonnees.lng = event.latlng.lng;
   }
 
   searchAddress() {
 
     const provider = new OpenStreetMapProvider();
-    const searchControl = new GeoSearchControl({
+    new GeoSearchControl({
       provider,
       searchLabel: 'Entrer une addresse',
       style: 'bar',
@@ -104,32 +136,34 @@ export class CoreComponent implements  OnInit, OnDestroy {
       }
     }).addTo(this.map);
 
-
   }
 
   findItineraire() {
 
-      // marche malgré l'erreur
-      this.routing = L.Routing.control({
-        geocoder: L.Control.Geocoder.nominatim(),
-        lineOptions: {
-          styles: [{
-            color: '#48dbfb',
-            weight: 7
-          }]
-        },
-      }).addTo(this.map);
+    // marche malgré l'erreur
+    // TODO: trouver pourquoi il y'a une erreur ici
+    this.routing = L.Routing.control({
+      geocoder: L.Control.Geocoder.nominatim(),
+      lineOptions: {
+        styles: [{
+          color: '#48dbfb',
+          weight: 7
+        }]
+      },
+    }).addTo(this.map);
 
   }
 
   removeItineraire() {
+
     this.map.removeControl(this.routing);
   }
 
   //#endregion
 
   //#region options
-  modal(content) {
+  modal(content: any) {
+
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
   }
   contactUs(event) {
@@ -147,23 +181,23 @@ export class CoreComponent implements  OnInit, OnDestroy {
     if (this.auth.getData().token !== null) {
       this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe( (result) => {
 
-        // verifier si l'email est disponible
-        // result = true si l'email existe
-        if (result.auth === true) {
+          // verifier si l'email est disponible
+          // result = true si l'email existe
+          if (result.auth === true) {
 
-          this.message = 'Message envoyé !';
-          this.db.sendMessage(data.email, data.message).subscribe((resSendMessage) => {
-            this.message = resSendMessage.message;
-          } );
+            this.message = 'Message envoyé !';
+            this.db.sendMessage(data.email, data.message).subscribe((resSendMessage) => {
+              this.message = resSendMessage.message;
+            } );
         } else {
 
-          this.message = 'Email non existant';
+            this.message = 'Email non existant';
         }
       });
 
     } else {
 
-      this.message = 'Vous devez vous connectez ';
+        this.message = 'Vous devez vous connectez ';
     }
 
   }
@@ -172,31 +206,18 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
     this.router.navigate(['/gerer-users']);
   }
-
-  setItineraire() {
-
-    this.itineraire = !this.itineraire;
-
-    if (this.itineraire) {
-
-      this.findItineraire();
-    } else {
-
-      this.removeItineraire();
-    }
-  }
   //#endregion
 
   //#region pointImportant
 
   getPointImportant() {
+
     return this.pointImportant;
   }
 
   setPointImportant() {
 
     this.pointImportant = !this.pointImportant;
-    console.log('Point important : ' + this.pointImportant);
   }
 
   enregistrerPointImportant(event) {
@@ -225,7 +246,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
               this.db.sendPointImportant(data.email, data.message, data.latitude, data.longitude).subscribe((resSendMessage) => {
                 this.message = resSendMessage.message;
                 this.mapService.getPointImportant();
-              } );
+              });
             } else {
 
               this.message = 'Email non existant';
@@ -244,6 +265,28 @@ export class CoreComponent implements  OnInit, OnDestroy {
     this.router.navigate(['gerer-point-important']);
   }
 //#endregion
+
+  //#region  itineraire
+  getItineraire() {
+
+    return this.itineraire;
+  }
+
+  setItineraire() {
+
+    this.itineraire = !this.itineraire;
+
+    if (this.itineraire) {
+
+      this.findItineraire();
+
+    } else {
+
+      this.removeItineraire();
+    }
+  }
+
+  //#endregion
 
 
   ngOnDestroy() {

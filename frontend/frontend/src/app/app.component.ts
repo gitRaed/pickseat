@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { AuthService } from './auth.service';
 
 
@@ -8,17 +8,13 @@ import { AuthService } from './auth.service';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
+export class AppComponent {
 
 
   constructor(private auth: AuthService) {}
 
   data = this.auth.getData();
 
-  ngOnInit() {
-
-    this.auth.setData('Connectez', 'vous', '', '');
-  }
 
 
 }

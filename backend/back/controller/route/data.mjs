@@ -128,7 +128,7 @@ route.get('/auth/:email/:mdp/:type', async function (req, res) {
     if (type === 'auth') {
         authCode(email, motDePasse).then((result) => {
 
-            // si le user est authentifié, envoyer un accessToken en reponse normal et un refreshToken en cookie
+            // si le user est authentifié, envoyer un accessToken en reponse normal
             if (result.auth === true) {
                 result.token = createAccessToken();
             }
