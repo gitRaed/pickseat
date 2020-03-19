@@ -61,6 +61,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
     // afficher les points importants
     this.mapService.getPointImportant();
+
   }
 
   createButton(label, container) {
@@ -68,10 +69,14 @@ export class CoreComponent implements  OnInit, OnDestroy {
     const btn = L.DomUtil.create('button', '', container);
     btn.setAttribute('type', 'button');
     btn.innerHTML = label;
+    btn.style.backgroundColor = 'white';
+    btn.style.border = 'none';
+    btn.style.boxShadow = ' 0 0 2px #222f3e';
+    btn.style.color = '#222f3e';
     return btn;
   }
 
-  reverse(event) {
+  onClickLocation(event) {
 
     const container = L.DomUtil.create('div');
     const startBtn = this.createButton('Start here?', container);

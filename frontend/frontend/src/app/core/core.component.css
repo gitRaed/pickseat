@@ -11,7 +11,8 @@
 .mapOptionsGererPoint,
 .mapOptionsSearch,
 .mapOptionsProfil,
-.mapOptionsChat {
+.mapOptionsChat,
+.mapOnClickLocation {
     background-color: white;
     box-shadow: 0 0 2px black;
     border: none;
