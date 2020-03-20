@@ -12,7 +12,8 @@
 .mapOptionsSearch,
 .mapOptionsProfil,
 .mapGestionProfil,
-.mapEnregistrerTrajet {
+.mapEnregistrerTrajet,
+.mapGestionTrajet {
     background-color: white;
     box-shadow: 0 0 2px black;
     border: none;
@@ -35,7 +36,8 @@
 .mapOptionsSearch:hover,
 .mapOptionsProfil:hover,
 .mapGestionProfil:hover,
-.mapEnregistrerTrajet:hover {
+.mapEnregistrerTrajet:hover,
+.mapGestionTrajet:hover {
     background-color: #48dbfb;
     color: white;
 }
@@ -45,7 +47,8 @@
 .mapOptionsSearch,
 .mapOptionsProfil,
 .mapGestionProfil,
-.mapEnregistrerTrajet {
+.mapEnregistrerTrajet,
+.mapGestionTrajet {
     border-radius: 2px;
     left: 9px;
     padding: 0.3%;
@@ -69,13 +72,19 @@
     top: 46%;
 }
 
-.mapOptionsProfil {
-    top: 58%;
+.mapGestionTrajet {
+    top: 51%;
 }
 
 .mapGestionProfil {
-    top: 53%;
+    top: 58%;
 }
+
+.mapOptionsProfil {
+    top: 63%;
+}
+
+
 
 /* Fenetre modal */
 
@@ -177,7 +186,9 @@
 .modal-body form input[type="tel"],
 .modal-body form input[type="password"],
 .modal-body form select
-.modal-body .form input[type="textarea"]{
+.modal-body .form input[type="textarea"],
+form input[type="time"],
+form input[type=date]{
     border-radius: 30px;
 }
 
@@ -226,24 +237,27 @@ form input[type="email"],
 form input[type="number"],
 form input[type="tel"],
 form input[type="password"],
-form select
+form select,
+form input[type="time"],
+form input[type=date]
 {
+	
+    outline: none;
+    background: #fff;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    border: 1px solid #ccc;
+    color: #555;
+    font: 95% Arial, Helvetica, sans-serif;
+	margin-top: 2%;
+	margin-bottom: 4%;
+	padding: 3%;
 	-webkit-transition: all 0.30s ease-in-out;
 	-moz-transition: all 0.30s ease-in-out;
 	transition: all 0.30s ease-in-out;
 	-o-transition: all 0.30s ease-in-out;
-	outline: none;
-	box-sizing: border-box;
-	-webkit-box-sizing: border-box;
-	-moz-box-sizing: border-box;
-	width: 100%;
-	background: #fff;
-	margin-top: 2%;
-	margin-bottom: 4%;
-	border: 1px solid #ccc;
-	padding: 3%;
-	color: #555;
-	font: 95% Arial, Helvetica, sans-serif;
+    width: 100%;
 }
 
 form input[type="text"]:focus,
@@ -251,12 +265,15 @@ form input[type="email"]:focus,
 form input[type="number"]:focus,
 form input[type="tel"]:focus,
 form input[type="password"]:focus,
+form input[type="time"]:focus,
+form input[type=date]:focus,
 form select:focus
 {
     border: 1px solid #48dbfb;
     box-shadow: 0 0 5px #48dbfb;
 	padding: 3%;
 }
+
 
 .message{
     color: red;

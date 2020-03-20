@@ -5,7 +5,11 @@ import {
     registerMessage,
     registerPointImportant,
     updatePointImportant,
-    deletePointImportant
+    deletePointImportant,
+    getTrajet,
+    enregistrerTrajet,
+    updateTrajet,
+    deleteTrajet
 } from '../dataAccessLayer/requete_map.mjs';
 
 
@@ -48,4 +52,24 @@ export async function codeUpdatePointImportant(id, message) {
 export async function codeDeletePointImportant(id) {
 
     return deletePointImportant(id);
+}
+
+export async function codeGetTrajet(email) {
+
+    return getTrajet(email);
+}
+
+export async function codeEnregistrerTrajet(email, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
+
+    return enregistrerTrajet(email, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale);
+}
+
+export async function codeUpdateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
+
+    return updateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale);
+}
+
+export async function codeDeleteTrajet(id) {
+
+    return deleteTrajet(id);
 }

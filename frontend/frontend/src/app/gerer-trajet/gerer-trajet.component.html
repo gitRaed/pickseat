@@ -1,0 +1,108 @@
+<div class="message">
+    {{message}}
+</div>
+
+<br>
+<a routerLink="/map" class="retour">Retour</a>
+
+<table>
+
+    <tr class="colorie">
+        <th>Index</th>
+        <th>Adresse Départ</th>
+        <th>Adresse Arrivée</th>
+        <th>Heure de départ</th>
+        <th>Date du trajet</th>
+        <th>Options</th>
+        <th>Escale à</th>
+        <th>Options-trajet</th>
+    </tr>
+
+    <tr *ngFor="let item of data; let i=index;">
+        
+        <td>{{i}}</td>
+
+        <td id="adresse_depart">{{item.adresse_depart}}</td>
+
+        <td id="adresse_arrive">{{item.adresse_arrive}}</td>
+
+        <td id="heure_trajet">{{item.heure_trajet | date : 'hh:mm:ss'}}</td>
+
+        <td id="date_trajet">{{item.date_trajet | date: 'dd/MM/yyyy'}}</td>
+
+        <td id="options">{{item.options}}</td>
+
+        <td id="escale">{{item.escale}}</td>
+
+        <td>
+            <button (click)="modal(modifierTrajet)" [ngbTooltip] = "tooltipModifier" title="Modifier le trajet"><i class="fas fa-retweet"></i></button>
+            <button [ngbTooltip] = "tooltipSupprimer" title="Supprimer le trajet"><i class="fas fa-trash"></i></button>
+        </td>
+
+        <ng-template #modifierTrajet let-modal>
+
+            <div class="modal-header">
+                <h4 id="modal-basic-title">Modifier trajet</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+
+            <div class="modal-body">
+                <form (submit) = "updateTrajet($event)"> 
+                    <div class="form-group">
+                        <input type="text" id="id_trajet" value="{{item.trajet}}" disabled style="background-color: #dfe4ea; display: none;">
+                        <input required type="text" name="adresse_depart" id="adresse_depart" value="{{item.adresse_depart}}" pattern="^[a-zA-Z0-9]{3,}$" title="minimum 3 lettres">
+                        <input required type="text" name="adresse_arrive" id="adresse_arrive" value="{{item.adresse_arrive}}" pattern="^[a-zA-Z0-9]{3,}$" title="minimum 3 lettres">
+                        <input class="dateTime" required type="time" name="heure_trajet" id="heure_trajet" title="Entrer l'heure du trajet"> <br>
+                        <input class="dateTime" required type="date" name="date_trajet" id="date_trajet" title="Entrer la date du trajet"> <br>
+                        <select required name="options" id="options">
+                            <option value="" disabled selected>Valeur actuelle :  {{item.options}}</option>
+                            <option value="oui">Oui</option>
+                            <option value="non">Non</option>
+                        </select>
+                        <input type="text" name="escale" id="escale" value="{{item.escale}}">
+                        <input type="submit" value="Valider">    
+                    </div>
+                </form>
+            </div>
+
+            <div class="modal-footer">
+                <p>
+                    {{message}}
+                </p>
+            </div>
+        </ng-template>
+
+        <ng-template #supprimerTrajet let-modal>
+
+            <div class="modal-header">
+                <h4 id="modal-basic-title">Supprimer trajet</h4>
+                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+        
+            <div class="modal-body">
+            <p><strong>Etes-vous sûr de vouloir supprimer ce trajet?</strong></p>
+                <p>Toutes informations relatives à ce trajet sera supprimées de façon permanente
+                <span class="text-danger">Cette opération ne peut pas être annulée !!</span>
+                </p>
+            </div>
+            
+            <div class="modal-footer">
+                <button type="button" class="btn btn-outline-dark" (click) = "deleteTrajet(item.id_trajet)">Supprimer</button>
+            </div>
+
+        </ng-template>
+
+        <ng-template #tooltipModifier>
+            Modifier le trajet d'index {{i}}
+        </ng-template>
+
+        <ng-template #tooltipSupprimer>
+            Supprimer le trajet d'index {{i}}
+        </ng-template>
+
+    </tr>
+</table>

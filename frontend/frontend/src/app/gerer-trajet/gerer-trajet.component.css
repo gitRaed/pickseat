@@ -1,0 +1,139 @@
+.message{
+	color: red;
+	left: 5%;
+	margin: 1%;
+	padding: 1%;
+	position: relative;
+}
+
+
+table {
+    border-collapse: collapse;
+}
+
+th,
+td {
+    border: 1px solid black;
+    padding: 0.5%;
+    text-align: center;
+    width: 4%;
+}
+
+tr {
+    color: black;
+}
+
+
+tr:nth-child(odd),
+tr:nth-child(odd) button {
+    background-color: #c8d6e5;
+    color: black;
+}
+
+
+table .colorie {
+    background-color: #17c0eb;
+    color: white;
+}
+
+
+
+button {
+    border: 1px solid black;
+    background-color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+
+button:hover, tr:nth-child(odd) button:hover {
+    background-color: #48dbfb;
+    border-radius: 5px;
+    color: white;
+}
+
+
+
+.modal-header,.modal-header button{
+	background: #48dbfb;
+	color: white;
+	font-weight: 300;
+	text-align: center;
+}
+
+.modal-header button:hover {
+	background-color: white;
+	color: #48dbfb;
+}
+
+.modal-footer button {
+	border: 1px solid #48dbfb;
+	color: #48dbfb;
+	transition: all 0.5s;
+}
+
+.modal-footer button:hover {
+	color:white;
+}
+
+form input[type="submit"]  {
+	background-color: white;
+	border: 1px solid #48dbfb;
+	border-radius: 5px;
+	color: #48dbfb;
+	font-size: large;
+	left:80%;
+	padding: 2%;
+	position: relative;
+	transition: all 0.5s;
+}
+
+form input[type="submit"]:hover {
+	background-color: #48dbfb;
+	border: 1px solid white;
+	color: white;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form input[type="tel"],
+form input[type="password"],
+form input[type="time"],
+form input[type=date],
+form select
+{
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	background: #fff;
+	margin-top: 2%;
+	margin-bottom: 4%;
+	border: 1px solid #ccc;
+	border-radius: 30px;
+	padding: 3%;
+	color: #555;
+	font: 95% Arial, Helvetica, sans-serif;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="number"]:focus,
+form input[type="tel"]:focus,
+form input[type="password"]:focus,
+form input[type="time"]:focus,
+form input[type=date]:focus,
+form select:focus
+{
+    border: 1px solid #48dbfb;
+    box-shadow: 0 0 5px #48dbfb;
+	padding: 3%;
+}
+
+

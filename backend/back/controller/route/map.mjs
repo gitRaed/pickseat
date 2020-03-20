@@ -12,7 +12,11 @@ import {
     codeRegisterMessage,
     codePointImportant, 
     codeUpdatePointImportant,
-    codeDeletePointImportant
+    codeDeletePointImportant,
+    codeGetTrajet,
+    codeEnregistrerTrajet,
+    codeUpdateTrajet,
+    codeDeleteTrajet
 } from '../../serviceLayer/code_map.mjs';
 
 const route = express.Router();
@@ -250,6 +254,202 @@ route.post("/deletePoint", async (req, res) => {
     }
 
 });
+
+route.post("/getTrajet", async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email} = req.body;
+
+    try {
+        
+        res.status(200);
+
+        // verifier si token es envoyé en header
+        const verifToken = isAuth(authorization);
+        if (verifToken.message !== '') {
+            res.send({
+                message: verifToken.message
+            });
+        } else {
+
+            // verifier si l'email est disponible dans la bdd
+            authCodeEmail(email).then((result) => {
+
+                if (result.auth === true) {
+                    // enregister dans la bdd et envoyer le résultat
+                    codeGetTrajet(email).then((result) => {
+                        res.send({
+                            message: result
+                        });
+                    });
+                } else {
+
+                    res.status(400);
+                    res.send({
+                        message: 'L\'utilisateur n\'existe pas',
+                        reqBody: req.body
+                    });
+                }
+
+            });
+        }
+
+
+    } catch (error) {
+        res.status(500);
+        res.send({
+            message: error
+        });
+        console.log('Get trajet error : ' + error);
+    }
+});
+
+route.post("/enregistrerTrajet", async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale} = req.body;
+
+    try {
+
+        res.status(200);
+
+        // verifier si token es envoyé en header
+        const verifToken = isAuth(authorization);
+        if (verifToken.message !== '') {
+            res.send({
+                message: verifToken.message
+            });
+        } else {
+
+            // verifier si l'email est disponible dans la bdd
+            authCodeEmail(email).then((result) => {
+
+                if (result.auth === true) {
+                    // enregister dans la bdd et envoyer le résultat
+                    codeEnregistrerTrajet(email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale).then((result) => {
+                        res.send({
+                            message: result
+                        });
+                    });
+                } else {
+
+                    res.status(400);
+                    res.send({
+                        message: 'L\'utilisateur n\'existe pas',
+                        reqBody: req.body
+                    });
+                }
+
+            });
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Enregistrer trajet error : ' + error);
+        res.send({
+            message: error
+        });
+    }
+
+});
+
+route.post("/updateTrajet", async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {id, email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale} = req.body;
+
+    try {
+
+        res.status(200);
+
+        // verifier si token es envoyé en header
+        const verifToken = isAuth(authorization);
+        if (verifToken.message !== '') {
+            res.send({
+                message: verifToken.message
+            });
+        } else {
+
+            // verifier si l'email est disponible dans la bdd
+            authCodeEmail(email).then((result) => {
+
+                if (result.auth === true) {
+                    // enregister dans la bdd et envoyer le résultat
+                    codeUpdateTrajet(id, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale).then((result) => {
+                        res.send({
+                            message: result
+                        });
+                    });
+                } else {
+
+                    res.status(400);
+                    res.send({
+                        message: 'L\'utilisateur n\'existe pas',
+                        reqBody: req.body
+                    });
+                }
+
+            });
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Modifier trajet error : ' + error);
+        res.send({
+            message: error
+        });
+    }
+});
+
+route.post("/deleteTrajet", async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {id, email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale} = req.body;
+
+    try {
+
+        res.status(200);
+
+        // verifier si token es envoyé en header
+        const verifToken = isAuth(authorization);
+        if (verifToken.message !== '') {
+            res.send({
+                message: verifToken.message
+            });
+        } else {
+
+            // verifier si l'email est disponible dans la bdd
+            authCodeEmail(email).then((result) => {
+
+                if (result.auth === true) {
+                    // enregister dans la bdd et envoyer le résultat
+                    codeDeleteTrajet(id).then((result) => {
+                        res.send({
+                            message: result
+                        });
+                    });
+                } else {
+
+                    res.status(400);
+                    res.send({
+                        message: 'L\'utilisateur n\'existe pas',
+                        reqBody: req.body
+                    });
+                }
+
+            });
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Supprimer trajet error : ' + error);
+        res.send({
+            message: error
+        });
+    }
+});
+
+
 
 export {
     route as map

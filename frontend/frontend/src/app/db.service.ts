@@ -113,7 +113,6 @@ export class DbService {
       observable : 'response',
   };
 
-    console.log(email, message);
     return this.http.post < any > ('http://localhost:9500/map/contactUs', {
       email,
       message
@@ -195,4 +194,89 @@ export class DbService {
   }
 
   //#endregion
-}
+
+  //#region trajet
+
+  getTrajet() {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/getTrajet', {
+      email: this.auth.getData().email
+    }, optionsHeader);
+  }
+  enregistrerTrajet(email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/enregistrerTrajet', {
+      email,
+      adresseDepart,
+      adresseArrive,
+      heureTrajet,
+      dateTrajet,
+      options,
+      escale
+    }, optionsHeader);
+  }
+
+  modifierTrajet(id, email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/updateTrajet', {
+      id,
+      email,
+      adresseDepart,
+      adresseArrive,
+      heureTrajet,
+      dateTrajet,
+      options,
+      escale
+    }, optionsHeader);
+  }
+
+  supprimerTrajet(id) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/deleteTrajet', {
+      id
+    }, optionsHeader);
+  }
+  }
+
+  //#endregion
+

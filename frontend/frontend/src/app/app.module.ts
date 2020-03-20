@@ -18,6 +18,7 @@ import { AuthGuard } from './auth.guard';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { CoreComponent } from './core/core.component';
 import { GererPointImportantComponent } from './gerer-point-important/gerer-point-important.component';
+import { GererTrajetComponent } from './gerer-trajet/gerer-trajet.component';
 
 
 
@@ -30,7 +31,8 @@ import { GererPointImportantComponent } from './gerer-point-important/gerer-poin
     ForgotPasswordComponent,
     NotFoundComponent,
     CoreComponent,
-    GererPointImportantComponent
+    GererPointImportantComponent,
+    GererTrajetComponent
   ],
   imports: [
     BrowserModule,
@@ -64,6 +66,11 @@ import { GererPointImportantComponent } from './gerer-point-important/gerer-poin
       {
         path: 'gerer-point-important',
         component: GererPointImportantComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'gerer-trajet',
+        component: GererTrajetComponent,
         canActivate: [AuthGuard]
       },
       {
