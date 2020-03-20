@@ -94,7 +94,7 @@ route.post('/updateData', async function (req, res) {
     // console.log(id, nom, prenom, email, numero, typeUser, motDePasse);
     updateUser(id, nom, prenom, email, numero, typeUser).then(() =>
         res.json({
-            message: 'Donnée reçues ' + nom + ' ' + prenom
+            message: 'Donnée reçues et modifiées !' + nom + ' ' + prenom
         }));
 
 });

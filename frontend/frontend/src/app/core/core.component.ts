@@ -31,6 +31,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
   private pointImportant = false;
   private itineraire = false;
   private routing = null;
+  usersData = {};
   private coordonnees = {
     lat : 0,
     lng : 0
@@ -61,6 +62,10 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
     // afficher les points importants
     this.mapService.getPointImportant();
+
+    // récupérer les données de l'utilisateur
+    this.usersData = this.auth.getData();
+    console.log(this.usersData);
 
   }
 
@@ -293,8 +298,34 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
   //#endregion
 
+  //#region profil
 
-  ngOnDestroy() {
+  updateProfil(event) {
+
+    event.preventDefault();
+    const target = event.target;
+    const data = {
+      id: this.auth.getData().id,
+      nom : target.querySelector('#nom_user').value,
+      prenom: target.querySelector('#prenom_user').value,
+      email: target.querySelector('#email_user').value,
+      numero: target.querySelector('#numero_user').value,
+      typeUser: target.querySelector('#type_user').value,
+    };
+
+    this.message = this.user.test(data, [], 'update');
+
+    if (this.message === 'Utilisateur ' + data.nom + ' ' + data.prenom + ' modifié!') {
+          this.db.updateUser(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
+            console.log('Data Updated!');
+            this.auth.setData(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser, this.auth.getData().token);
+          });
+        }
+  }
+
+
+  //#endregion
+ngOnDestroy() {
 
     this.map.remove();
   }

@@ -11,8 +11,8 @@
 .mapOptionsGererPoint,
 .mapOptionsSearch,
 .mapOptionsProfil,
-.mapOptionsChat,
-.mapOnClickLocation {
+.mapGestionProfil,
+.mapEnregistrerTrajet {
     background-color: white;
     box-shadow: 0 0 2px black;
     border: none;
@@ -34,7 +34,8 @@
 .mapOptionsGererPoint:hover,
 .mapOptionsSearch:hover,
 .mapOptionsProfil:hover,
-.mapOptionsChat:hover {
+.mapGestionProfil:hover,
+.mapEnregistrerTrajet:hover {
     background-color: #48dbfb;
     color: white;
 }
@@ -43,7 +44,8 @@
 .mapOptionsGererPoint,
 .mapOptionsSearch,
 .mapOptionsProfil,
-.mapOptionsChat {
+.mapGestionProfil,
+.mapEnregistrerTrajet {
     border-radius: 2px;
     left: 9px;
     padding: 0.3%;
@@ -62,16 +64,18 @@
     top: 38%;
 }
 
-.mapOptionsChat {
+.mapEnregistrerTrajet {
 
     top: 46%;
 }
 
 .mapOptionsProfil {
-    top: 53%;
+    top: 58%;
 }
 
-
+.mapGestionProfil {
+    top: 53%;
+}
 
 /* Fenetre modal */
 
@@ -167,9 +171,13 @@
     padding: 0 0 0 5%;
 }
 
-.modal-body .form input[type="email"],
-.modal-body .form input[type="textarea"],
-.modal-body .form input[type="text"] {
+.modal-body form input[type="text"],
+.modal-body form input[type="email"],
+.modal-body form input[type="number"],
+.modal-body form input[type="tel"],
+.modal-body form input[type="password"],
+.modal-body form select
+.modal-body .form input[type="textarea"]{
     border-radius: 30px;
 }
 
@@ -178,12 +186,79 @@
     width: 100%;
 }
 
-.modal-footer button {
-    border: 1px solid #48dbfb;
-    color: #48dbfb;
-    transition: all 0.5s;
+
+
+.modal-header,.modal-header button{
+	background: #48dbfb;
+	color: white;
+	font-weight: 300;
+	text-align: center;
 }
 
-.modal-footer button:hover {
-    color: white;
+.modal-header button:hover {
+	background-color: white;
+	color: #48dbfb;
+}
+
+.modal-body form input[type="submit"]  {
+	background-color: white;
+	border: 1px solid #48dbfb;
+	border-radius: 5px;
+	color: #48dbfb;
+	padding: 2%;
+    position: relative;
+    text-align: center;
+	transition: all 0.5s;
+}
+
+.modal-body form input[type="submit"]:hover {
+	background-color: #48dbfb;
+	border: 1px solid white;
+	color: white;
+}
+
+.modal-body .valider {
+    left: 80%;
+}
+
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form input[type="tel"],
+form input[type="password"],
+form select
+{
+	-webkit-transition: all 0.30s ease-in-out;
+	-moz-transition: all 0.30s ease-in-out;
+	transition: all 0.30s ease-in-out;
+	-o-transition: all 0.30s ease-in-out;
+	outline: none;
+	box-sizing: border-box;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	width: 100%;
+	background: #fff;
+	margin-top: 2%;
+	margin-bottom: 4%;
+	border: 1px solid #ccc;
+	padding: 3%;
+	color: #555;
+	font: 95% Arial, Helvetica, sans-serif;
+}
+
+form input[type="text"]:focus,
+form input[type="email"]:focus,
+form input[type="number"]:focus,
+form input[type="tel"]:focus,
+form input[type="password"]:focus,
+form select:focus
+{
+    border: 1px solid #48dbfb;
+    box-shadow: 0 0 5px #48dbfb;
+	padding: 3%;
+}
+
+.message{
+    color: red;
+    padding: 1%;
 }

@@ -45,7 +45,7 @@ export class AuthentificationComponent implements OnInit {
     this.user.appelUnicite(data.email, data.password, 'auth').subscribe( (result) => {
 
       if (result.auth === true) {
-        this.auth.setData(result.nom, result.prenom, result.email, result.numero, result.typeUser, result.token);
+        this.auth.setData(result.id, result.nom, result.prenom, result.email, result.numero, result.typeUser, result.token);
         this.auth.setLogStatus(true);
         this.router.navigate(['/map']);
       } else {

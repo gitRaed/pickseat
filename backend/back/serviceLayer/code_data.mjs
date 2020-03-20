@@ -49,6 +49,7 @@ export function authCode(email, motDePasse) {
 
             if(result[i].email === email && result[i].motDePasse === motDePasse) {
                 data.auth = true;
+                data.id = result[i].id_utilisateur;
                 data.nom = result[i].nom;
                 data.prenom = result[i].prenom;
                 data.email = result[i].email;
