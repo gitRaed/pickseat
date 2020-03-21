@@ -41,11 +41,11 @@
         <td id="mdp_user"> {{item.motDePasse}} </td>
 
         <td>
-            <button title="Modifier l'utilisateur" (click)="modal(modifier)"><i class="fas fa-retweet"></i></button>
-            <button title="Supprimer l'utilisateur" (click)="modal(supprimer)"><i class="fas fa-trash"></i></button>
-            <button title="Bannir l'utilisateur" (click)="modal(bannir)"><i class="fas fa-ban"></i></button>
-            <button title="Suspendre l'utilisateur" (click)="modal(suspendre)"><i class="fas fa-history"></i></button>
-            <button title="Rendre actif l'utilisateur" (click)="modal(backToActif)"><i class="fas fa-check-circle"></i></button>
+            <button [ngbTooltip] = "tooltipModifier" (click)="modal(modifier)"><i class="fas fa-retweet"></i></button>
+            <button [ngbTooltip] = "tooltipSupprimer" (click)="modal(supprimer)"><i class="fas fa-trash"></i></button>
+            <button [ngbTooltip] = "tooltipBannir" (click)="modal(bannir)"><i class="fas fa-ban"></i></button>
+            <button [ngbTooltip] = "tooltipSuspendre" (click)="modal(suspendre)"><i class="fas fa-history"></i></button>
+            <button [ngbTooltip] = "tooltipActif" (click)="modal(backToActif)"><i class="fas fa-check-circle"></i></button>
         </td>
 
         <ng-template #modifier let-modal>
@@ -60,13 +60,13 @@
             <div class="modal-body">
                 <form (submit) = "update($event)"> 
                     <div class="form-group">
-                        <input type="text" id="id_user" value="{{item.id_utilisateur}}" disabled style="background-color: #dfe4ea;">
+                        <input type="text" id="id_user" value="{{item.id_utilisateur}}" disabled style="display: none;">
                         <input required type="text" name="nom" id="nom_user" value="{{item.nom}}" pattern="^[a-zA-Z]{3,}$" title="minimum 3 lettres">
                         <input required type="text" name="prenom" id="prenom_user" value="{{item.prenom}}" pattern="^[a-zA-Z]{3,}$" title="minimum 3 lettres">
                         <input required type="email" name="email" id="email_user" value="{{item.email}}" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
                         <input required type="tel" name="numero" id="numero_user" value="{{item.numero}}" pattern="^[0-9]{8,}$" title="minimum 8 chiffres">
                         <select required name="type" id="type_user">
-                            <option value="" disabled selected>User actuel est {{item.typeUser}}</option>
+                            <option value="" disabled selected>L'utilisateur actuel est {{item.typeUser}}</option>
                             <option value="chauffeur">Chauffeur</option>
                             <option value="piéton">Piéton</option>
                         </select>
@@ -166,6 +166,26 @@
                 <button type="button" class="btn btn-outline-dark" (click)="normal(item.id_utilisateur, item.nom, item.prenom);">Rendre actif</button>
             </div>
         
+        </ng-template>
+
+        <ng-template #tooltipModifier>
+            Modifier l'utilisateur {{item.nom}} {{item.prenom}}
+        </ng-template>
+
+        <ng-template #tooltipSupprimer>
+            Supprimer l'utilisateur {{item.nom}} {{item.prenom}}
+        </ng-template>
+
+        <ng-template #tooltipBannir>
+            Bannir l'utilisateur {{item.nom}} {{item.prenom}}
+        </ng-template>
+
+        <ng-template #tooltipSuspendre>
+            Suspendre l'utilisateur {{item.nom}} {{item.prenom}}
+        </ng-template>
+
+        <ng-template #tooltipActif>
+            Rendre l'utilisateur {{item.nom}} {{item.prenom}} actif
         </ng-template>
     </tr>
 

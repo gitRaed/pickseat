@@ -17,6 +17,7 @@
 <button class = "mapOptionsSetPoint" (click) = "setPointImportant()" [ngbTooltip] = "tooltipSetPoint"><i class="fas fa-map-marker-alt"></i></button>
 <button class = "mapOptionsGererPoint" (click) = "redirectionGererPoint()" [ngbTooltip] = "tooltipGererPointImportant"><i class="fas fa-map-marked-alt"></i></button>
 <button class = "mapOptionsSearch" (click) = "setItineraire()" [ngbTooltip] = "tooltipSearch"><i class="fas fa-directions"></i></button>
+<button class = "mapRechercherTrajet" (click) = "modal(rechercherTrajet)" [ngbTooltip] = "tooltipRechercherTrajet"><i class="fas fa-search-location"></i></button>
 <button class = "mapEnregistrerTrajet" (click) = "modal(enregistrerTrajet)" [ngbTooltip] = "tooltipTrajet"><i class="fas fa-sign"></i></button>
 <button class = "mapGestionTrajet" (click)= "redirectionGestionTrajet()" [ngbTooltip] = "tooltipGestionTrajet"><i class="fas fa-map-signs"></i></button>
 <button class = "mapGestionProfil" (click) = "modal(gestionProfil)" [ngbTooltip] = "tooltipGestionProfil"><i class="fas fa-diagnoses"></i></button>
@@ -59,11 +60,45 @@
         <form class="form" (submit) = "enregistrerPointImportant($event)">
             <input required type="email" name="email" id="email_user_point_important" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
             <input required type="textarea" name="message" id="message_user_point_important" placeholder="Libellé du point">
-            <input type="submit" value="Envoyer" class="valider">
+            <input type="submit" value="Envoyer">
         </form>
         <p class="error">{{message}}</p>
     </div>
     
+</ng-template>
+
+<ng-template #rechercherTrajet let-modal>
+    
+    <div class="modal-header">
+        <h4 id="modal-basic-title">Rechercher un trajet</h4>
+        <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+        <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="modal-body">
+
+        <form class="form">
+            <input required type="text" name="adresse_depart" id="adresse_depart" placeholder="Adresse de départ" title="Minimum 3 lettres, sans espace" pattern="^[a-zA-Z0-9]{3,}$">
+            <input required type="text" name="adresse_arrive" id="adresse_arrive" placeholder="Adresse d'arrivée" title="Minimum 3 lettres, sans espace" pattern="^[a-zA-Z0-9]{3,}$">
+            <input class="dateTime" required type="time" name="heure_trajet" id="heure_trajet" title="Entrer l'heure du trajet"> <br>
+            <input class="dateTime" required type="date" name="date_trajet" id="date_trajet" title="Entrer la date du trajet"> <br>
+
+            <input type="submit" value="Valider"> 
+        </form>
+
+    </div>
+
+    <div class="modal-footer">
+
+        <p style="right: 10%;position: relative;">La liste des trajets trouvées s'affichera en bas</p>
+
+        <p class="error">
+            {{message}}
+        </p>
+
+    </div>
+
 </ng-template>
 
 <ng-template #enregistrerTrajet let-modal>
@@ -88,7 +123,7 @@
                 <option value="non">Non</option>
             </select>
             <input type="text" name="escale" id="escale" placeholder="Si oui, où?" [ngbTooltip] = "tooltipTrajetEscale">
-            <input type="submit" value="Valider" > 
+            <input type="submit" value="Valider"> 
         </form>
 
     </div>
@@ -155,6 +190,10 @@
 
 <ng-template #tooltipSearch>
     Trouver une adresse <br><b>Cliquez</b> ouvrira la recherche d'itinéraire <br><b>Recliquez</b> pour la refaire disparaître
+</ng-template>
+
+<ng-template #tooltipRechercherTrajet>
+    Rechercher un trajet
 </ng-template>
 
 <ng-template #tooltipProfil> 

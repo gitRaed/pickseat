@@ -10,6 +10,7 @@
 .mapOptionsSetPoint,
 .mapOptionsGererPoint,
 .mapOptionsSearch,
+.mapRechercherTrajet,
 .mapOptionsProfil,
 .mapGestionProfil,
 .mapEnregistrerTrajet,
@@ -34,6 +35,7 @@
 .mapOptionsSetPoint:hover,
 .mapOptionsGererPoint:hover,
 .mapOptionsSearch:hover,
+.mapRechercherTrajet:hover,
 .mapOptionsProfil:hover,
 .mapGestionProfil:hover,
 .mapEnregistrerTrajet:hover,
@@ -45,6 +47,7 @@
 .mapOptionsSetPoint,
 .mapOptionsGererPoint,
 .mapOptionsSearch,
+.mapRechercherTrajet,
 .mapOptionsProfil,
 .mapGestionProfil,
 .mapEnregistrerTrajet,
@@ -67,21 +70,26 @@
     top: 38%;
 }
 
+.mapRechercherTrajet {
+
+    top: 45%;
+}
+
 .mapEnregistrerTrajet {
 
-    top: 46%;
+    top: 53%;
 }
 
 .mapGestionTrajet {
-    top: 51%;
-}
-
-.mapGestionProfil {
     top: 58%;
 }
 
+.mapGestionProfil {
+    top: 65%;
+}
+
 .mapOptionsProfil {
-    top: 63%;
+    top: 70%;
 }
 
 

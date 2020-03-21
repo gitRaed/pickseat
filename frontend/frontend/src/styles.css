@@ -52,7 +52,7 @@ html, body {
 #map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > div {
 	background-color: white;
 	line-height: 26px;
-	width: 50%;
+	width: 100%;
 }
 
 #map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > div > div {
