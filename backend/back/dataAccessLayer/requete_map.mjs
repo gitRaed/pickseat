@@ -105,6 +105,25 @@ export async function getTrajet(email) {
     }
 }
 
+export async function rechercherTrajet1(adresse_depart, adresse_arrive, heure_trajet, date_trajet) {
+
+    try {
+        
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                        .input('adresse_depart', adresse_depart)
+                        .input('adresse_arrive', adresse_arrive)
+                        .input('heure_trajet', heure_trajet)
+                        .input('date_trajet', date_trajet)
+                        .query('SELECT * FROM trajet WHERE adresse_depart=@adresse_depart and adresse_arrive=@adresse_arrive and heure_trajet=@heure_trajet and date_trajet=@date_trajet ORDER BY heure_trajet');
+        return result.recordset;
+
+    } catch (error) {
+        console.log('Rerchercher trajet error : ' + error);
+        return error;
+    }
+}
+
 export async function enregistrerTrajet(email, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
     
     try {

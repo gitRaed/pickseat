@@ -7,12 +7,20 @@ import {
     updatePointImportant,
     deletePointImportant,
     getTrajet,
+    rechercherTrajet1,
     enregistrerTrajet,
     updateTrajet,
     deleteTrajet
 } from '../dataAccessLayer/requete_map.mjs';
 
 
+
+export async function codeRegisterMessage(email, message) {
+
+    return registerMessage(email, message);
+}
+
+//#region pointImportant
 export async function codeGetPointImportant(email) {
 
     return getPointImportant(email).then( (result) => {
@@ -33,12 +41,6 @@ export async function codeGetPointImportant(email) {
     });
 }
 
-
-export async function codeRegisterMessage(email, message) {
-
-    return registerMessage(email, message);
-}
-
 export async function codePointImportant(email, message, latitude, longitude) {
 
     return registerPointImportant(email, message, latitude, longitude);
@@ -53,10 +55,24 @@ export async function codeDeletePointImportant(id) {
 
     return deletePointImportant(id);
 }
+//#endregion
 
+//#region trajet
 export async function codeGetTrajet(email) {
 
     return getTrajet(email);
+}
+
+export async function codeRechercherTrajet(adresse_depart, adresse_arrive, heure_trajet, date_trajet) {
+
+    return rechercherTrajet1(adresse_depart, adresse_arrive, heure_trajet, date_trajet).then( (result) => {
+
+        if(result.length === 0) {
+            return 'Pas de trajet similaire';
+        } else{
+            return result;
+        }
+    });
 }
 
 export async function codeEnregistrerTrajet(email, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
@@ -73,3 +89,4 @@ export async function codeDeleteTrajet(id) {
 
     return deleteTrajet(id);
 }
+//#endregion
