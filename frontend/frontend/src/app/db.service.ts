@@ -213,7 +213,7 @@ export class DbService {
       email: this.auth.getData().email
     }, optionsHeader);
   }
-  enregistrerTrajet(email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale) {
+  enregistrerTrajet(nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale) {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -226,7 +226,10 @@ export class DbService {
     };
 
     return this.http.post<any>('http://localhost:9500/map/enregistrerTrajet', {
+      nom,
+      prenom,
       email,
+      numero,
       adresseDepart,
       adresseArrive,
       heureTrajet,
@@ -260,7 +263,7 @@ export class DbService {
     }, optionsHeader);
   }
 
-  supprimerTrajet(id) {
+  supprimerTrajet(id, email) {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -273,10 +276,29 @@ export class DbService {
     };
 
     return this.http.post<any>('http://localhost:9500/map/deleteTrajet', {
-      id
+      id,
+      email
     }, optionsHeader);
   }
-  }
 
+  rechercherTrajet(email, adresseDepart, adresseArrive) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/rechercherTrajet', {
+      email,
+      adresseDepart,
+      adresseArrive
+    }, optionsHeader);
+  }
   //#endregion
 
+}

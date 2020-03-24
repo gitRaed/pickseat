@@ -240,6 +240,23 @@ form input[type=date]{
     left: 80%;
 }
 
+.modal-footer div {
+    text-align: center;
+    width: 100%;
+}
+
+.modal-footer div .trouverTrajet {
+    border-top: 1px solid rgba(0,0,0,.2);
+    border-bottom: 1px solid rgba(0,0,0,.2);
+}
+
+.modal-footer div .trouverTrajet:hover {
+
+    background-color: #f5f6fa;
+	border-color: grey;
+    cursor: pointer;
+}
+
 form input[type="text"],
 form input[type="email"],
 form input[type="number"],

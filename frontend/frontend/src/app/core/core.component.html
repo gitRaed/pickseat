@@ -78,12 +78,9 @@
 
     <div class="modal-body">
 
-        <form class="form">
+        <form class="form" (submit) = "findTrajet($event)">
             <input required type="text" name="adresse_depart" id="adresse_depart" placeholder="Adresse de départ" title="Minimum 3 lettres, sans espace" pattern="^[a-zA-Z0-9]{3,}$">
             <input required type="text" name="adresse_arrive" id="adresse_arrive" placeholder="Adresse d'arrivée" title="Minimum 3 lettres, sans espace" pattern="^[a-zA-Z0-9]{3,}$">
-            <input class="dateTime" required type="time" name="heure_trajet" id="heure_trajet" title="Entrer l'heure du trajet"> <br>
-            <input class="dateTime" required type="date" name="date_trajet" id="date_trajet" title="Entrer la date du trajet"> <br>
-
             <input type="submit" value="Valider"> 
         </form>
 
@@ -91,8 +88,19 @@
 
     <div class="modal-footer">
 
-        <p style="right: 10%;position: relative;">La liste des trajets trouvées s'affichera en bas</p>
+        <div >La liste des trajets trouvées s'affichera ici, une liste vide s'affichera s'il n'y a aucun trajet : <br> <br>
 
+            <!--TODO: Au click, envoyer un message au chauffeur (module chat qui a été reporté-->
+            <p class="trouverTrajet" *ngFor="let item of trajet; let i = index">
+                Chauffeur {{i}} : {{item.nom_chauffeur}} {{item.prenom_chauffeur}} <br>
+                Trajet : {{item.adresse_depart}} - {{item.adresse_arrive}} <br>
+                    Le {{item.date_trajet | date: 'dd/MM/yyyy'}} à {{item.heure_trajet | date: 'hh:mm a'}} <br>
+                Escale: {{item.escale}}
+            </p> <br> <br>
+
+        </div>
+
+        
         <p class="error">
             {{message}}
         </p>

@@ -315,7 +315,7 @@ route.post("/rechercherTrajet", async (req, res) => {
 
     
     const authorization = req.headers.authorization.valueOf('authorization');
-    const {email, adresseDepart, adresseArrive, heureTrajet, dateTrajet} = req.body;
+    const {email, adresseDepart, adresseArrive} = req.body;
 
     try {
 
@@ -334,7 +334,7 @@ route.post("/rechercherTrajet", async (req, res) => {
 
                 if (result.auth === true) {
                     // enregister dans la bdd et envoyer le résultat
-                    codeRechercherTrajet(adresseDepart, adresseArrive, heureTrajet, dateTrajet).then( (result) => {
+                    codeRechercherTrajet(adresseDepart, adresseArrive).then( (result) => {
                         res.send({
                             message: result
                         });
@@ -365,7 +365,7 @@ route.post("/rechercherTrajet", async (req, res) => {
 route.post("/enregistrerTrajet", async (req, res) => {
 
     const authorization = req.headers.authorization.valueOf('authorization');
-    const {email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale} = req.body;
+    const {nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale} = req.body;
 
     try {
 
@@ -384,7 +384,7 @@ route.post("/enregistrerTrajet", async (req, res) => {
 
                 if (result.auth === true) {
                     // enregister dans la bdd et envoyer le résultat
-                    codeEnregistrerTrajet(email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale).then((result) => {
+                    codeEnregistrerTrajet(nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale).then((result) => {
                         res.send({
                             message: result
                         });
@@ -462,7 +462,7 @@ route.post("/updateTrajet", async (req, res) => {
 route.post("/deleteTrajet", async (req, res) => {
 
     const authorization = req.headers.authorization.valueOf('authorization');
-    const {id, email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale} = req.body;
+    const {id, email} = req.body;
 
     try {
 

@@ -33,7 +33,6 @@ export class GererTrajetComponent implements OnInit {
 
     this.db.getTrajet().subscribe( (result) => {
       this.data = result.message;
-      console.log(this.data);
     });
   }
   updateTrajet(event) {
@@ -43,8 +42,8 @@ export class GererTrajetComponent implements OnInit {
     const data = {
       id: target.querySelector('#id_trajet').value,
       email: this.auth.getData().email,
-      adresse_depart: target.querySelector('#adresse_depart').value,
-      adresse_arrive: target.querySelector('#adresse_arrive').value,
+      adresse_depart: target.querySelector('#adresse_depart').value.toLowerCase(),
+      adresse_arrive: target.querySelector('#adresse_arrive').value.toLowerCase(),
       heure_trajet: target.querySelector('#heure_trajet').value,
       date_trajet: target.querySelector('#date_trajet').value,
       options: target.querySelector('#options').value,
@@ -54,7 +53,7 @@ export class GererTrajetComponent implements OnInit {
     // function anonyme qui s'exécute automatiquement
     (() => {
       const escaleValue = target.querySelector('#escale').value;
-      if (escaleValue === 'oui') {
+      if (data.options === 'oui') {
         data.escale = escaleValue;
       } else {
         data.escale = 'non';
@@ -98,7 +97,8 @@ export class GererTrajetComponent implements OnInit {
 
   deleteTrajet(id) {
 
-    this.db.deleteUser(id).subscribe( (result) => {
+    const email = this.auth.getData().email;
+    this.db.supprimerTrajet(id, email).subscribe( (result) => {
 
       this.message = 'Trajet supprimé!';
       this.getTrajet();

@@ -32,6 +32,8 @@ export class CoreComponent implements  OnInit, OnDestroy {
   private itineraire = false;
   private routing = null;
   usersData = {};
+  trajet = [];
+  isTrajet = false;
   private coordonnees = {
     lat : 0,
     lng : 0
@@ -334,9 +336,12 @@ export class CoreComponent implements  OnInit, OnDestroy {
     event.preventDefault();
     const target = event.target;
     const data = {
+      nom: this.auth.getData().nom,
+      prenom: this.auth.getData().prenom,
       email: this.auth.getData().email,
-      adresse_depart: target.querySelector('#adresse_depart').value,
-      adresse_arrive: target.querySelector('#adresse_arrive').value,
+      numero: this.auth.getData().numero,
+      adresse_depart: target.querySelector('#adresse_depart').value.toLowerCase(),
+      adresse_arrive: target.querySelector('#adresse_arrive').value.toLowerCase(),
       heure_trajet: target.querySelector('#heure_trajet').value,
       date_trajet: target.querySelector('#date_trajet').value,
       options: target.querySelector('#options').value,
@@ -346,7 +351,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
     // function anonyme qui s'exécute automatiquement
     (() => {
       const escaleValue = target.querySelector('#escale').value;
-      if (escaleValue === 'oui') {
+      if (data.options === 'oui') {
         data.escale = escaleValue;
       } else {
         data.escale = 'non';
@@ -363,7 +368,10 @@ export class CoreComponent implements  OnInit, OnDestroy {
           // result = true si email es disponible
           if (result.auth === true) {
 
-            this.db.enregistrerTrajet(data.email,
+            this.db.enregistrerTrajet(data.nom,
+                                      data.prenom,
+                                      data.email,
+                                      data.numero,
                                       data.adresse_depart,
                                       data.adresse_arrive,
                                       data.heure_trajet,
@@ -389,6 +397,52 @@ export class CoreComponent implements  OnInit, OnDestroy {
   redirectionGestionTrajet() {
 
     this.router.navigate(['gerer-trajet']);
+  }
+
+  findTrajet(event) {
+
+    this.trajet = [];
+    this.isTrajet = false;
+    event.preventDefault();
+    const target = event.target;
+    const data = {
+      email: this.auth.getData().email,
+      adresse_depart: target.querySelector('#adresse_depart').value.toLowerCase(),
+      adresse_arrive: target.querySelector('#adresse_arrive').value.toLowerCase(),
+    };
+
+     // verifier si le token existe
+    if (this.auth.getData().token !== null) {
+      // sil existe, verifier si lemail est disponible
+      // Pour respecter la structure du back, un password doit etre envoyé
+      this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe( (result) => {
+
+          // result = true si email es disponible
+          if (result.auth === true) {
+
+            this.db.rechercherTrajet( data.email,
+                                      data.adresse_depart,
+                                      data.adresse_arrive)
+                .subscribe( (Result) => {
+
+                  if (Result.message === 'Pas de trajet similaire avec ses données') {
+                    this.trajet.push({message : Result.message});
+                  } else {
+                    this.isTrajet = true;
+                    this.trajet = Result.message;
+                  }
+
+                });
+          } else {
+
+            this.message = 'Email non existant';
+          }
+        });
+
+    } else {
+
+      this.message = 'Vous devez vous connectez ';
+    }
   }
   //#endregion
 

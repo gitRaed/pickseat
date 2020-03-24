@@ -97,7 +97,7 @@ export async function getTrajet(email) {
         const pool = await new sql.ConnectionPool(config).connect();
         const result = await pool.request()
                         .input('email', email)
-                        .query('SELECT * FROM trajet WHERE email=@email');
+                        .query('SELECT * FROM trajet WHERE email_chauffeur=@email');
         return result.recordset;
     } catch (error) {
         console.log('Requête getTrajet error : ' + error);
@@ -105,7 +105,7 @@ export async function getTrajet(email) {
     }
 }
 
-export async function rechercherTrajet1(adresse_depart, adresse_arrive, heure_trajet, date_trajet) {
+export async function rechercherTrajet1(adresse_depart, adresse_arrive, date_trajet) {
 
     try {
         
@@ -113,9 +113,7 @@ export async function rechercherTrajet1(adresse_depart, adresse_arrive, heure_tr
         const result = await pool.request()
                         .input('adresse_depart', adresse_depart)
                         .input('adresse_arrive', adresse_arrive)
-                        .input('heure_trajet', heure_trajet)
-                        .input('date_trajet', date_trajet)
-                        .query('SELECT * FROM trajet WHERE adresse_depart=@adresse_depart and adresse_arrive=@adresse_arrive and heure_trajet=@heure_trajet and date_trajet=@date_trajet ORDER BY heure_trajet');
+                        .query('SELECT * FROM trajet WHERE adresse_depart=@adresse_depart and adresse_arrive=@adresse_arrive ORDER BY heure_trajet');
         return result.recordset;
 
     } catch (error) {
@@ -124,20 +122,23 @@ export async function rechercherTrajet1(adresse_depart, adresse_arrive, heure_tr
     }
 }
 
-export async function enregistrerTrajet(email, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
+export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, numero, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
     
     try {
         
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
+                    .input('nom', nom_chauffeur)
+                    .input('prenom', prenom_chauffeur)
                     .input('email', email)
+                    .input('numero', numero)
                     .input('adresse_depart', adresse_depart)
                     .input('adresse_arrive', adresse_arrive)
                     .input('heure_trajet', heure_trajet)
                     .input('date_trajet', date_trajet)
                     .input('options', options)
                     .input('escale', escale)
-                .query('INSERT INTO trajet VALUES (@email, @adresse_depart, @adresse_arrive, @heure_trajet, @date_trajet, @options, @escale)');
+                .query('INSERT INTO trajet VALUES (@nom, @prenom, @email, @numero, @adresse_depart, @adresse_arrive, @heure_trajet, @date_trajet, @options, @escale)');
         return 'Trajet enregistré !';
     } catch (error) {
         console.log('Requête enregistrer trajet error : ' + error);

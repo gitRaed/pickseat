@@ -36,7 +36,7 @@
 
         <td>
             <button (click)="modal(modifierTrajet)" [ngbTooltip] = "tooltipModifier" title="Modifier le trajet"><i class="fas fa-retweet"></i></button>
-            <button [ngbTooltip] = "tooltipSupprimer" title="Supprimer le trajet"><i class="fas fa-trash"></i></button>
+            <button (click)="modal(supprimerTrajet)" [ngbTooltip] = "tooltipSupprimer" title="Supprimer le trajet"><i class="fas fa-trash"></i></button>
         </td>
 
         <ng-template #modifierTrajet let-modal>
@@ -51,7 +51,7 @@
             <div class="modal-body">
                 <form (submit) = "updateTrajet($event)"> 
                     <div class="form-group">
-                        <input type="text" id="id_trajet" value="{{item.trajet}}" disabled style="background-color: #dfe4ea; display: none;">
+                        <input type="text" name="id_trajet" id="id_trajet" value="{{item.id_trajet}}" disabled style="background-color: #dfe4ea; display: none;">
                         <input required type="text" name="adresse_depart" id="adresse_depart" value="{{item.adresse_depart}}" pattern="^[a-zA-Z0-9]{3,}$" title="minimum 3 lettres">
                         <input required type="text" name="adresse_arrive" id="adresse_arrive" value="{{item.adresse_arrive}}" pattern="^[a-zA-Z0-9]{3,}$" title="minimum 3 lettres">
                         <input class="dateTime" required type="time" name="heure_trajet" id="heure_trajet" title="Entrer l'heure du trajet"> <br>

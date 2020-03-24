@@ -65,19 +65,19 @@ export async function codeGetTrajet(email) {
 
 export async function codeRechercherTrajet(adresse_depart, adresse_arrive, heure_trajet, date_trajet) {
 
-    return rechercherTrajet1(adresse_depart, adresse_arrive, heure_trajet, date_trajet).then( (result) => {
+    return rechercherTrajet1(adresse_depart, adresse_arrive).then( (result) => {
 
         if(result.length === 0) {
-            return 'Pas de trajet similaire';
-        } else{
+            return 'Pas de trajet similaire avec ses données';
+        } else {
             return result;
         }
     });
 }
 
-export async function codeEnregistrerTrajet(email, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
+export async function codeEnregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
 
-    return enregistrerTrajet(email, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale);
+    return enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale);
 }
 
 export async function codeUpdateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
