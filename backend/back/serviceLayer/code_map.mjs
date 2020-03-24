@@ -8,6 +8,7 @@ import {
     deletePointImportant,
     getTrajet,
     rechercherTrajet1,
+    rechercherEscale,
     enregistrerTrajet,
     updateTrajet,
     deleteTrajet
@@ -68,9 +69,34 @@ export async function codeRechercherTrajet(adresse_depart, adresse_arrive, heure
     return rechercherTrajet1(adresse_depart, adresse_arrive).then( (result) => {
 
         if(result.length === 0) {
-            return 'Pas de trajet similaire avec ses données';
+            return codeRechercherEscale(adresse_depart, adresse_arrive).then( (resultat) => {
+                if (resultat.length === 0) {
+                    return 'Pas de chauffeur trouver avec ses données';
+                } else {
+                    return resultat;
+                }
+            });
         } else {
             return result;
+        }
+    });
+}
+
+async function codeRechercherEscale(adresse_depart, adresse_arrive) {
+
+    return rechercherEscale().then( (result) => {
+
+        for(let i = 0, n = result.length; i < n; i++) {
+
+            let escale = result[i].escale.split(',');
+
+            for(let j = 0, m = escale.length; j < m; i++) {
+
+                let location = escale[j];
+
+                if(location === adresse_arrive)
+                    return  result;
+            }
         }
     });
 }

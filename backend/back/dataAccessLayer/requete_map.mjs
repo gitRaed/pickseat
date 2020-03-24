@@ -113,7 +113,7 @@ export async function rechercherTrajet1(adresse_depart, adresse_arrive, date_tra
         const result = await pool.request()
                         .input('adresse_depart', adresse_depart)
                         .input('adresse_arrive', adresse_arrive)
-                        .query('SELECT * FROM trajet WHERE adresse_depart=@adresse_depart and adresse_arrive=@adresse_arrive ORDER BY heure_trajet');
+                        .query('SELECT * FROM trajet WHERE adresse_depart=@adresse_depart and adresse_arrive=@adresse_arrive ORDER BY date_trajet');
         return result.recordset;
 
     } catch (error) {
@@ -122,6 +122,20 @@ export async function rechercherTrajet1(adresse_depart, adresse_arrive, date_tra
     }
 }
 
+export async function rechercherEscale() {
+
+    try {
+        const options = 'oui';
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                                    .input('options', options)
+                                    .query('SELECT * FROM trajet WHERE options=@options');
+        return result.recordset;
+    } catch (error) {
+        console.log('Requête rechercher escale error : ' + error);
+        return error;
+    }
+}
 export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, numero, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
     
     try {
