@@ -91,11 +91,11 @@
         <div >La liste des trajets trouvées s'affichera ici, une liste vide s'affichera s'il n'y a aucun trajet : <br> <br>
 
             <!--TODO: Au click, envoyer un message au chauffeur (module chat qui a été reporté-->
-            <p class="trouverTrajet" *ngFor="let item of trajet; let i = index">
-                Chauffeur {{i}} : {{item.nom_chauffeur}} {{item.prenom_chauffeur}} <br>
-                Trajet : {{item.adresse_depart}} - {{item.adresse_arrive}} <br>
-                    Le {{item.date_trajet | date: 'dd/MM/yyyy'}} à {{item.heure_trajet | date: 'hh:mm a'}} <br>
-                Escale: {{item.escale}}
+            <p class="trouverTrajet" *ngFor="let item of trajet">
+                Chauffeur :  <br>
+                Trajet :  <br>
+                    Le  à <br>
+                Escale: 
             </p> <br> <br>
 
         </div>
@@ -126,7 +126,7 @@
             <input class="dateTime" required type="time" name="heure_trajet" id="heure_trajet" title="Entrer l'heure du trajet"> <br>
             <input class="dateTime" required type="date" name="date_trajet" id="date_trajet" title="Entrer la date du trajet"> <br>
             <select required name="options" id="options">
-                <option value="" disabled selected>Pouvez-vous faire une/plusieurs escale?</option>
+                <option value="" disabled selected>Pouvez-vous faire une escale?</option>
                 <option value="oui">Oui</option>
                 <option value="non">Non</option>
             </select>
@@ -217,7 +217,7 @@
 </ng-template>
 
 <ng-template #tooltipTrajetEscale>
-    Séparer vos adresses par des virgules
+    Vous ne pouvez entrer qu'une seule adresse
 </ng-template>
 
 <ng-template #tooltipGestionTrajet>

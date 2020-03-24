@@ -69,14 +69,10 @@ export async function codeRechercherTrajet(adresse_depart, adresse_arrive, heure
     return rechercherTrajet1(adresse_depart, adresse_arrive).then( (result) => {
 
         if(result.length === 0) {
-            return codeRechercherEscale(adresse_depart, adresse_arrive).then( (resultat) => {
-                if (resultat.length === 0) {
-                    return 'Pas de chauffeur trouver avec ses données';
-                } else {
-                    return resultat;
-                }
-            });
+
+            return codeRechercherEscale(adresse_depart, adresse_arrive);
         } else {
+
             return result;
         }
     });
@@ -84,21 +80,21 @@ export async function codeRechercherTrajet(adresse_depart, adresse_arrive, heure
 
 async function codeRechercherEscale(adresse_depart, adresse_arrive) {
 
-    return rechercherEscale().then( (result) => {
+    let tableau = [];
+    await rechercherEscale().then( (result) => {
 
         for(let i = 0, n = result.length; i < n; i++) {
 
-            let escale = result[i].escale.split(',');
+            let escale = result[i].escale;
 
-            for(let j = 0, m = escale.length; j < m; i++) {
-
-                let location = escale[j];
-
-                if(location === adresse_arrive)
-                    return  result;
-            }
+            if (escale === adresse_arrive){
+                tableau.push(result[i]);
+            }          
         }
+
     });
+
+    return tableau;
 }
 
 export async function codeEnregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
