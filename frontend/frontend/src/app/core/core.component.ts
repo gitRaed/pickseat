@@ -410,7 +410,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
       adresse_depart: target.querySelector('#adresse_depart').value.toLowerCase(),
       adresse_arrive: target.querySelector('#adresse_arrive').value.toLowerCase(),
     };
-
+    this.message = 'Veuillez patientez...';
      // verifier si le token existe
     if (this.auth.getData().token !== null) {
       // sil existe, verifier si lemail est disponible
@@ -430,6 +430,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
                   } else {
                     this.isTrajet = true;
                     this.trajet = Result.message;
+                    this.message =  'Chauffeurs trouvés!';
                   }
 
                 });

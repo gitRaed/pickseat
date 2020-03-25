@@ -17,8 +17,10 @@
     "esm": "^3.2.25",
     "express": "^4.17.1",
     "express-session": "^1.17.0",
+    "geolocation-utils": "^1.2.2",
     "jsonwebtoken": "^8.5.1",
     "mssql": "^6.0.1",
+    "node-geocoder": "^3.26.0",
     "nodemailer": "^6.4.2"
   },
   "devDependencies": {

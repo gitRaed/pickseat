@@ -14,6 +14,10 @@ import {
     deleteTrajet
 } from '../dataAccessLayer/requete_map.mjs';
 
+import {
+    distance
+} from './distance.mjs';
+
 
 
 export async function codeRegisterMessage(email, message) {
@@ -81,20 +85,24 @@ export async function codeRechercherTrajet(adresse_depart, adresse_arrive, heure
 async function codeRechercherEscale(adresse_depart, adresse_arrive) {
 
     let tableau = [];
-    await rechercherEscale().then( (result) => {
+    const result = await rechercherEscale();
 
-        for(let i = 0, n = result.length; i < n; i++) {
+    for(let i = 0, n = result.length; i < n; i++) {
 
-            let escale = result[i].escale;
+        let trajet = result[i];
+        console.log('\nDépart : ' + trajet.adresse_depart + ', arrivé : ' + trajet.adresse_arrive + ', escale : ' +  trajet.escale);
+        let escale = result[i].escale;
+        let depart_chauffeur = result[i].adresse_depart;
+        let isDist = await distance(adresse_depart, depart_chauffeur);
 
-            if (escale === adresse_arrive){
-                tableau.push(result[i]);
-            }          
-        }
+        console.log('is dist : ' + isDist);
+        if (escale === adresse_arrive && isDist === true){
 
-    });
-
+            tableau.push(trajet);
+        }          
+    }
     return tableau;
+
 }
 
 export async function codeEnregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
