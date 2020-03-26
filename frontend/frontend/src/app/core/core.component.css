@@ -10,11 +10,14 @@
 .mapOptionsSetPoint,
 .mapOptionsGererPoint,
 .mapOptionsSearch,
+.mapCovoiturage,
 .mapRechercherTrajet,
 .mapOptionsProfil,
 .mapGestionProfil,
 .mapEnregistrerTrajet,
-.mapGestionTrajet {
+.mapGestionTrajet,
+.mapDeuxBoutons,
+.mapSonner {
     background-color: white;
     box-shadow: 0 0 2px black;
     border: none;
@@ -35,11 +38,14 @@
 .mapOptionsSetPoint:hover,
 .mapOptionsGererPoint:hover,
 .mapOptionsSearch:hover,
+.mapCovoiturage:hover,
 .mapRechercherTrajet:hover,
 .mapOptionsProfil:hover,
 .mapGestionProfil:hover,
 .mapEnregistrerTrajet:hover,
-.mapGestionTrajet:hover {
+.mapGestionTrajet:hover,
+.mapDeuxBoutons:hover ,
+.mapSonner:hover{
     background-color: #48dbfb;
     color: white;
 }
@@ -48,6 +54,7 @@
 .mapOptionsGererPoint,
 .mapOptionsSearch,
 .mapRechercherTrajet,
+.mapCovoiturage,
 .mapOptionsProfil,
 .mapGestionProfil,
 .mapEnregistrerTrajet,
@@ -70,29 +77,47 @@
     top: 38%;
 }
 
+.mapCovoiturage {
+    top: 45%;
+}
+
 .mapRechercherTrajet {
 
-    top: 45%;
+    top: 50%;
 }
 
 .mapEnregistrerTrajet {
 
-    top: 53%;
-}
-
-.mapGestionTrajet {
     top: 58%;
 }
 
+.mapGestionTrajet {
+    top: 63%;
+}
+
 .mapGestionProfil {
-    top: 65%;
+    top: 71%;
 }
 
 .mapOptionsProfil {
-    top: 70%;
+    top: 76%;
 }
 
+.mapDeuxBoutons,
+.mapSonner {
+    border-radius: 2px;
+    padding: 0.3%;
+    width: 30px;
+    top: 90px;
+}
 
+.mapDeuxBoutons {
+    right: 13%;
+}
+
+.mapSonner {
+    right: 18%;
+}
 
 /* Fenetre modal */
 

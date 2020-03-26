@@ -1,14 +1,33 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router } from '@angular/router';
-import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import {
+  Component,
+  OnInit,
+  OnDestroy
+} from '@angular/core';
+import {
+  Router
+} from '@angular/router';
+import {
+  NgbModal
+} from '@ng-bootstrap/ng-bootstrap';
 
-import { MapService } from '../map.service';
-import { DbService } from '../db.service';
-import { UserService } from '../user.service';
-import { AuthService } from '../auth.service';
+import {
+  MapService
+} from '../map.service';
+import {
+  DbService
+} from '../db.service';
+import {
+  UserService
+} from '../user.service';
+import {
+  AuthService
+} from '../auth.service';
 
 import * as L from 'leaflet';
-import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+import {
+  GeoSearchControl,
+  OpenStreetMapProvider
+} from 'leaflet-geosearch';
 import 'leaflet-control-geocoder';
 import 'leaflet-routing-machine';
 
@@ -18,25 +37,28 @@ import 'leaflet-routing-machine';
   templateUrl: './core.component.html',
   styleUrls: ['./core.component.css']
 })
-export class CoreComponent implements  OnInit, OnDestroy {
+export class CoreComponent implements OnInit, OnDestroy {
 
   constructor(private mapService: MapService,
               private db: DbService,
               private modalService: NgbModal,
               private user: UserService,
               private auth: AuthService,
-              private router: Router) { }
+              private router: Router) {}
 
   message = 'Merci d\'utiliser Pickseat !';
   private pointImportant = false;
   private itineraire = false;
   private routing = null;
+  private covoiturage = false;
+  private boutonStartEnd = false;
+  private boutonSonner = false;
   usersData = {};
   trajet = [];
   isTrajet = false;
   private coordonnees = {
-    lat : 0,
-    lng : 0
+    lat: 0,
+    lng: 0
   };
   map: L.Map;
 
@@ -44,22 +66,22 @@ export class CoreComponent implements  OnInit, OnDestroy {
   ngOnInit(): void {
 
     // trouver la localisation de l'utilisateur
-    navigator.geolocation.getCurrentPosition( (position) => {
+    navigator.geolocation.getCurrentPosition((position) => {
 
       // si l'user accepte de donner sa position
       this.mapService.setOptions(15, position.coords.latitude, position.coords.longitude);
       this.mapService.setLayersControl('Your position', position.coords.latitude, position.coords.longitude,
-                                      'This is where you are ' + this.auth.getData().nom + ' ' + this.auth.getData().prenom);
+        'This is where you are ' + this.auth.getData().nom + ' ' + this.auth.getData().prenom);
       this.mapService.setCoordone(position.coords.latitude, position.coords.longitude);
     }, () => {
       // s'il n'accepte pas
       console.log('Uh.. ok, i will still find your location even if it is not accurate');
       fetch('https://ipapi.co/json')
-      .then(res => res.json())
-      .then(result => {
-        this.mapService.setOptions(15, result.latitude, result.longitude);
-        this.mapService.setLayersControl('Your position', result.latitude, result.longitude, 'Approximation of your position');
-      });
+        .then(res => res.json())
+        .then(result => {
+          this.mapService.setOptions(15, result.latitude, result.longitude);
+          this.mapService.setLayersControl('Your position', result.latitude, result.longitude, 'Approximation of your position');
+        });
     });
 
     // afficher les points importants
@@ -83,29 +105,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
     return btn;
   }
 
-  onClickLocation(event) {
 
-    const container = L.DomUtil.create('div');
-    const startBtn = this.createButton('Start here?', container);
-    const endBtn = this.createButton('End here?', container);
-
-    L.popup()
-      .setContent(container)
-      .setLatLng(event.latlng)
-      .openOn(this.map);
-
-    L.DomEvent.on(startBtn, 'click', () => {
-
-      this.routing.spliceWaypoints(0, 1, event.latlng);
-      this.map.closePopup();
-    });
-
-    L.DomEvent.on(endBtn, 'click', () => {
-
-      this.routing.spliceWaypoints(this.routing.getWaypoints().length - 1, 1, event.latlng);
-      this.map.closePopup();
-    });
-  }
 
   //#region mapFunction
   onMapReady(map: L.Map) {
@@ -143,7 +143,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
       provider,
       searchLabel: 'Entrer une addresse',
       style: 'bar',
-      classNames : {
+      classNames: {
 
       }
     }).addTo(this.map);
@@ -176,7 +176,9 @@ export class CoreComponent implements  OnInit, OnDestroy {
   //#region options
   modal(content: any) {
 
-    this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+    this.modalService.open(content, {
+      ariaLabelledBy: 'modal-basic-title'
+    });
   }
   contactUs(event) {
 
@@ -191,25 +193,25 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
     // verifier si le token existe
     if (this.auth.getData().token !== null) {
-      this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe( (result) => {
+      this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe((result) => {
 
-          // verifier si l'email est disponible
-          // result = true si l'email existe
-          if (result.auth === true) {
+        // verifier si l'email est disponible
+        // result = true si l'email existe
+        if (result.auth === true) {
 
-            this.message = 'Message envoyé !';
-            this.db.sendMessage(data.email, data.message).subscribe((resSendMessage) => {
-              this.message = resSendMessage.message;
-            } );
+          this.message = 'Message envoyé !';
+          this.db.sendMessage(data.email, data.message).subscribe((resSendMessage) => {
+            this.message = resSendMessage.message;
+          });
         } else {
 
-            this.message = 'Email non existant';
+          this.message = 'Email non existant';
         }
       });
 
     } else {
 
-        this.message = 'Vous devez vous connectez ';
+      this.message = 'Vous devez vous connectez ';
     }
 
   }
@@ -240,30 +242,30 @@ export class CoreComponent implements  OnInit, OnDestroy {
       event.preventDefault();
       const target = event.target;
       const data = {
-        email : target.querySelector('#email_user_point_important').value,
+        email: target.querySelector('#email_user_point_important').value,
         message: target.querySelector('#message_user_point_important').value,
-        latitude : this.coordonnees.lat,
-        longitude : this.coordonnees.lng,
+        latitude: this.coordonnees.lat,
+        longitude: this.coordonnees.lng,
       };
 
       // verifier si le token existe
       if (this.auth.getData().token !== null) {
         // sil existe, verifier si lemail est disponible
-        this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe( (result) => {
+        this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe((result) => {
 
-            // result = true si email es disponible
-            if (result.auth === true) {
+          // result = true si email es disponible
+          if (result.auth === true) {
 
-              this.message = 'Point important enregistré !';
-              this.db.sendPointImportant(data.email, data.message, data.latitude, data.longitude).subscribe((resSendMessage) => {
-                this.message = resSendMessage.message;
-                this.mapService.getPointImportant();
-              });
-            } else {
+            this.message = 'Point important enregistré !';
+            this.db.sendPointImportant(data.email, data.message, data.latitude, data.longitude).subscribe((resSendMessage) => {
+              this.message = resSendMessage.message;
+              this.mapService.getPointImportant();
+            });
+          } else {
 
-              this.message = 'Email non existant';
-            }
-          });
+            this.message = 'Email non existant';
+          }
+        });
 
       } else {
 
@@ -276,7 +278,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
 
     this.router.navigate(['gerer-point-important']);
   }
-//#endregion
+  //#endregion
 
   //#region  itineraire
   getItineraire() {
@@ -298,6 +300,72 @@ export class CoreComponent implements  OnInit, OnDestroy {
     }
   }
 
+  onClickLocation(event) {
+
+    if (this.boutonStartEnd === true) {
+
+      const container = L.DomUtil.create('div');
+      const startBtn = this.createButton('Start here?', container);
+      const endBtn = this.createButton('End here?', container);
+
+      L.popup()
+      .setContent(container)
+      .setLatLng(event.latlng)
+      .openOn(this.map);
+
+      L.DomEvent.on(startBtn, 'click', () => {
+
+      this.routing.spliceWaypoints(0, 1, event.latlng);
+      this.map.closePopup();
+    });
+
+      L.DomEvent.on(endBtn, 'click', () => {
+
+      this.routing.spliceWaypoints(this.routing.getWaypoints().length - 1, 1, event.latlng);
+      this.map.closePopup();
+    });
+    }
+  }
+
+  onBoutonSonner(event) {
+
+    if (this.boutonSonner === true) {
+
+      console.log(this.coordonnees.lat, this.coordonnees.lng);
+    }
+  }
+
+  setBoutonStartEnd() {
+
+    this.boutonStartEnd = !this.boutonStartEnd;
+  }
+
+  getBoutonStartEnd() {
+
+    let status = 'Désactivé';
+
+    if (this.boutonStartEnd === true) {
+      status = 'Activé';
+    }
+
+    return status;
+  }
+
+  setBoutonSonner() {
+
+    this.boutonSonner = !this.boutonSonner;
+  }
+
+  getBoutonSonner() {
+
+    let status = 'Désactivé';
+
+    if (this.boutonSonner === true) {
+      status = 'Activé';
+    }
+
+    return status;
+  }
   //#endregion
 
   //#region profil
@@ -308,7 +376,7 @@ export class CoreComponent implements  OnInit, OnDestroy {
     const target = event.target;
     const data = {
       id: this.auth.getData().id,
-      nom : target.querySelector('#nom_user').value,
+      nom: target.querySelector('#nom_user').value,
       prenom: target.querySelector('#prenom_user').value,
       email: target.querySelector('#email_user').value,
       numero: target.querySelector('#numero_user').value,
@@ -318,11 +386,11 @@ export class CoreComponent implements  OnInit, OnDestroy {
     this.message = this.user.test(data, [], 'update');
 
     if (this.message === 'Utilisateur ' + data.nom + ' ' + data.prenom + ' modifié!') {
-          this.db.updateUser(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
-            console.log('Data Updated!');
-            this.auth.setData(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser, this.auth.getData().token);
-          });
-        }
+      this.db.updateUser(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
+        console.log('Data Updated!');
+        this.auth.setData(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser, this.auth.getData().token);
+      });
+    }
   }
 
 
@@ -356,37 +424,36 @@ export class CoreComponent implements  OnInit, OnDestroy {
       } else {
         data.escale = 'non';
       }
-    }
-    )();
+    })();
 
-     // verifier si le token existe
+    // verifier si le token existe
     if (this.auth.getData().token !== null) {
       // sil existe, verifier si lemail est disponible
       // Pour respecter la structure du back, un password doit etre envoyé
-      this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe( (result) => {
+      this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe((result) => {
 
-          // result = true si email es disponible
-          if (result.auth === true) {
+        // result = true si email es disponible
+        if (result.auth === true) {
 
-            this.db.enregistrerTrajet(data.nom,
-                                      data.prenom,
-                                      data.email,
-                                      data.numero,
-                                      data.adresse_depart,
-                                      data.adresse_arrive,
-                                      data.heure_trajet,
-                                      data.date_trajet,
-                                      data.options,
-                                      data.escale)
-                .subscribe( (Result) => {
+          this.db.enregistrerTrajet(data.nom,
+              data.prenom,
+              data.email,
+              data.numero,
+              data.adresse_depart,
+              data.adresse_arrive,
+              data.heure_trajet,
+              data.date_trajet,
+              data.options,
+              data.escale)
+            .subscribe((Result) => {
 
-                  this.message = Result.message;
-                });
-          } else {
+              this.message = Result.message;
+            });
+        } else {
 
-            this.message = 'Email non existant';
-          }
-        });
+          this.message = 'Email non existant';
+        }
+      });
 
     } else {
 
@@ -410,42 +477,74 @@ export class CoreComponent implements  OnInit, OnDestroy {
       adresse_depart: target.querySelector('#adresse_depart').value.toLowerCase(),
       adresse_arrive: target.querySelector('#adresse_arrive').value.toLowerCase(),
     };
-    this.message = 'Veuillez patientez...';
-     // verifier si le token existe
-    if (this.auth.getData().token !== null) {
-      // sil existe, verifier si lemail est disponible
-      // Pour respecter la structure du back, un password doit etre envoyé
-      this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe( (result) => {
+
+    if (this.getCovoiturage() === true) {
+      this.message = 'Veuillez patientez...';
+
+      // verifier si le token existe
+      if (this.auth.getData().token !== null) {
+        // sil existe, verifier si lemail est disponible
+        // Pour respecter la structure du back, un password doit etre envoyé
+        this.user.appelUnicite(data.email, 'somePassword', 'register').subscribe((result) => {
 
           // result = true si email es disponible
           if (result.auth === true) {
 
-            this.db.rechercherTrajet( data.email,
-                                      data.adresse_depart,
-                                      data.adresse_arrive)
-                .subscribe( (Result) => {
+            this.db.rechercherTrajet(data.email,
+                data.adresse_depart,
+                data.adresse_arrive)
+              .subscribe((Result) => {
 
-                  if (Result.message === 'Pas de trajet similaire avec ses données') {
-                    this.trajet.push({message : Result.message});
-                  } else {
-                    this.isTrajet = true;
-                    this.trajet = Result.message;
-                    this.message =  'Chauffeurs trouvés!';
-                  }
+                if (Result.message === 'Pas de trajet similaire avec ses données') {
+                  this.trajet.push({
+                    message: Result.message
+                  });
+                } else {
+                  this.isTrajet = true;
+                  this.trajet = Result.message;
+                  this.message = 'Chauffeurs trouvés!';
+                }
 
-                });
+              });
           } else {
 
             this.message = 'Email non existant';
           }
         });
 
-    } else {
+      } else {
 
-      this.message = 'Vous devez vous connectez ';
+        this.message = 'Vous devez vous connectez ';
+      }
+    } else {
+      this.message = 'Vous devez activer le covoiturage pour utiliser la recherche de trajet';
     }
   }
   //#endregion
+
+  //#region covoiturage
+  getCovoiturage() {
+    return this.covoiturage;
+  }
+
+  getCovoiturageStatus() {
+    let status = '';
+
+    if (this.covoiturage === true) {
+      status = 'Covoiturage activé';
+    } else {
+      status = 'Covoiturage désactivé';
+    }
+
+    return status;
+  }
+
+  setCovoiturage() {
+    this.covoiturage = !this.covoiturage;
+  }
+  //#endregion
+
+
 
   ngOnDestroy() {
 
