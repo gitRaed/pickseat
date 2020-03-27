@@ -91,20 +91,26 @@
 
     <div class="modal-footer">
 
-        <div >
-            La liste des trajets trouvées s'affichera ici, une liste vide s'affichera s'il n'y a aucun trajet  
+        <div>
+            Plus vous entrerez des détails sur vos adresses, plus la recherche sera détaillée. 
             <br>
+            Par exemple si une de vos addresses se situe à solibra, écrivez : <i>Société de Limonaderies et Brasseries d'Afrique (Solibra), Rue des Brasseurs, Arras, Zone 3, Treichville, Abidjan, 26, Côte d'Ivoire</i>
+            <br> <br>
+            La liste des trajets trouvées s'affichera ici, une liste vide s'affichera s'il n'y a aucun trajet  
+            <br> 
             
             <p class="error">
                 {{message}}
             </p>
-            <!--TODO: Au click, envoyer un message au chauffeur (module chat qui a été reporté-->
+            <!--TODO: Au click, envoyer un message au chauffeur (module chat qui a été reporté) -->
             <p class="trouverTrajet" *ngFor="let item of trajet">
                 Chauffeur : {{item.nom_chauffeur}} {{item.prenom_chauffeur}} <br>
                 Trajet : {{item.adresse_depart}} - {{item.adresse_arrive}} <br>
                     Le {{item.date_trajet | date: 'dd/MM/yyyy'}} à {{item.heure_trajet | date: 'hh:mm a'}} <br>
-                Escale: {{item.escale}} <br>
-                Numéro : {{item.numero_chauffeur}}
+                Escale : {{item.escale}} <br>
+                Numéro : {{item.numero_chauffeur}} <br>
+                <button class="boutonRoute bouton1" (click) = "afficherRoutes(item.coords_depart_user, item.coords_arrive_user)">Votre route</button>
+                <button class="boutonRoute bouton2" (click) = "afficherRoutes(item.coords_depart_chauffeur, item.coords_arrive_chauffeur)">Route du chauffeur</button>
             </p> <br> <br>
 
         </div>
@@ -148,6 +154,9 @@
 
         <p>
             Enregistrez soigneusement votre trajet, ces données seront utilisées par les autres voyageurs pour la recherche de covoiturage
+        </p>
+        <p>
+            Plus vous entrerez des détails pour vos adresses, plus détaillée sera la rechercher pour les autres utilisateurs
         </p>
 
     </div>

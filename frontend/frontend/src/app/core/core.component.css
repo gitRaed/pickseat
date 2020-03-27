@@ -329,3 +329,23 @@ form select:focus
     color: red;
     padding: 1%;
 }
+
+.boutonRoute {
+
+    background-color: white;
+	border: 1px solid #48dbfb;
+	border-radius: 5px;
+    color: #48dbfb;
+    margin: 1%;
+	padding: 2%;
+    text-align: center;
+	transition: all 0.5s;
+    
+}
+
+.boutonRoute:hover {
+    background-color: #48dbfb;
+    color: white;
+}
+
+

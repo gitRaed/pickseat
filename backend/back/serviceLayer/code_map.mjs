@@ -15,7 +15,8 @@ import {
 } from '../dataAccessLayer/requete_map.mjs';
 
 import {
-    distance
+    distance,
+    addressToCoordinate
 } from './distance.mjs';
 
 
@@ -68,39 +69,63 @@ export async function codeGetTrajet(email) {
     return getTrajet(email);
 }
 
-export async function codeRechercherTrajet(adresse_depart, adresse_arrive, heure_trajet, date_trajet) {
+export async function codeRechercherTrajet(adresse_depart_user, adresse_arrive_user) {
 
-    return rechercherTrajet1(adresse_depart, adresse_arrive).then( (result) => {
+    // * result = trajet chauffeur
+    const result = await rechercherTrajet1(adresse_depart_user, adresse_arrive_user);
 
         if(result.length === 0) {
 
-            return codeRechercherEscale(adresse_depart, adresse_arrive);
+            // * s'il n'y a pas de trajet dans résult, chercher des trajets qui ont pour escale adresse_arrive_user
+            // * s'occupe aussi d'ajouter les coordonnées des adresses du voyageur et du chauffeur au résultat
+            return codeRechercherEscale(adresse_depart_user, adresse_arrive_user);
+
         } else {
+    
+            // * ajouter les coordonnées des adresses du voyageur et du chauffeur au résultat
+            for(let i = 0, n = result.length; i < n; i++) {
+                result[i].coords_depart_user = await addressToCoordinate(adresse_depart_user);
+                result[i].coords_arrive_user =  await addressToCoordinate(adresse_arrive_user);
+                result[i].coords_depart_chauffeur = await addressToCoordinate(result[i].adresse_depart);
+                result[i].coords_arrive_chauffeur = await addressToCoordinate(result[i].adresse_arrive);
+            }
 
             return result;
         }
-    });
+
 }
 
-async function codeRechercherEscale(adresse_depart, adresse_arrive) {
+
+async function codeRechercherEscale(adresse_depart_user, adresse_arrive_user) {
 
     let tableau = [];
-    const result = await rechercherEscale();
+
+    const result = await rechercherEscale();    // * result = trajet du chauffeur
 
     for(let i = 0, n = result.length; i < n; i++) {
 
         let trajet = result[i];
-        console.log('\nDépart : ' + trajet.adresse_depart + ', arrivé : ' + trajet.adresse_arrive + ', escale : ' +  trajet.escale);
-        let escale = result[i].escale;
-        let depart_chauffeur = result[i].adresse_depart;
-        let isDist = await distance(adresse_depart, depart_chauffeur);
+        let escale = trajet.escale;
+        let depart_chauffeur = trajet.adresse_depart;
+        let arrive_chauffeur = escale; 
+        // * arrive = escale car on ne veut afficher au front que le départ et l'escale, l'arrive du chauffeur ne regarde pas le voyageur
+        let isDist = await distance(adresse_depart_user, adresse_arrive_user, depart_chauffeur, arrive_chauffeur);
 
-        console.log('is dist : ' + isDist);
-        if (escale === adresse_arrive && isDist === true){
+        console.log('\nDépart : ' + trajet.adresse_depart + ', arrivé : ' + trajet.adresse_arrive + ', escale : ' +  trajet.escale);
+        console.log('is dist : ' + isDist.bool);
+        
+        // * ajoute les coordonnées du voyageur et chauffeur si la condition est respectée
+        if (escale === adresse_arrive_user && isDist.bool === true){
+
+            trajet.coords_depart_user = isDist.depart_user;
+            trajet.coords_arrive_user = isDist.arrive_user;
+            trajet.coords_depart_chauffeur = isDist.depart_chauffeur;
+            trajet.coords_arrive_chauffeur = isDist.arrive_chauffeur;
 
             tableau.push(trajet);
         }          
     }
+
     return tableau;
 
 }

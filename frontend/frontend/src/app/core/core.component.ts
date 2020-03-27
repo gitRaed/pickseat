@@ -329,13 +329,6 @@ export class CoreComponent implements OnInit, OnDestroy {
     }
   }
 
-  onBoutonSonner(event) {
-
-    if (this.boutonSonner === true) {
-
-      console.log(this.coordonnees.lat, this.coordonnees.lng);
-    }
-  }
 
   setBoutonStartEnd() {
 
@@ -353,6 +346,14 @@ export class CoreComponent implements OnInit, OnDestroy {
     return status;
   }
 
+  onBoutonSonner(event) {
+
+    if (this.boutonSonner === true) {
+
+      console.log(this.coordonnees.lat, this.coordonnees.lng);
+    }
+  }
+
   setBoutonSonner() {
 
     this.boutonSonner = !this.boutonSonner;
@@ -368,6 +369,21 @@ export class CoreComponent implements OnInit, OnDestroy {
 
     return status;
   }
+
+  afficherRoutes(depart, arrive) {
+
+    this.itineraire = true;
+    if (this.routing) {
+      this.removeItineraire();
+    }
+
+    this.findItineraire();
+    // this.route(departUser, arriveUser);
+    this.routing.spliceWaypoints(0, 1, depart);
+    this.routing.spliceWaypoints(this.routing.getWaypoints().length - 1, 1, arrive);
+  }
+
+
   //#endregion
 
   //#region profil
