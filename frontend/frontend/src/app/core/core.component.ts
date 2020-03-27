@@ -152,14 +152,16 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   findItineraire() {
 
-    // marche malgré l'erreur
-    // TODO: trouver pourquoi il y'a une erreur ici
+    // *marche malgré les erreurs
+    // TODO: trouver pourquoi il y'a 2 erreurs ici
     this.routing = L.Routing.control({
       geocoder: L.Control.Geocoder.nominatim(),
+      router: L.Routing.mapbox('pk.eyJ1Ijoib3JmZXIiLCJhIjoiY2s4OXk3NngwMGF3ZTNpbXBhaTM1NTBhYiJ9.HzQ7as1fZfYpzZSLRFvY7Q'),
       lineOptions: {
         styles: [{
-          color: '#48dbfb',
-          weight: 7
+          color: '#00a8ff',
+          opacity: 1,
+          weight: 5,
         }]
       },
     }).addTo(this.map);
@@ -280,7 +282,7 @@ export class CoreComponent implements OnInit, OnDestroy {
   }
   //#endregion
 
-  //#region  itineraire
+  //#region itineraire
   getItineraire() {
 
     return this.itineraire;
