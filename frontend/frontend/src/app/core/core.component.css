@@ -1,6 +1,6 @@
 #map {
     bottom: 30px;
-    height: 87%;
+    height: 100%;
     margin: 0;
     width: 100%;
 }
@@ -30,7 +30,7 @@
     border-radius: 10px;
     padding: 0.5%;
     right: 10px;
-    top: 88%;
+    top: 100%;
 }
 
 

@@ -1,36 +1,17 @@
-import {
-  Component,
-  OnInit,
-  OnDestroy
-} from '@angular/core';
-import {
-  Router
-} from '@angular/router';
-import {
-  NgbModal
-} from '@ng-bootstrap/ng-bootstrap';
-
-import {
-  MapService
-} from '../map.service';
-import {
-  DbService
-} from '../db.service';
-import {
-  UserService
-} from '../user.service';
-import {
-  AuthService
-} from '../auth.service';
-
-import * as L from 'leaflet';
-import {
-  GeoSearchControl,
-  OpenStreetMapProvider
-} from 'leaflet-geosearch';
 import 'leaflet-control-geocoder';
 import 'leaflet-routing-machine';
 
+import * as L from 'leaflet';
+import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
+
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+
+import { AuthService } from '../auth.service';
+import { DbService } from '../db.service';
+import { MapService } from '../map.service';
+import { UserService } from '../user.service';
 
 @Component({
   selector: 'app-core',
@@ -65,29 +46,17 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
 
-    // trouver la localisation de l'utilisateur
-    navigator.geolocation.getCurrentPosition((position) => {
+    this.locateUser(true);
 
-      // si l'user accepte de donner sa position
-      this.mapService.setOptions(15, position.coords.latitude, position.coords.longitude);
-      this.mapService.setLayersControl('Your position', position.coords.latitude, position.coords.longitude,
-        'This is where you are ' + this.auth.getData().nom + ' ' + this.auth.getData().prenom);
-      this.mapService.setCoordone(position.coords.latitude, position.coords.longitude);
-    }, () => {
-      // s'il n'accepte pas
-      console.log('Uh.. ok, i will still find your location even if it is not accurate');
-      fetch('https://ipapi.co/json')
-        .then(res => res.json())
-        .then(result => {
-          this.mapService.setOptions(15, result.latitude, result.longitude);
-          this.mapService.setLayersControl('Your position', result.latitude, result.longitude, 'Approximation of your position');
-        });
-    });
+    // *pour récupérer la position de l'utilisateur toutes les 10 secondes
+    setInterval(() => {
+      this.locateUser(false);
+    }, 10000);
 
-    // afficher les points importants
+    // *afficher les points importants
     this.mapService.getPointImportant();
 
-    // récupérer les données de l'utilisateur
+    // *récupérer les données de l'utilisateur
     this.usersData = this.auth.getData();
     console.log(this.usersData);
 
@@ -103,6 +72,34 @@ export class CoreComponent implements OnInit, OnDestroy {
     btn.style.boxShadow = ' 0 0 2px #222f3e';
     btn.style.color = '#222f3e';
     return btn;
+  }
+
+  locateUser(bol) {
+
+     // trouver la localisation de l'utilisateur
+    navigator.geolocation.getCurrentPosition((position) => {
+
+      // si l'user accepte de donner sa position
+      if (bol === true ) {
+        this.mapService.setOptions(15, position.coords.latitude, position.coords.longitude);
+      }
+      this.mapService.setLayersControl('Your position', position.coords.latitude, position.coords.longitude,
+          'This is where you are ' + this.auth.getData().nom + ' ' + this.auth.getData().prenom);
+      this.mapService.setCoordone(position.coords.latitude, position.coords.longitude);
+    }, () => {
+      // s'il n'accepte pas
+      console.log('Uh.. ok, i will still find your location even if it is not accurate');
+      fetch('https://ipapi.co/json')
+        .then(res => res.json())
+        .then(result => {
+
+          if (bol === true) {
+            this.mapService.setOptions(15, result.latitude, result.longitude);
+          }
+
+          this.mapService.setLayersControl('Your position', result.latitude, result.longitude, 'Approximation of your position');
+        });
+    });
   }
 
 
@@ -226,8 +223,18 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   //#region pointImportant
 
-  getPointImportant() {
+  getPointImportantStatus() {
 
+    let status = 'Désactivé';
+
+    if (this.pointImportant === true) {
+      status = 'Activé';
+    }
+
+    return status;
+  }
+
+  getPointImportant() {
     return this.pointImportant;
   }
 
@@ -248,6 +255,7 @@ export class CoreComponent implements OnInit, OnDestroy {
         message: target.querySelector('#message_user_point_important').value,
         latitude: this.coordonnees.lat,
         longitude: this.coordonnees.lng,
+        sonner : target.querySelector('#sonner').value
       };
 
       // verifier si le token existe
@@ -259,7 +267,7 @@ export class CoreComponent implements OnInit, OnDestroy {
           if (result.auth === true) {
 
             this.message = 'Point important enregistré !';
-            this.db.sendPointImportant(data.email, data.message, data.latitude, data.longitude).subscribe((resSendMessage) => {
+            this.db.sendPointImportant(data.email, data.message, data.latitude, data.longitude, data.sonner).subscribe((resSendMessage) => {
               this.message = resSendMessage.message;
               this.mapService.getPointImportant();
             });

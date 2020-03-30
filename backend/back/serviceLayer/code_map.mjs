@@ -39,7 +39,8 @@ export async function codeGetPointImportant(email) {
                 id_points : result[i].id_points,
                 message : result[i].message,
                 latitude : result[i].latitude,
-                longitude : result[i].longitude 
+                longitude : result[i].longitude,
+                sonner : result[i].sonner 
             });
         }
 
@@ -47,14 +48,14 @@ export async function codeGetPointImportant(email) {
     });
 }
 
-export async function codePointImportant(email, message, latitude, longitude) {
+export async function codePointImportant(email, message, latitude, longitude, sonner) {
 
-    return registerPointImportant(email, message, latitude, longitude);
+    return registerPointImportant(email, message, latitude, longitude, sonner);
 }
 
-export async function codeUpdatePointImportant(id, message) {
+export async function codeUpdatePointImportant(id, message, sonner) {
 
-    return updatePointImportant(id, message);
+    return updatePointImportant(id, message, sonner);
 }
 
 export async function codeDeletePointImportant(id) {

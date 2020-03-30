@@ -34,6 +34,10 @@ export class MapService {
 
 
   //#region this.coordonne
+  getCoordonne() {
+    return this.coordone;
+  }
+
   setCoordone(latitude, longitude) {
     this.coordone.latitude = latitude;
     this.coordone.longitude = longitude;
@@ -52,6 +56,7 @@ export class MapService {
 
  //#endregion
 
+ // * pour l'affichage des points importants
 //#region layersControl
   getLayersControl() {
     return this.layersControl;
@@ -63,6 +68,7 @@ export class MapService {
 
 //#endregion
 
+// * pour la gestion des points importants
 //#region layer
   getLayer() {
     return this.layer;

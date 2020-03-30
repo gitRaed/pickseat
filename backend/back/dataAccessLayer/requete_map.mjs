@@ -44,7 +44,7 @@ export async function registerMessage(email, message) {
     }
 }
 
-export async function registerPointImportant(email, message, latitude, longitude) {
+export async function registerPointImportant(email, message, latitude, longitude, sonner) {
 
     try {
         const pool = await new sql.ConnectionPool(config).connect();
@@ -53,7 +53,8 @@ export async function registerPointImportant(email, message, latitude, longitude
             .input('message', message)
             .input('latitude', latitude)
             .input('longitude', longitude)
-            .query('INSERT INTO pointImportant VALUES (@email, @message, @latitude, @longitude)');
+            .input('sonner', sonner)
+            .query('INSERT INTO pointImportant VALUES (@email, @message, @latitude, @longitude, @sonner)');
             return 'Point important enregistré!';
     } catch (error) {
         console.log('Register point important error : ' + error);
@@ -61,14 +62,15 @@ export async function registerPointImportant(email, message, latitude, longitude
     }
 }
 
-export async function updatePointImportant(id, message) {
+export async function updatePointImportant(id, message, sonner) {
 
     try {
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
                 .input('id', id)
                 .input('message', message)
-                .query('UPDATE pointImportant SET message=@message WHERE id_points=@id');
+                .input('sonner', sonner)
+                .query('UPDATE pointImportant SET message=@message, sonner=@sonner WHERE id_points=@id');
         return 'Point modifié!';
     } catch (error) {
         console.log("update point important error : " + error);
@@ -97,7 +99,7 @@ export async function getTrajet(email) {
         const pool = await new sql.ConnectionPool(config).connect();
         const result = await pool.request()
                         .input('email', email)
-                        .query('SELECT * FROM trajet WHERE email_chauffeur=@email');
+                        .query('SELECT * FROM trajet WHERE email_chauffeur=@email ORDER BY date_trajet');
         return result.recordset;
     } catch (error) {
         console.log('Requête getTrajet error : ' + error);

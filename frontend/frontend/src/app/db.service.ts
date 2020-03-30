@@ -137,7 +137,7 @@ export class DbService {
     }, options);
   }
 
-  sendPointImportant(email: string, message: string, latitude: number, longitude: number) {
+  sendPointImportant(email: string, message: string, latitude: number, longitude: number, sonner: string) {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -153,11 +153,12 @@ export class DbService {
       email,
       message,
       latitude,
-      longitude
+      longitude,
+      sonner
     }, options);
   }
 
-  updatePointImportant(id, email, message: string) {
+  updatePointImportant(id, email, message: string, sonner: string) {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -172,7 +173,8 @@ export class DbService {
     return this.http.post< any > ('http://localhost:9500/map/updatePoint', {
       id,
       email,
-      message
+      message,
+      sonner
     }, options);
   }
 

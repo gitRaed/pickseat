@@ -45,8 +45,9 @@ export class GererPointImportantComponent implements OnInit {
     const id = target.querySelector('#id_user').value;
     const email = target.querySelector('#email_user').value;
     const message = target.querySelector('#message_user').value;
+    const sonner = target.querySelector('#sonner').value;
 
-    this.db.updatePointImportant(id, email, message).subscribe( (result) => {
+    this.db.updatePointImportant(id, email, message, sonner).subscribe( (result) => {
       this.message = result.message;
       this.getLayer();
       this.mapService.getPointImportant();

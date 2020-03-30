@@ -63,6 +63,11 @@
         <form class="form" (submit) = "enregistrerPointImportant($event)">
             <input required type="email" name="email" id="email_user_point_important" placeholder="Votre email" pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
             <input required type="textarea" name="message" id="message_user_point_important" placeholder="Libellé du point">
+            <select name="sonner" id="sonner">
+                <option value="" disabled selected>Faire vibrer votre téléphone à ce point?</option>
+                <option value="oui">Oui</option>
+                <option value="non">Non</option>
+            </select>
             <input type="submit" value="Envoyer">
         </form>
         <p class="error">{{message}}</p>
@@ -203,6 +208,7 @@
 
 <ng-template #tooltipSetPoint>
     Enregistrer point important <b>Attention!</b> Tous points que vous allez clicker sur la map ouvrira un formulaire! Rappuyer pour désactiver
+    <br>Status : <b>{{getPointImportantStatus()}}</b>
 </ng-template>
 
 <ng-template #tooltipGererPointImportant>

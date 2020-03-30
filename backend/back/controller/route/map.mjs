@@ -136,6 +136,7 @@ route.post("/pointImportant", async (req, res) => {
     const message = req.body.message;
     const latitude = req.body.latitude;
     const longitude = req.body.longitude;
+    const sonner = req.body.sonner;
 
     try {
 
@@ -153,7 +154,7 @@ route.post("/pointImportant", async (req, res) => {
 
                 if (result.auth === true) {
                     // enregister dans la bdd et envoyer le résultat
-                    codePointImportant(email, message, latitude, longitude).then((result) => {
+                    codePointImportant(email, message, latitude, longitude, sonner).then((result) => {
                         res.send({
                             message: result
                         });
@@ -188,6 +189,7 @@ route.post("/updatePoint", async (req, res) => {
     const id = req.body.id;
     const email = req.body.email;
     const message = req.body.message;
+    const sonner = req.body.sonner;
 
 
     try {
@@ -204,7 +206,7 @@ route.post("/updatePoint", async (req, res) => {
 
             if (result.auth === true) {
                 // enregister dans la bdd et envoyer le résultat
-                codeUpdatePointImportant(id, message).then((result) => {
+                codeUpdatePointImportant(id, message, sonner).then((result) => {
                     res.send({
                         message: result
                     });
