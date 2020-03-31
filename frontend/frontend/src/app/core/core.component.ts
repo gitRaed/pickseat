@@ -51,6 +51,7 @@ export class CoreComponent implements OnInit, OnDestroy {
     // *pour récupérer la position de l'utilisateur toutes les 10 secondes
     setInterval(() => {
       this.locateUser(false);
+      this.onBoutonSonner();
     }, 10000);
 
     // *afficher les points importants
@@ -354,11 +355,25 @@ export class CoreComponent implements OnInit, OnDestroy {
     return status;
   }
 
-  onBoutonSonner(event) {
+  onBoutonSonner() {
 
     if (this.boutonSonner === true) {
 
-      console.log(this.coordonnees.lat, this.coordonnees.lng);
+      const coords = {
+        latitude : this.mapService.getCoordonne().latitude,
+        longitude : this.mapService.getCoordonne().longitude
+      };
+
+      this.db.alarme(this.auth.getData().email, 5.278210, -3.977520).subscribe((result) => {
+        console.log('Result : ' + result.isDist);
+        if (result.isDist === true) {
+          console.log('Faire sonner');
+          // *Vibre coomme l'intro de super mario
+          navigator.vibrate([125, 75, 125, 275, 200, 275, 125, 75, 125, 275, 200, 600, 200, 600]);
+          window.alert('Vous êtes à proximité du point ' + result.libelle);
+        }
+
+      });
     }
   }
 

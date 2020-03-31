@@ -12,6 +12,24 @@ var config = {
     },
 };
 
+// * enregitre le message de contactUs du front
+export async function registerMessage(email, message) {
+
+    try {
+        const pool = await new sql.ConnectionPool(config).connect();
+        await pool.request()
+            .input('email', email)
+            .input('message', message)
+            .query('INSERT INTO contactUs VALUES (@email, @message)');
+            return 'Message enregistrée!';
+    } catch (error) {
+        console.log('Register Message, erreur : ' + error);
+        return 'Register message erreur,' + error;
+    }
+}
+
+
+//#region point important 
 
 export async function getPointImportant(email) {
 
@@ -25,22 +43,6 @@ export async function getPointImportant(email) {
     } catch (error) {
         console.log('Requete_map, get point important error : ' + error);
         return error;
-    }
-}
-
-
-export async function registerMessage(email, message) {
-
-    try {
-        const pool = await new sql.ConnectionPool(config).connect();
-        await pool.request()
-            .input('email', email)
-            .input('message', message)
-            .query('INSERT INTO contactUs VALUES (@email, @message)');
-            return 'Message enregistrée!';
-    } catch (error) {
-        console.log('Register Message, erreur : ' + error);
-        return 'Register message erreur,' + error;
     }
 }
 
@@ -92,6 +94,28 @@ export async function deletePointImportant(id) {
     }
 }
 
+export async function alarme(email) {
+
+    try {
+        
+        const sonner = 'oui';
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                        .input('email', email)
+                        .input('sonner', sonner)
+                        .query('SELECT message, latitude, longitude FROM pointImportant WHERE email_user=@email and sonner=@sonner');
+        return result.recordset;
+
+    } catch (error) {
+        console.log('Requête alarme error : ' + error);
+        return error;
+    }
+}
+
+//#endregion
+
+//#region trajet
+
 export async function getTrajet(email) {
 
     try {
@@ -138,6 +162,7 @@ export async function rechercherEscale() {
         return error;
     }
 }
+
 export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, numero, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
     
     try {
@@ -197,3 +222,4 @@ export async function deleteTrajet(id) {
         return error;
     }
 }
+//#endregion

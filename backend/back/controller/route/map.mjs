@@ -13,6 +13,7 @@ import {
     codePointImportant, 
     codeUpdatePointImportant,
     codeDeletePointImportant,
+    codeAlarme,
     codeGetTrajet,
     codeRechercherTrajet,
     codeEnregistrerTrajet,
@@ -80,6 +81,7 @@ route.post("/contactUs", async (req, res) => {
         res.status(500);
     }
 });
+
 
 //#region point important
 
@@ -258,8 +260,59 @@ route.post("/deletePoint", async (req, res) => {
     }
 
 });
-//#endregion
 
+route.post("/alarme", async (req, res) => {
+    
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, latitude, longitude} = req.body;
+
+    try {
+        
+        res.status(200);
+
+        // verifier si token es envoyé en header
+        const verifToken = isAuth(authorization);
+        if (verifToken.message !== '') {
+            res.send({
+                message: verifToken.message
+            });
+        } else {
+
+            // verifier si l'email est disponible dans la bdd
+            authCodeEmail(email).then((result) => {
+
+                if (result.auth === true) {
+
+                    codeAlarme(email, parseFloat(latitude), parseFloat(longitude)).then( (result) => {
+                            res.send({
+                                isDist : result.isDist,
+                                libelle : result.libelle
+                            });
+                        });
+
+                } else {
+
+                    res.status(400);
+                    res.send({
+                        message: 'L\'utilisateur n\'existe pas',
+                        reqBody: req.body
+                    });
+                }
+
+            });
+        }
+
+
+    } catch (error) {
+        res.status(500);
+        res.send({
+            message: error
+        });
+        console.log('Alarme error : ' + error);
+    }
+});
+
+//#endregion
 
 
 //#region trajet

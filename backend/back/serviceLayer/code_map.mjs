@@ -6,6 +6,7 @@ import {
     registerPointImportant,
     updatePointImportant,
     deletePointImportant,
+    alarme,
     getTrajet,
     rechercherTrajet1,
     rechercherEscale,
@@ -16,17 +17,19 @@ import {
 
 import {
     distance,
+    distanceForAlarm,
     addressToCoordinate
 } from './distance.mjs';
 
 
-
+// * enregistrer message de contactUs du front
 export async function codeRegisterMessage(email, message) {
 
     return registerMessage(email, message);
 }
 
 //#region pointImportant
+
 export async function codeGetPointImportant(email) {
 
     return getPointImportant(email).then( (result) => {
@@ -48,27 +51,69 @@ export async function codeGetPointImportant(email) {
     });
 }
 
+
 export async function codePointImportant(email, message, latitude, longitude, sonner) {
 
     return registerPointImportant(email, message, latitude, longitude, sonner);
 }
+
 
 export async function codeUpdatePointImportant(id, message, sonner) {
 
     return updatePointImportant(id, message, sonner);
 }
 
+
 export async function codeDeletePointImportant(id) {
 
     return deletePointImportant(id);
 }
+
+
+export async function codeAlarme(email, latitude_user, longitude_user) {
+
+    const resultatAlarme = await alarme(email);
+    let bool = false;
+    let libelle = '';
+
+    const coords_user = {
+        lat : latitude_user,
+        lng : longitude_user
+    };
+
+    for (let i = 0, n = resultatAlarme.length; i < n; i++) {
+
+        let coords_point = {
+            lat : resultatAlarme[i].latitude,
+            lng: resultatAlarme[i].longitude
+        };
+
+        let isDist = await distanceForAlarm(coords_user, coords_point);
+
+        if (isDist === true) {
+            bool = true;
+            libelle = resultatAlarme[i].message;
+            console.log('Faire sonner le téléphone');
+        }
+
+    }
+
+    return {
+        isDist : bool,
+        libelle : libelle
+    };
+}
 //#endregion
 
+
+
 //#region trajet
+
 export async function codeGetTrajet(email) {
 
     return getTrajet(email);
 }
+
 
 export async function codeRechercherTrajet(adresse_depart_user, adresse_arrive_user) {
 
@@ -131,18 +176,23 @@ async function codeRechercherEscale(adresse_depart_user, adresse_arrive_user) {
 
 }
 
+
 export async function codeEnregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
 
     return enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale);
 }
+
 
 export async function codeUpdateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
 
     return updateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale);
 }
 
+
 export async function codeDeleteTrajet(id) {
 
     return deleteTrajet(id);
 }
 //#endregion
+
+

@@ -7,7 +7,6 @@
     [leafletLayersControl] = "mapLayersControl()"
     (leafletClick) = "recupCoordonnees($event)"
     (leafletClick) = "!getItineraire() || onClickLocation($event)"
-    (leafletClick) = "!getItineraire() || onBoutonSonner($event)"
     (click) = "!getPointImportant() || modal(enregistrerPoint)"
     >
 
@@ -249,8 +248,8 @@
 </ng-template>
 
 <ng-template #tooltipBoutonSonner>
-    Activer ou désactiver l'enregistrement de points d'alarmes. <br>
-    Quand vous serez à proximité d'un des points, votre téléphone vibrera <br>
+    Activer ou désactiver le bouton d'alarme. <br>
+    Quand vous serez à proximité d'un des points, toutes les 10 secondes ,votre téléphone vibrera et un message d'alerte apparaîtra <br>
     Status : <b>{{getBoutonSonner()}}</b>
 </ng-template>
 

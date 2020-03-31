@@ -68,3 +68,21 @@ async function distanceBetweenAdress(coords_user, coords_chauffeur) {
         console.log('distance between adress error : ' + error);
     }
 }
+
+export async function distanceForAlarm(coords_user, coords_point) {
+
+    try {
+        
+        let distance = geo.headingDistanceTo(coords_user, coords_point);
+        let isDistanceGood = false;
+
+        if (distance.distance <= 100) {
+            isDistanceGood = true;
+        }
+
+        return isDistanceGood;
+
+    } catch (error) {
+        console.log('Distance for alarm error : ' + error);
+    }
+}

@@ -195,6 +195,25 @@ export class DbService {
     }, options);
   }
 
+  alarme(email, latitude, longitude) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const options = {
+      headers,
+      observable : 'response',
+  };
+
+    return this.http.post<any>('http://localhost:9500/map/alarme', {
+      email,
+      latitude,
+      longitude
+    }, options);
+  }
+
   //#endregion
 
   //#region trajet
