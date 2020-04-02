@@ -51,8 +51,8 @@
                         <input type="password" name="id_user" id="id_user" value="{{item.id_points}}" disabled style="display: none;">
                         <input required type="email" name="email" id="email_user" value="{{email}}" disabled style="background-color: gray;color: whitesmoke;">
                         <input type="text" name="message" id="message_user" placeholder="Nouveau libelle" value="{{item.message}}">
-                        <select name="sonner" id="sonner">
-                            <option value="" disabled selected>Actuellement {{item.sonner}}</option>
+                        <select required name="sonner" id="sonner">
+                            <option value="" disabled selected >Actuellement {{item.sonner}}</option>
                             <option value="oui">Oui</option>
                             <option value="non">Non</option>
                         </select>

@@ -59,7 +59,8 @@ form {
 
 form input[type="email"],
 form input[type="textarea"],
-form input[type="text"]
+form input[type="text"],
+form select
 {
 	-webkit-transition: all 0.30s ease-in-out;
 	-moz-transition: all 0.30s ease-in-out;
@@ -81,7 +82,8 @@ form input[type="text"]
 
 form input[type="email"]:focus,
 form input[type="textarea"]:focus,
-form input[type="text"]:focus
+form input[type="text"]:focus,
+form select:focus
 {
     border: 1px solid #48dbfb;
     box-shadow: 0 0 5px #48dbfb;
