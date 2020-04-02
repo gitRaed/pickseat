@@ -101,6 +101,8 @@ export class DbService {
 
   //#endregion
 
+
+  // *Pour le contactUs
   sendMessage(email: string, message: string) {
 
     const headers = new HttpHeaders({
@@ -216,6 +218,7 @@ export class DbService {
 
   //#endregion
 
+
   //#region trajet
 
   getTrajet() {
@@ -234,7 +237,18 @@ export class DbService {
       email: this.auth.getData().email
     }, optionsHeader);
   }
-  enregistrerTrajet(nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale) {
+  enregistrerTrajet(nom,
+                    prenom,
+                    email,
+                    numero,
+                    adresseDepart,
+                    adresseArrive,
+                    heureTrajet,
+                    dateTrajet,
+                    options,
+                    escale,
+                    tarifTotal,
+                    tarifEscale) {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -256,11 +270,22 @@ export class DbService {
       heureTrajet,
       dateTrajet,
       options,
-      escale
+      escale,
+      tarifTotal,
+      tarifEscale
     }, optionsHeader);
   }
 
-  modifierTrajet(id, email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale) {
+  modifierTrajet(id,
+                 email,
+                 adresseDepart,
+                 adresseArrive,
+                 heureTrajet,
+                 dateTrajet,
+                 options,
+                 escale,
+                 tarifTotal,
+                 tarifEscale) {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -280,7 +305,9 @@ export class DbService {
       heureTrajet,
       dateTrajet,
       options,
-      escale
+      escale,
+      tarifTotal,
+      tarifEscale
     }, optionsHeader);
   }
 

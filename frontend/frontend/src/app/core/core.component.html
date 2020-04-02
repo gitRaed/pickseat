@@ -86,8 +86,8 @@
     <div class="modal-body">
 
         <form class="form" (submit) = "findTrajet($event)">
-            <input required type="text" name="adresse_depart" id="adresse_depart" placeholder="Adresse de départ" title="Minimum 3 lettres, sans espace" pattern="^[a-zA-Z0-9]{3,}$">
-            <input required type="text" name="adresse_arrive" id="adresse_arrive" placeholder="Adresse d'arrivée" title="Minimum 3 lettres, sans espace" pattern="^[a-zA-Z0-9]{3,}$">
+            <input required type="text" name="adresse_depart" id="adresse_depart" placeholder="Adresse de départ">
+            <input required type="text" name="adresse_arrive" id="adresse_arrive" placeholder="Adresse d'arrivée">
             <input type="submit" value="Valider"> 
         </form>
 
@@ -99,6 +99,9 @@
             Plus vous entrerez des détails sur vos adresses, plus la recherche sera détaillée. 
             <br>
             Par exemple si une de vos addresses se situe à solibra, écrivez : <i>Société de Limonaderies et Brasseries d'Afrique (Solibra), Rue des Brasseurs, Arras, Zone 3, Treichville, Abidjan, 26, Côte d'Ivoire</i>
+            <br> <br>
+
+            <b>Ne pas mettre de ponctuation !!</b> 
             <br> <br>
             La liste des trajets trouvées s'affichera ici, une liste vide s'affichera s'il n'y a aucun trajet  
             <br> 
@@ -113,6 +116,7 @@
                     Le {{item.date_trajet | date: 'dd/MM/yyyy'}} à {{item.heure_trajet | date: 'hh:mm a'}} <br>
                 Escale : {{item.escale}} <br>
                 Numéro : {{item.numero_chauffeur}} <br>
+                Tarif : {{item.tarif}} <br>
                 <button class="boutonRoute bouton1" (click) = "afficherRoutes(item.coords_depart_user, item.coords_arrive_user)">Votre route</button>
                 <button class="boutonRoute bouton2" (click) = "afficherRoutes(item.coords_depart_chauffeur, item.coords_arrive_chauffeur)">Route du chauffeur</button>
             </p> <br> <br>
@@ -135,8 +139,8 @@
     <div class="modal-body">
 
         <form class="form" (submit) = "registerTrajet($event)">
-            <input required type="text" name="adresse_depart" id="adresse_depart" placeholder="Adresse de départ" title="Minimum 3 lettres/chiffres" pattern="[a-zA-Z0-9\s]{3,}">
-            <input required type="text" name="adresse_arrive" id="adresse_arrive" placeholder="Adresse d'arrivée" title="Minimum 3 lettres/chiffres" pattern="[a-zA-Z0-9\s]{3,}">
+            <input required type="text" name="adresse_depart" id="adresse_depart" placeholder="Adresse de départ" title="Minimum 3 lettres/chiffres" pattern="[a-zA-Z0-9\s,]{3,}">
+            <input required type="text" name="adresse_arrive" id="adresse_arrive" placeholder="Adresse d'arrivée" title="Minimum 3 lettres/chiffres" pattern="[a-zA-Z0-9\s,]{3,}">
             <input class="dateTime" required type="time" name="heure_trajet" id="heure_trajet" title="Entrer l'heure du trajet"> <br>
             <input class="dateTime" required type="date" name="date_trajet" id="date_trajet" title="Entrer la date du trajet"> <br>
             <select required name="options" id="options">
@@ -145,6 +149,8 @@
                 <option value="non">Non</option>
             </select>
             <input type="text" name="escale" id="escale" placeholder="Si oui, où?" [ngbTooltip] = "tooltipTrajetEscale" pattern = "^[a-zA-Z0-9]{3,}$">
+            <input required type="text" name="tarif_total" id="tarif_total" placeholder="Votre tarif pour le trajet total" [ngbTooltip] = "tooltipTarif">
+            <input type="text" name="tarif_escale" id="tarif_escale" placeholder="Votre tarif s'il y a une escale" [ngbTooltip] = " tooltipTarifEscale">
             <input type="submit" value="Valider"> 
         </form>
 
@@ -241,6 +247,15 @@
 
 <ng-template #tooltipTrajetEscale>
     Vous ne pouvez entrer qu'une seule adresse
+</ng-template>
+
+<ng-template #tooltipTarif>
+    Entrer la devise après votre tarif
+</ng-template>
+
+<ng-template #tooltipTarifEscale>
+    Entrer la devise après votre tarif <br>
+    <b>NB </b>: ce tarif constitue votre trajet qui commence à votre point de départ jusqu'à votre point d'escale
 </ng-template>
 
 <ng-template #tooltipGestionTrajet>

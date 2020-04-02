@@ -6,7 +6,7 @@ import {
 } from "../dataAccessLayer/requete_register.mjs";
 import {
     encrypt
-} from './crypter.mjs';
+} from './service/crypter.mjs';
 
 export async function registerData(nom, prenom, email, numero, typeUser, status_validation, status_compte, motDePasse) {
 

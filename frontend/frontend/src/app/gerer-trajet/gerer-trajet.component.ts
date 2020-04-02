@@ -47,19 +47,27 @@ export class GererTrajetComponent implements OnInit {
       heure_trajet: target.querySelector('#heure_trajet').value,
       date_trajet: target.querySelector('#date_trajet').value,
       options: target.querySelector('#options').value,
-      escale: ''
+      escale: '',
+      tarif_total: target.querySelector('#tarif_total').value,
+      tarif_escale : ''
     };
 
     // function anonyme qui s'exécute automatiquement
     (() => {
+
       const escaleValue = target.querySelector('#escale').value;
+      const tarifEscale = target.querySelector('#tarif_escale').value;
+
       if (data.options === 'oui') {
+
         data.escale = escaleValue;
+        data.tarif_escale = tarifEscale;
+
       } else {
         data.escale = 'non';
+        data.tarif_escale = 'Pas d\'escale';
       }
-    }
-    )();
+    })();
 
      // verifier si le token existe
     if (this.auth.getData().token !== null) {
@@ -77,7 +85,9 @@ export class GererTrajetComponent implements OnInit {
                                   data.heure_trajet,
                                   data.date_trajet,
                                   data.options,
-                                  data.escale)
+                                  data.escale,
+                                  data.tarif_total,
+                                  data.tarif_escale)
                 .subscribe( (Result) => {
 
                   this.message = Result.message;

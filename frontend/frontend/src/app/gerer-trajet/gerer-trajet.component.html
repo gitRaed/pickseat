@@ -11,10 +11,12 @@
         <th>Index</th>
         <th>Adresse Départ</th>
         <th>Adresse Arrivée</th>
-        <th>Heure de départ</th>
         <th>Date du trajet</th>
+        <th>Heure de départ</th>
         <th>Options</th>
         <th>Escale à</th>
+        <th>Tarif total</th>
+        <th>Tarif escale</th>
         <th>Options-trajet</th>
     </tr>
 
@@ -26,13 +28,17 @@
 
         <td id="adresse_arrive">{{item.adresse_arrive}}</td>
 
-        <td id="heure_trajet">{{item.heure_trajet | date : 'hh:mm:ss'}}</td>
-
         <td id="date_trajet">{{item.date_trajet | date: 'dd/MM/yyyy'}}</td>
+
+        <td id="heure_trajet">{{item.heure_trajet | date: 'hh:mm a'}}</td>
 
         <td id="options">{{item.options}}</td>
 
         <td id="escale">{{item.escale}}</td>
+
+        <td id="tarif_total">{{item.tarif_total}}</td>
+
+        <td id="tarif_escale">{{item.tarif_escale}}</td>
 
         <td>
             <button (click)="modal(modifierTrajet)" [ngbTooltip] = "tooltipModifier" title="Modifier le trajet"><i class="fas fa-retweet"></i></button>
@@ -52,8 +58,8 @@
                 <form (submit) = "updateTrajet($event)"> 
                     <div class="form-group">
                         <input type="text" name="id_trajet" id="id_trajet" value="{{item.id_trajet}}" disabled style="background-color: #dfe4ea; display: none;">
-                        <input required type="text" name="adresse_depart" id="adresse_depart" value="{{item.adresse_depart}}" pattern="^[a-zA-Z0-9]{3,}$" title="minimum 3 lettres">
-                        <input required type="text" name="adresse_arrive" id="adresse_arrive" value="{{item.adresse_arrive}}" pattern="^[a-zA-Z0-9]{3,}$" title="minimum 3 lettres">
+                        <input required type="text" name="adresse_depart" id="adresse_depart" value="{{item.adresse_depart}}" pattern="^[a-zA-Z0-9\s,]{3,}$" title="minimum 3 lettres">
+                        <input required type="text" name="adresse_arrive" id="adresse_arrive" value="{{item.adresse_arrive}}" pattern="^[a-zA-Z0-9\s,]{3,}$" title="minimum 3 lettres">
                         <input class="dateTime" required type="time" name="heure_trajet" id="heure_trajet" title="Entrer l'heure du trajet"> <br>
                         <input class="dateTime" required type="date" name="date_trajet" id="date_trajet" title="Entrer la date du trajet"> <br>
                         <select required name="options" id="options">
@@ -62,6 +68,9 @@
                             <option value="non">Non</option>
                         </select>
                         <input type="text" name="escale" id="escale" value="{{item.escale}}">
+                        <input required type="text" name="tarif_total" id="tarif_total" value="{{item.tarif_total}}" placeholder="Votre tarif pour le trajet total" [ngbTooltip] = "tooltipTarif">
+                        <input type="text" name="tarif_escale" id="tarif_escale" value="{{item.tarif_escale}}" placeholder="Votre tarif s'il y a une escale" [ngbTooltip] = " tooltipTarifEscale">
+                        
                         <input type="submit" value="Valider">    
                     </div>
                 </form>
@@ -102,6 +111,15 @@
 
         <ng-template #tooltipSupprimer>
             Supprimer le trajet d'index {{i}}
+        </ng-template>
+
+        <ng-template #tooltipTarif>
+            Entrer la devise après votre tarif
+        </ng-template>
+        
+        <ng-template #tooltipTarifEscale>
+            Entrer la devise après votre tarif, 
+            <b>NB </b>: ce tarif constitue votre trajet qui commence à votre point de départ jusqu'à votre point d'escale
         </ng-template>
 
     </tr>

@@ -291,6 +291,7 @@ export class CoreComponent implements OnInit, OnDestroy {
   }
   //#endregion
 
+
   //#region itineraire
   getItineraire() {
 
@@ -364,7 +365,7 @@ export class CoreComponent implements OnInit, OnDestroy {
         longitude : this.mapService.getCoordonne().longitude
       };
 
-      this.db.alarme(this.auth.getData().email, 5.278210, -3.977520).subscribe((result) => {
+      this.db.alarme(this.auth.getData().email,coords.latitude, coords.longitude).subscribe((result) => {
         console.log('Result : ' + result.isDist);
         if (result.isDist === true) {
           console.log('Faire sonner');
@@ -409,6 +410,7 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   //#endregion
 
+
   //#region profil
 
   updateProfil(event) {
@@ -437,6 +439,7 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   //#endregion
 
+
   //#region trajet
 
   registerTrajet(event) {
@@ -454,16 +457,25 @@ export class CoreComponent implements OnInit, OnDestroy {
       heure_trajet: target.querySelector('#heure_trajet').value,
       date_trajet: target.querySelector('#date_trajet').value,
       options: target.querySelector('#options').value,
-      escale: ''
+      escale: '',
+      tarif_total: target.querySelector('#tarif_total').value,
+      tarif_escale : ''
     };
 
-    // function anonyme qui s'exécute automatiquement
+    // fonction anonyme qui s'exécute automatiquement
     (() => {
+
       const escaleValue = target.querySelector('#escale').value;
+      const tarifEscale = target.querySelector('#tarif_escale').value;
+
       if (data.options === 'oui') {
+
         data.escale = escaleValue;
+        data.tarif_escale = tarifEscale;
+
       } else {
         data.escale = 'non';
+        data.tarif_escale = 'Pas d\'escale';
       }
     })();
 
@@ -485,7 +497,9 @@ export class CoreComponent implements OnInit, OnDestroy {
               data.heure_trajet,
               data.date_trajet,
               data.options,
-              data.escale)
+              data.escale,
+              data.tarif_total,
+              data.tarif_escale)
             .subscribe((Result) => {
 
               this.message = Result.message;
@@ -563,6 +577,7 @@ export class CoreComponent implements OnInit, OnDestroy {
   }
   //#endregion
 
+
   //#region covoiturage
   getCovoiturage() {
     return this.covoiturage;
@@ -591,4 +606,6 @@ export class CoreComponent implements OnInit, OnDestroy {
 
     this.map.remove();
   }
+
+
 }

@@ -1,9 +1,14 @@
 "use strict";
 import express from "express";
 import bodyParser from "body-parser";
+
+import {
+    verif
+} from '../../serviceLayer/service/verif.mjs';
+
 import {
     isAuth
-} from '../../serviceLayer/isAuth.mjs';
+} from '../../serviceLayer/service/isAuth.mjs';
 import {
     authCodeEmail
 } from '../../serviceLayer/code_data.mjs';
@@ -33,47 +38,33 @@ route.use(express.json());
 
 route.post("/contactUs", async (req, res) => {
 
-    res.status(200);
-
     const authorization = req.headers.authorization.valueOf('authorization');
-    let email = req.body.email;
-    let message = req.body.message;
-    /*console.log(req.body);
-    console.log('Email : ' + email + ', message : ' + message);
-    console.log('Token value : ' + authorization);*/
+    const {email, message} = req.body;
 
     try {
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+
+        res.status(200);
+
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if (verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
-            });
-        } else {
-
-            // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-                    // enregister dans la bdd et envoyer le résultat
-                    codeRegisterMessage(email, message).then((result) => {
-                        res.send({
-                            message: result
-                        });
-                    });
-                } else {
-
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+                message : verifData.message
             });
 
+        }  else {
 
+            codeRegisterMessage(email, message).then((result) => {
+                res.send({
+                    message: result
+                });
+            });
         }
+
     } catch (error) {
+
         console.log('Contact us error : ' + error);
         res.send({
             message: error
@@ -87,42 +78,35 @@ route.post("/contactUs", async (req, res) => {
 
 route.post("/getPointImportant", async (req, res) => {
 
-    res.status(200);
-
     const authorization = req.headers.authorization.valueOf('authorization');
     const email = req.body.email;
 
     try {
 
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        res.status(200);
+
+        const verifData = await verif(authorization, email);
+        // * la fonction verfi vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message: verifData.message
             });
+
         } else {
 
-             // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-                    // enregister dans la bdd et envoyer le résultat
-                    codeGetPointImportant(email).then((result) => {
-                        res.send({
-                            message: result
-                        });
-                    });
-                } else {
-
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+             // return les points importants
+            codeGetPointImportant(email).then((result) => {
+                res.send({
+                    message: result
+                });
             });
         }
+
     } catch (error) {
+
+        res.status(500);
         console.log('Get points important error : ' + error);
         res.send({
             message: 'Get points important error : ' + error
@@ -134,45 +118,30 @@ route.post("/pointImportant", async (req, res) => {
 
     const authorization = req.headers.authorization.valueOf('authorization');
 
-    const email = req.body.email;
-    const message = req.body.message;
-    const latitude = req.body.latitude;
-    const longitude = req.body.longitude;
-    const sonner = req.body.sonner;
+    const {email, message, latitude, longitude, sonner} = req.body;
 
     try {
 
         res.status(200);
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if (verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
         } else {
 
-            // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-                    // enregister dans la bdd et envoyer le résultat
-                    codePointImportant(email, message, latitude, longitude, sonner).then((result) => {
-                        res.send({
-                            message: result
-                        });
-                    });
-                } else {
-
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+            // * enregistrer le point 
+            codePointImportant(email, message, latitude, longitude, sonner).then((result) => {
+                res.send({
+                    message: result
+                });
             });
-
-
         }
+
     } catch (error) {
 
         res.status(500);
@@ -180,50 +149,40 @@ route.post("/pointImportant", async (req, res) => {
         res.send({
             message: error
         });
-        res.status(500);
     }
 });
 
 route.post("/updatePoint", async (req, res) => {
 
     const authorization = req.headers.authorization.valueOf('authorization');
-
-    const id = req.body.id;
-    const email = req.body.email;
-    const message = req.body.message;
-    const sonner = req.body.sonner;
-
+    const {id, email, message, sonner} = req.body;
 
     try {
 
         res.status(200);
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
-        }   // verifier si l'email est disponible dans la bdd
-        authCodeEmail(email).then((result) => {
 
-            if (result.auth === true) {
-                // enregister dans la bdd et envoyer le résultat
-                codeUpdatePointImportant(id, message, sonner).then((result) => {
-                    res.send({
-                        message: result
-                    });
-                });
-            } else {
+        } else {
 
+            codeUpdatePointImportant(id, message, sonner).then((result) => {
                 res.send({
-                    message: 'L\'utilisateur n\'existe pas',
-                    reqBody: req.body
+                    message: result
                 });
-            }
+            });
+        }
 
-        });
     } catch (error) {
+
         res.status(500);
+        console.log('Update point important error : ' + error);
         res.send({
             message: error
         });
@@ -232,18 +191,22 @@ route.post("/updatePoint", async (req, res) => {
 
 route.post("/deletePoint", async (req, res) => {
 
-    
     const authorization = req.headers.authorization.valueOf('authorization');
-    const id = req.body.id;
+    const {id, email} = req.body;
 
     try {
+
         res.status(200);
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
+
         } else {
 
             codeDeletePointImportant(id).then( (result) => {
@@ -252,8 +215,11 @@ route.post("/deletePoint", async (req, res) => {
                 });
             });
         }
+
     } catch (error) {
+
         res.status(500);
+        console.log('Delete point important error : ' + error);
         res.send({
             message: error
         });
@@ -267,49 +233,39 @@ route.post("/alarme", async (req, res) => {
     const {email, latitude, longitude} = req.body;
 
     try {
-        
-        res.status(200);
 
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        res.status(200);
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
+
         } else {
 
-            // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-
-                    codeAlarme(email, parseFloat(latitude), parseFloat(longitude)).then( (result) => {
-                            res.send({
-                                isDist : result.isDist,
-                                libelle : result.libelle
-                            });
-                        });
-
-                } else {
-
-                    res.status(400);
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+            
+            codeAlarme(email, parseFloat(latitude), parseFloat(longitude)).then( (result) => {
+                res.send({
+                    isDist : result.isDist,
+                    libelle : result.libelle
+                });
             });
+
         }
 
-
     } catch (error) {
+
         res.status(500);
+        console.log('Alarme error : ' + error);
         res.send({
             message: error
         });
-        console.log('Alarme error : ' + error);
     }
+    
 });
 
 //#endregion
@@ -323,95 +279,72 @@ route.post("/getTrajet", async (req, res) => {
     const {email} = req.body;
 
     try {
-        
-        res.status(200);
 
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        res.status(200);
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
+
         } else {
 
-            // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-                    // enregister dans la bdd et envoyer le résultat
-                    codeGetTrajet(email).then((result) => {
-                        res.send({
-                            message: result
-                        });
-                    });
-                } else {
-
-                    res.status(400);
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+            codeGetTrajet(email).then((result) => {
+                res.send({
+                    message: result
+                });
             });
+
         }
 
-
     } catch (error) {
+
         res.status(500);
+        console.log('Get trajet error : ' + error);
         res.send({
             message: error
         });
-        console.log('Get trajet error : ' + error);
     }
+
 });
 
 route.post("/rechercherTrajet", async (req, res) => {
 
-    
     const authorization = req.headers.authorization.valueOf('authorization');
     const {email, adresseDepart, adresseArrive} = req.body;
 
     try {
 
         res.status(200);
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
+
         } else {
 
-            // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-                    // enregister dans la bdd et envoyer le résultat
-                    codeRechercherTrajet(adresseDepart, adresseArrive).then( (result) => {
-                        res.send({
-                            message: result
-                        });
-                    });
-
-                } else {
-
-                    res.status(400);
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+            codeRechercherTrajet(adresseDepart, adresseArrive).then( (result) => {
+                res.send({
+                    message: result
+                });
             });
-        }
 
-    } catch (error) {
+        }
+    } catch(error) {
+
         res.status(500);
         console.log('Rechercher trajet error : ' + error);
         res.send({
-            message: error
+            message : error
         });
     }
 
@@ -420,94 +353,72 @@ route.post("/rechercherTrajet", async (req, res) => {
 route.post("/enregistrerTrajet", async (req, res) => {
 
     const authorization = req.headers.authorization.valueOf('authorization');
-    const {nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale} = req.body;
+    const {nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale, tarifTotal, tarifEscale} = req.body;
 
     try {
 
         res.status(200);
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
+
         } else {
 
-            // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-                    // enregister dans la bdd et envoyer le résultat
-                    codeEnregistrerTrajet(nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale).then((result) => {
-                        res.send({
-                            message: result
-                        });
-                    });
-                } else {
-
-                    res.status(400);
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+            codeEnregistrerTrajet(nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale, tarifTotal, tarifEscale).then((result) => {
+                res.send({
+                    message: result
+                });
             });
+
         }
 
-    } catch (error) {
+    } catch(error) {
+
         res.status(500);
         console.log('Enregistrer trajet error : ' + error);
         res.send({
-            message: error
+            message : error
         });
     }
-
 });
 
 route.post("/updateTrajet", async (req, res) => {
 
     const authorization = req.headers.authorization.valueOf('authorization');
-    const {id, email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale} = req.body;
+    const {id, email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale, tarifTotal, tarifEscale} = req.body;
 
     try {
 
         res.status(200);
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
+
         } else {
 
-            // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-                    // enregister dans la bdd et envoyer le résultat
-                    codeUpdateTrajet(id, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale).then((result) => {
-                        res.send({
-                            message: result
-                        });
-                    });
-                } else {
-
-                    res.status(400);
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+            codeUpdateTrajet(id, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale, tarifTotal, tarifEscale).then((result) => {
+                res.send({
+                    message: result
+                });
             });
+
         }
 
     } catch (error) {
         res.status(500);
-        console.log('Modifier trajet error : ' + error);
+        console.log('Update trajet error : ' + error);
         res.send({
             message: error
         });
@@ -522,35 +433,24 @@ route.post("/deleteTrajet", async (req, res) => {
     try {
 
         res.status(200);
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
-        // verifier si token es envoyé en header
-        const verifToken = isAuth(authorization);
-        if (verifToken.message !== '') {
+        if(verifData.bool === false) {
+
             res.send({
-                message: verifToken.message
+                message : verifData.message
             });
+
         } else {
 
-            // verifier si l'email est disponible dans la bdd
-            authCodeEmail(email).then((result) => {
-
-                if (result.auth === true) {
-                    // enregister dans la bdd et envoyer le résultat
-                    codeDeleteTrajet(id).then((result) => {
-                        res.send({
-                            message: result
-                        });
-                    });
-                } else {
-
-                    res.status(400);
-                    res.send({
-                        message: 'L\'utilisateur n\'existe pas',
-                        reqBody: req.body
-                    });
-                }
-
+            codeDeleteTrajet(id).then((result) => {
+                res.send({
+                    message: result
+                });
             });
+
         }
 
     } catch (error) {

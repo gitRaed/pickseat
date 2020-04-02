@@ -114,6 +114,8 @@ export async function alarme(email) {
 
 //#endregion
 
+
+
 //#region trajet
 
 export async function getTrajet(email) {
@@ -163,7 +165,7 @@ export async function rechercherEscale() {
     }
 }
 
-export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, numero, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
+export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, numero, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale) {
     
     try {
         
@@ -179,7 +181,9 @@ export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, 
                     .input('date_trajet', date_trajet)
                     .input('options', options)
                     .input('escale', escale)
-                .query('INSERT INTO trajet VALUES (@nom, @prenom, @email, @numero, @adresse_depart, @adresse_arrive, @heure_trajet, @date_trajet, @options, @escale)');
+                    .input('tarif_total', tarif_total)
+                    .input('tarif_escale', tarif_escale)
+                .query('INSERT INTO trajet VALUES (@nom, @prenom, @email, @numero, @adresse_depart, @adresse_arrive, @heure_trajet, @date_trajet, @options, @escale, @tarif_total, @tarif_escale)');
         return 'Trajet enregistré !';
     } catch (error) {
         console.log('Requête enregistrer trajet error : ' + error);
@@ -187,7 +191,7 @@ export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, 
     }
 }
 
-export async function updateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale) {
+export async function updateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale) {
     
     try {
         
@@ -200,7 +204,9 @@ export async function updateTrajet(id, adresse_depart, adresse_arrive, heure_tra
                     .input('date_trajet', date_trajet)
                     .input('options', options)
                     .input('escale', escale)
-                .query('UPDATE trajet SET adresse_depart = @adresse_depart, adresse_arrive = @adresse_arrive, heure_trajet = @heure_trajet, date_trajet = @date_trajet, options = @options, escale = @escale WHERE id_trajet = @id');
+                    .input('tarif_total', tarif_total)
+                    .input('tarif_escale', tarif_escale)
+                .query('UPDATE trajet SET adresse_depart = @adresse_depart, adresse_arrive = @adresse_arrive, heure_trajet = @heure_trajet, date_trajet = @date_trajet, options = @options, escale = @escale, tarif_total = @tarif_total, tarif_escale = @tarif_escale WHERE id_trajet = @id');
         return 'Trajet modifié !';
     } catch (error) {
         console.log('Requête update trajet error : ' + error);
