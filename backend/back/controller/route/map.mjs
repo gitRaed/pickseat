@@ -332,7 +332,7 @@ route.post("/rechercherTrajet", async (req, res) => {
 
         } else {
 
-            codeRechercherTrajet(adresseDepart, adresseArrive).then( (result) => {
+            codeRechercherTrajet(email, adresseDepart, adresseArrive).then( (result) => {
                 res.send({
                     message: result
                 });

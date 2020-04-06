@@ -169,6 +169,7 @@ export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, 
     
     try {
         
+        const validite = 0;
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
                     .input('nom', nom_chauffeur)
@@ -183,8 +184,11 @@ export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, 
                     .input('escale', escale)
                     .input('tarif_total', tarif_total)
                     .input('tarif_escale', tarif_escale)
-                .query('INSERT INTO trajet VALUES (@nom, @prenom, @email, @numero, @adresse_depart, @adresse_arrive, @heure_trajet, @date_trajet, @options, @escale, @tarif_total, @tarif_escale)');
+                    .input('validite', validite)
+                .query('INSERT INTO trajet VALUES (@nom, @prenom, @email, @numero, @adresse_depart, @adresse_arrive, @heure_trajet, @date_trajet, @options, @escale, @tarif_total, @tarif_escale, @validite)');
+
         return 'Trajet enregistré !';
+
     } catch (error) {
         console.log('Requête enregistrer trajet error : ' + error);
         return error;
@@ -216,16 +220,69 @@ export async function updateTrajet(id, adresse_depart, adresse_arrive, heure_tra
 
 export async function deleteTrajet(id) {
     
+    // * le chauffeur supprime son trajet
+
     try {
         
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
                     .input('id', id)
                 .query('DELETE trajet WHERE id_trajet = @id');
+
         return 'Trajet supprimé !';
+
     } catch (error) {
         console.log('Requête delete trajet error : ' + error);
         return error;
     }
 }
+
+
+export async function getTrajetDate(email) {
+
+    // * liste des dates des trajets de l'utilisateur ordonnée par rapport à la date
+    // * Liste retournée contient que les dates des trajets qui ne doivent pas être supprimées
+    // * Un trajet est sensé être supprimé si validite = 1
+
+    try {
+        
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                        .input('email', email)
+                        .query('SELECT date_trajet FROM trajet WHERE email_chauffeur=@email and validite=0 ORDER BY date_trajet');
+
+        return result.recordset;
+
+    } catch (error) {
+        console.log('Requête getTrajet error : ' + error);
+        return error;
+    }
+}
+
+
+export async function deleteTrajetDate(date) {
+
+    // * met la valeur à 1 du champs validité pour tout les trajets 'périmés'
+
+    try {
+        
+        const pool = await new sql.ConnectionPool(config).connect();
+        await pool.request()
+                    .input('date', date)
+                .query('UPDATE trajet SET validite=1 WHERE date_trajet = @date');
+
+        const trajet_a_supprimer = await pool.request()
+                    .query('SELECT * FROM trajet WHERE validite=1 ORDER BY date_trajet');
+
+        return trajet_a_supprimer.recordsets;
+
+    } catch (error) {
+
+        console.log('Delete trajet date error ' + error);
+        return error;
+    }
+}
+
 //#endregion
+
+

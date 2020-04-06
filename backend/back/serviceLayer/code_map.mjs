@@ -21,6 +21,10 @@ import {
     addressToCoordinate
 } from './service/distance.mjs';
 
+import {
+    compareTrajet
+} from './service/compareDate.mjs';
+
 
 // * enregistrer message de contactUs du front
 export async function codeRegisterMessage(email, message) {
@@ -111,11 +115,25 @@ export async function codeAlarme(email, latitude_user, longitude_user) {
 
 export async function codeGetTrajet(email) {
 
-    return getTrajet(email);
+    const val = await compareTrajet(email); // * 'supprime' les vieux trajets
+    
+    const trajet = await getTrajet(email); // * retourne la liste des trajets de l'utilisateur filtrée, anciennes dates supprimées
+
+    console.log(val);
+    console.log(trajet);
+
+    if (val === true) {
+
+        return trajet;
+    }
 }
 
 
-export async function codeRechercherTrajet(adresse_depart_user, adresse_arrive_user) {
+export async function codeRechercherTrajet(email, adresse_depart_user, adresse_arrive_user) {
+
+    await compareTrajet(email); // * 'supprime' les vieux trajets
+
+    const trajet = [];
 
     // * result = trajet chauffeur
     const result = await rechercherTrajet1(adresse_depart_user, adresse_arrive_user);
@@ -127,17 +145,25 @@ export async function codeRechercherTrajet(adresse_depart_user, adresse_arrive_u
             return codeRechercherEscale(adresse_depart_user, adresse_arrive_user);
 
         } else {
+
             // * cas où le chauffeur et le voyageur ont le même trajet
             // * ajouter les coordonnées des adresses du voyageur et du chauffeur au résultat
+
             for(let i = 0, n = result.length; i < n; i++) {
-                result[i].coords_depart_user = await addressToCoordinate(adresse_depart_user);
-                result[i].coords_arrive_user =  await addressToCoordinate(adresse_arrive_user);
-                result[i].coords_depart_chauffeur = await addressToCoordinate(result[i].adresse_depart);
-                result[i].coords_arrive_chauffeur = await addressToCoordinate(result[i].adresse_arrive);
-                result[i].tarif = result[i].tarif_total;
+                
+                // * si le trajet n'est pas périmé
+                if (result[i].validite === 0) {
+
+                    result[i].coords_depart_user = await addressToCoordinate(adresse_depart_user);
+                    result[i].coords_arrive_user =  await addressToCoordinate(adresse_arrive_user);
+                    result[i].coords_depart_chauffeur = await addressToCoordinate(result[i].adresse_depart);
+                    result[i].coords_arrive_chauffeur = await addressToCoordinate(result[i].adresse_arrive);
+                    result[i].tarif = result[i].tarif_total;
+                    trajet.push(result[i]);
+                }
             }
 
-            return result;
+            return trajet;
         }
 
 }
@@ -154,20 +180,16 @@ async function codeRechercherEscale(adresse_depart_user, adresse_arrive_user) {
         let trajet = result[i];
         let escale = trajet.escale;
         let depart_chauffeur = trajet.adresse_depart;
-        let arrive_chauffeur = escale; 
-        // * arrive = escale car on ne veut afficher au front que le départ et l'escale, l'arrive du chauffeur ne regarde pas le voyageur
+        let arrive_chauffeur = escale; // * arrive = escale car on ne veut afficher au front que le départ et l'escale, l'arrive du chauffeur ne regarde pas le voyageur
         let isDist = await distance(adresse_depart_user, adresse_arrive_user, depart_chauffeur, arrive_chauffeur);
-
-        console.log('\nDépart : ' + trajet.adresse_depart + ', arrivé : ' + trajet.adresse_arrive + ', escale : ' +  trajet.escale);
-        console.log('is dist : ' + isDist.bool);
 
         const escaleTr = escale.toLowerCase().split(' ');
         const arriver_userTr = adresse_arrive_user.toLowerCase().split(' ');
 
         const verif = await verifierEscaleEtArrive(escaleTr, arriver_userTr);
 
-        // * ajoute les coordonnées du voyageur et chauffeur si la condition est respectée
-        if (verif === true && isDist.bool === true){
+        // * ajoute les coordonnées du voyageur et chauffeur si les conditions sont respectées
+        if (verif === true && isDist.bool === true && trajet.validite === 0){
 
             trajet.coords_depart_user = isDist.depart_user;
             trajet.coords_arrive_user = isDist.arrive_user;
@@ -223,6 +245,7 @@ export async function codeDeleteTrajet(id) {
 
     return deleteTrajet(id);
 }
+
 //#endregion
 
 

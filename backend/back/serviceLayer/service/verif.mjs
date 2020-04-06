@@ -13,8 +13,6 @@ export async function verif(token, email, response) {
         const verifToken = await isAuth(token);
         const verifEmail = await authCodeEmail(email);
 
-        console.log('Token : ' + verifToken.message + ', email : ' + verifEmail.auth);
-
         const result = {
             bool : true,
             message : ''
