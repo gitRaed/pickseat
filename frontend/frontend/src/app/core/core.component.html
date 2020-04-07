@@ -117,8 +117,9 @@
                 Escale : {{item.escale}} <br>
                 Numéro : {{item.numero_chauffeur}} <br>
                 Tarif : {{item.tarif}} <br>
-                <button class="boutonRoute bouton1" (click) = "afficherRoutes(item.coords_depart_user, item.coords_arrive_user)">Votre route</button>
-                <button class="boutonRoute bouton2" (click) = "afficherRoutes(item.coords_depart_chauffeur, item.coords_arrive_chauffeur)">Route du chauffeur</button>
+                <button class="boutonRoute" (click) = "afficherRoutes(item.coords_depart_user, item.coords_arrive_user)">Votre route</button>
+                <button class="boutonRoute" (click) = "afficherRoutes(item.coords_depart_chauffeur, item.coords_arrive_chauffeur)">Route du chauffeur</button>
+                <button class="boutonRoute" (click) = "registerDemande(item.email_chauffeur, item.adresse_depart, item.adresse_arrive, item.date_trajet, item.heure_trajet, item.tarif)">Envoyer une demande</button>
             </p> <br> <br>
 
         </div>
@@ -192,7 +193,7 @@
                 <select required name="type" id="type_user">
                     <option value="" disabled selected>User actuel est {{usersData.typeUser}}</option>
                     <option value="chauffeur">Chauffeur</option>
-                    <option value="piéton">Piéton</option>
+                    <option value="voyageur">Voyageur</option>
                 </select>
                 <input type="submit" value="Valider" class="valider">    
             </div>

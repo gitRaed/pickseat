@@ -349,4 +349,48 @@ export class DbService {
   }
   //#endregion
 
+
+  //#region demandes
+  enregisterDemande(emailChauffeur, emailVoyageur, adresseDepart, adresseArrive, dateTrajet, heureTrajet, tarif) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/registerDemande', {
+      emailChauffeur,
+      emailVoyageur,
+      adresseDepart,
+      adresseArrive,
+      dateTrajet,
+      heureTrajet,
+      tarif
+    }, optionsHeader);
+  }
+
+  getDemande(email, typeUser) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/getDemande', {
+      email,
+      typeUser
+    }, optionsHeader);
+  }
+  //#endregion
+
 }

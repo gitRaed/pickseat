@@ -173,6 +173,7 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   //#endregion
 
+
   //#region options
   modal(content: any) {
 
@@ -221,6 +222,7 @@ export class CoreComponent implements OnInit, OnDestroy {
     this.router.navigate(['/gerer-users']);
   }
   //#endregion
+
 
   //#region pointImportant
 
@@ -600,7 +602,46 @@ export class CoreComponent implements OnInit, OnDestroy {
   }
   //#endregion
 
+  //#region demandes
+  registerDemande(emailChauffeur, adresseDepart, adresseArrive, dateTrajet, heureTrajet, tarif) {
 
+    const typeUser = this.auth.getData().typeUser;
+    const emailVoyageur = this.auth.getData().email;
+    // *emailvoyageur = email utilisateur car user est sensé être le voyageur vu qu'il nya que lui qui peut enregister une demande
+
+    if (typeUser !== 'voyageur') {
+
+      this.message = 'Vous ne pouvez pas faire de demande!';
+
+    } else {
+
+         // verifier si le token existe
+        if (this.auth.getData().token !== null) {
+
+        // Pour respecter la structure du back, un password doit etre envoyé
+          this.user.appelUnicite(emailVoyageur, 'somePassword', 'register').subscribe((result) => {
+
+            // result = true si email es disponible
+            if (result.auth === true) {
+
+              this.db.enregisterDemande(emailChauffeur, emailVoyageur, adresseDepart, adresseArrive, dateTrajet, heureTrajet, tarif)
+                  .subscribe( (resultat) => {
+                    this.message = resultat.message;
+                  });
+
+            } else {
+
+              this.message = 'Email non existant';
+            }
+          });
+
+    } else {
+
+      this.message = 'Vous devez vous connectez ';
+    }
+    }
+  }
+  //#endregion
 
   ngOnDestroy() {
 

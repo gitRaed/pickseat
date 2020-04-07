@@ -19,6 +19,7 @@ import { NotFoundComponent } from './not-found/not-found.component';
 import { CoreComponent } from './core/core.component';
 import { GererPointImportantComponent } from './gerer-point-important/gerer-point-important.component';
 import { GererTrajetComponent } from './gerer-trajet/gerer-trajet.component';
+import { GererDemandeComponent } from './gerer-demande/gerer-demande.component';
 
 
 
@@ -32,7 +33,8 @@ import { GererTrajetComponent } from './gerer-trajet/gerer-trajet.component';
     NotFoundComponent,
     CoreComponent,
     GererPointImportantComponent,
-    GererTrajetComponent
+    GererTrajetComponent,
+    GererDemandeComponent
   ],
   imports: [
     BrowserModule,
