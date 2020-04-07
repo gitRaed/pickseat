@@ -286,3 +286,72 @@ export async function deleteTrajetDate(date) {
 //#endregion
 
 
+//#region demandes 
+export async function registerDemande(nom_chauffeur, prenom_chauffeur, numero_chauffeur, email_chauffeur,
+                                        nom_voyageur, prenom_voyageur, numero_voyageur, email_voyageur,
+                                        adresse_depart, adresse_arrive, date_trajet, heure_trajet, tarif) {
+
+
+    try {
+        
+        const status = 'attente';
+        const pool = await new sql.ConnectionPool(config).connect();
+        await pool.request()
+                    .input('nom_chauffeur', nom_chauffeur)
+                    .input('prenom_chauffeur', prenom_chauffeur)
+                    .input('numero_chauffeur', numero_chauffeur)
+                    .input('email_chauffeur', email_chauffeur)
+                    .input('nom_voyageur', nom_voyageur)
+                    .input('prenom_voyageur', prenom_voyageur)
+                    .input('numero_voyageur', numero_voyageur)
+                    .input('email_voyageur', email_voyageur)
+                    .input('adresse_depart', adresse_depart)
+                    .input('adresse_arrive', adresse_arrive)
+                    .input('date_trajet', date_trajet)
+                    .input('heure_trajet', heure_trajet)
+                    .input('tarif', tarif)
+                    .input('status_demande', status)
+                .query('INSERT INTO demandes VALUES (@nom_chauffeur, @prenom_chauffeur, @numero_chauffeur, @email_chauffeur, @nom_voyageur, @prenom_voyageur, @numero_voyageur, @email_voyageur, @adresse_depart, @adresse_arrive, @date_trajet, @heure_trajet, @tarif, @status_demande)');
+        
+        return 'Demande enregistré';
+
+    } catch (error) {
+        console.log('Requête register demande error : ' + error);
+
+    }
+}
+
+export async function getDemandeChauffeur(email_chauffeur) {
+
+    try {
+        
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                                    .input('email', email_chauffeur)
+                                .query('SELECT * FROM demandes WHERE email_chauffeur=@email ORDER BY date_trajet');
+
+        return result.recordsets;
+
+    } catch (error) {
+        console.log('Requête get demande chauffeur error : ' + error);
+    }
+}
+
+export async function getDemandeVoyageur(email_voyageur) {
+
+    try {
+        
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                                    .input('email', email_voyageur)
+                                .query('SELECT * FROM demandes WHERE email_voyageur=@email ORDER BY date_trajet');
+
+        return result.recordsets;
+
+    } catch (error) {
+        console.log('Requête get demande voyageur error : ' + error);
+    }
+}
+
+//#endregion
+

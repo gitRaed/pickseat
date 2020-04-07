@@ -23,7 +23,9 @@ import {
     codeRechercherTrajet,
     codeEnregistrerTrajet,
     codeUpdateTrajet,
-    codeDeleteTrajet
+    codeDeleteTrajet,
+    codeRegisterDemande,
+    codeGetDemande
 } from '../../serviceLayer/code_map.mjs';
 
 const route = express.Router();
@@ -463,6 +465,80 @@ route.post("/deleteTrajet", async (req, res) => {
 });
 //#endregion
 
+
+//#region demandes
+
+route.post('/registerDemande', async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {emailChauffeur, emailVoyageur, adresseDepart, adresseArrive, dateTrajet, heureTrajet, tarif} = req.body;
+
+    try {
+
+        res.status(200);
+
+        const verifData = await verif(authorization, emailVoyageur);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+        // * on vérifie ici avec l'email du voyageur car il c'est normalement que lui qui peut enregistrer une demande
+
+        if(verifData.bool === false) {
+
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            codeRegisterDemande(emailChauffeur, emailVoyageur, adresseDepart, adresseArrive, dateTrajet, heureTrajet, tarif).then ( (result) => {
+
+                res.send({
+                    message : result
+                });
+            });
+        }
+
+    } catch (error) {
+
+        res.status(500);
+        console.log('Register demande error : ' + error);
+        return error;
+    }
+});
+
+route.post('/getDemande', async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, typeUser} = req.body;
+
+    try {
+        
+        res.status(200);
+
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            codeGetDemande(email, typeUser).then( (result) => {
+                res.send({
+                    message : result
+                });
+            });
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Get demande error : ' + error);
+        return error;
+    }
+});
+//#endregion
 
 
 export {

@@ -12,8 +12,15 @@ import {
     rechercherEscale,
     enregistrerTrajet,
     updateTrajet,
-    deleteTrajet
+    deleteTrajet,
+    registerDemande,
+    getDemandeChauffeur,
+    getDemandeVoyageur
 } from '../dataAccessLayer/requete_map.mjs';
+
+import {
+    authDbEmail
+} from '../dataAccessLayer/requete_data.mjs';
 
 import {
     distance,
@@ -244,6 +251,51 @@ export async function codeUpdateTrajet(id, adresse_depart, adresse_arrive, heure
 export async function codeDeleteTrajet(id) {
 
     return deleteTrajet(id);
+}
+
+//#endregion
+
+
+
+//#region demandes
+
+export async function codeRegisterDemande(email_chauffeur, email_voyageur, adresse_depart, adresse_arrive, date_trajet, heure_trajet, tarif) {
+
+    try {
+
+        const chauffeurData = await authDbEmail(email_chauffeur);
+        const voyageurData = await authDbEmail(email_voyageur);
+
+        const requete = await registerDemande(chauffeurData[0].nom, chauffeurData[0].prenom, chauffeurData[0].numero, email_chauffeur,
+                                                voyageurData[0].nom, voyageurData[0].prenom, voyageurData[0].numero, email_voyageur,
+                                                adresse_depart, adresse_arrive, date_trajet, heure_trajet, tarif);
+
+        return requete;
+    } catch (error) {
+        console.log('Code register demande error : ' + error);
+    }
+}
+
+export async function codeGetDemande(email, type) {
+
+    if(type === 'chauffeur') {
+
+        const demandeChauffeur = await getDemandeChauffeur(email);
+
+        console.log('Demande chauffeur : ');
+        console.log(demandeChauffeur);
+
+        return demandeChauffeur;
+
+    } else if (type === 'voyageur') {
+
+        const demandeVoyageur = await getDemandeVoyageur(email);
+
+        console.log('Demande voyageur : ');
+        console.log(demandeVoyageur);
+
+        return demandeVoyageur;
+    }
 }
 
 //#endregion
