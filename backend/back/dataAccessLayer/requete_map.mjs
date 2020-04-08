@@ -353,5 +353,34 @@ export async function getDemandeVoyageur(email_voyageur) {
     }
 }
 
+export async function getDemande() {
+
+    try {
+        
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                                .query('SELECT * FROM demandes ORDER BY date_trajet');
+
+        return result.recordsets;
+    } catch (error) {
+        console.log('Requête get demande error ' + error);
+    }
+}
+
+export async function updateDemandeStatus(id, status) {
+
+    try {
+        
+        const pool = await new sql.ConnectionPool(config).connect();
+        await pool.request()
+                    .input('id_demande', id)
+                    .input('status_demande', status)
+                .query('UPDATE demandes SET status_demande=@status_demande WHERE id_demande=@id_demande');
+
+    } catch (error) {
+        console.log('Requête updateDemandeStatus error : ' + error);
+    }
+}
+
 //#endregion
 

@@ -374,7 +374,25 @@ export class DbService {
     }, optionsHeader);
   }
 
-  getDemande(email, typeUser) {
+  getDemandeUser(email, typeUser) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/getDemandeUser', {
+      email,
+      typeUser
+    }, optionsHeader);
+  }
+
+  getDemande(email) {
 
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -387,8 +405,26 @@ export class DbService {
     };
 
     return this.http.post<any>('http://localhost:9500/map/getDemande', {
+      email
+    }, optionsHeader);
+  }
+
+  updateDemande(email, id, status) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/updateDemande', {
       email,
-      typeUser
+      id,
+      status
     }, optionsHeader);
   }
   //#endregion

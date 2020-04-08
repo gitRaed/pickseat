@@ -1,5 +1,5 @@
 import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { NgModule, Component } from '@angular/core';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { RouterModule } from '@angular/router';
@@ -20,6 +20,7 @@ import { CoreComponent } from './core/core.component';
 import { GererPointImportantComponent } from './gerer-point-important/gerer-point-important.component';
 import { GererTrajetComponent } from './gerer-trajet/gerer-trajet.component';
 import { GererDemandeComponent } from './gerer-demande/gerer-demande.component';
+import { GererDemandesUserComponent } from './gerer-demandes-user/gerer-demandes-user.component';
 
 
 
@@ -34,7 +35,8 @@ import { GererDemandeComponent } from './gerer-demande/gerer-demande.component';
     CoreComponent,
     GererPointImportantComponent,
     GererTrajetComponent,
-    GererDemandeComponent
+    GererDemandeComponent,
+    GererDemandesUserComponent
   ],
   imports: [
     BrowserModule,
@@ -73,6 +75,16 @@ import { GererDemandeComponent } from './gerer-demande/gerer-demande.component';
       {
         path: 'gerer-trajet',
         component: GererTrajetComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'gerer-demandes',
+        component: GererDemandeComponent,
+        canActivate: [AuthGuard]
+      },
+      {
+        path: 'gerer-demandes-user',
+        component: GererDemandesUserComponent,
         canActivate: [AuthGuard]
       },
       {

@@ -15,7 +15,9 @@ import {
     deleteTrajet,
     registerDemande,
     getDemandeChauffeur,
-    getDemandeVoyageur
+    getDemandeVoyageur,
+    getDemande,
+    updateDemandeStatus
 } from '../dataAccessLayer/requete_map.mjs';
 
 import {
@@ -276,14 +278,11 @@ export async function codeRegisterDemande(email_chauffeur, email_voyageur, adres
     }
 }
 
-export async function codeGetDemande(email, type) {
+export async function codeGetDemandeUser(email, type) {
 
     if(type === 'chauffeur') {
 
         const demandeChauffeur = await getDemandeChauffeur(email);
-
-        console.log('Demande chauffeur : ');
-        console.log(demandeChauffeur);
 
         return demandeChauffeur;
 
@@ -291,11 +290,43 @@ export async function codeGetDemande(email, type) {
 
         const demandeVoyageur = await getDemandeVoyageur(email);
 
-        console.log('Demande voyageur : ');
-        console.log(demandeVoyageur);
-
         return demandeVoyageur;
     }
+}
+
+export async function codeGetDemande() {
+
+    const listeDemande = await getDemande();
+
+    if (listeDemande.length === 0 ) {
+
+        return 'Pas de demandes';
+
+    } else {
+
+        return listeDemande;
+    }
+}
+
+export async function codeUpdateDemandeStatus(id, status) {
+
+    let message = 'Vous devez accepter ou refuser la demande et rien d\'autre! ';
+    
+    if (status === 'accepter' || status === 'refuser') {
+
+        await updateDemandeStatus(id, status);
+    }
+
+    if (status === 'accepter') {
+
+        message = 'Demande acceptée ';
+
+    } else if (status === 'refuser') {
+
+        message = 'Demande refusée ';
+    }
+    
+    return message;
 }
 
 //#endregion

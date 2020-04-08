@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { DbService } from '../db.service';
+import { AuthService } from '../auth.service';
 
 @Component({
   selector: 'app-gerer-demande',
@@ -7,9 +9,29 @@ import { Component, OnInit } from '@angular/core';
 })
 export class GererDemandeComponent implements OnInit {
 
-  constructor() { }
+  constructor(private db: DbService,
+              private auth: AuthService) {}
+
+
+  message = '';
+  demandes = [];
 
   ngOnInit() {
+
+    this.getDemande();
   }
 
+  getDemande() {
+
+    this.db.getDemande(this.auth.getData().email).subscribe( (result) => {
+
+      if (result.message === 'Pas de demandes') {
+        this.message = result.message;
+      } else {
+
+        this.demandes = result.message[0];
+        console.log(this.demandes);
+      }
+    });
+  }
 }

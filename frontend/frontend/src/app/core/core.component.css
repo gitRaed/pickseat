@@ -16,6 +16,8 @@
 .mapGestionProfil,
 .mapEnregistrerTrajet,
 .mapGestionTrajet,
+.mapGestionDemandeUser,
+.mapGestionDemande,
 .mapDeuxBoutons,
 .mapSonner {
     background-color: white;
@@ -44,6 +46,8 @@
 .mapGestionProfil:hover,
 .mapEnregistrerTrajet:hover,
 .mapGestionTrajet:hover,
+.mapGestionDemandeUser:hover,
+.mapGestionDemande:hover,
 .mapDeuxBoutons:hover ,
 .mapSonner:hover{
     background-color: #48dbfb;
@@ -58,7 +62,9 @@
 .mapOptionsProfil,
 .mapGestionProfil,
 .mapEnregistrerTrajet,
-.mapGestionTrajet {
+.mapGestionTrajet,
+.mapGestionDemandeUser,
+.mapGestionDemande {
     border-radius: 2px;
     left: 9px;
     padding: 0.3%;
@@ -83,7 +89,7 @@
 
 .mapRechercherTrajet {
 
-    top: 50%;
+    top: 49.5%;
 }
 
 .mapEnregistrerTrajet {
@@ -92,15 +98,23 @@
 }
 
 .mapGestionTrajet {
-    top: 63%;
+    top: 62.5%;
 }
 
-.mapGestionProfil {
+.mapGestionDemandeUser{
     top: 71%;
 }
 
+.mapGestionProfil {
+    top: 75.5%;
+}
+
+.mapGestionDemande{
+    top: 84%;
+}
+
 .mapOptionsProfil {
-    top: 76%;
+    top: 88.5%;
 }
 
 .mapDeuxBoutons,

@@ -14,14 +14,21 @@
 </div>
 
 <button class = "contactUs" (click) = "modal(ContactUs)">Contact us!</button>
+
 <button class = "mapOptionsSetPoint" (click) = "setPointImportant()" [ngbTooltip] = "tooltipSetPoint"><i class="fas fa-map-marker-alt"></i></button>
 <button class = "mapOptionsGererPoint" (click) = "redirectionGererPoint()" [ngbTooltip] = "tooltipGererPointImportant"><i class="fas fa-map-marked-alt"></i></button>
+
 <button class = "mapOptionsSearch" (click) = "setItineraire()" [ngbTooltip] = "tooltipSearch"><i class="fas fa-route"></i></button>
 <button class = "mapCovoiturage" (click) = "setCovoiturage()" [ngbTooltip] = "tooltipCovoiturage"><i class="fas fa-car"></i></button>
 <button class = "mapRechercherTrajet" (click) = "modal(rechercherTrajet)" [ngbTooltip] = "tooltipRechercherTrajet"><i class="fas fa-search-location"></i></button>
+
 <button class = "mapEnregistrerTrajet" (click) = "modal(enregistrerTrajet)" [ngbTooltip] = "tooltipTrajet"><i class="fas fa-sign"></i></button>
 <button class = "mapGestionTrajet" (click)= "redirectionGestionTrajet()" [ngbTooltip] = "tooltipGestionTrajet"><i class="fas fa-map-signs"></i></button>
+
+<button class = "mapGestionDemandeUser" (click) = "redirectionDemandeUser()" [ngbTooltip] = "tooltipGestionDemandeUser"><i class="fas fa-clipboard-list"></i></button>
 <button class = "mapGestionProfil" (click) = "modal(gestionProfil)" [ngbTooltip] = "tooltipGestionProfil"><i class="fas fa-diagnoses"></i></button>
+
+<button class = "mapGestionDemande" (click) = "redirectionDemande()" [ngbTooltip] = "tooltipGestionDemande"><i class="fas fa-clipboard"></i></button>
 <button class = "mapOptionsProfil" (click)= "redirectionProfil()" [ngbTooltip] = "tooltipProfil"><i class="fas fa-user"></i></button>
 
 <button class = "mapDeuxBoutons" (click) = "setBoutonStartEnd()" [ngbTooltip] = "tooltipDeuxBoutons" [hidden] = "!getItineraire()"><i class="fas fa-code-branch"></i></button>
@@ -212,6 +219,7 @@
     </div>
 </ng-template>
 
+
 <ng-template #tooltipSetPoint>
     Enregistrer point important <b>Attention!</b> Tous points que vous allez clicker sur la map ouvrira un formulaire! Rappuyer pour désactiver
     <br>Status : <b>{{getPointImportantStatus()}}</b>
@@ -227,7 +235,7 @@
 
 <ng-template #tooltipCovoiturage>
     Appuyer activer ou désactiver le covoiturage <br>
-    Status covoiturage : <b>{{getCovoiturageStatus()}}</b>
+    Status : <b>{{getCovoiturageStatus()}}</b>
 </ng-template>
 
 <ng-template #tooltipRechercherTrajet>
@@ -273,6 +281,14 @@
     Activer un bouton de remplissage rapide des routes <br>
     Cliquer sur la carte pour voir <br>
     Status : <b>{{getBoutonStartEnd()}}</b>
+</ng-template>
+
+<ng-template #tooltipGestionDemandeUser>
+    Gestion de vos demandes
+</ng-template>
+
+<ng-template #tooltipGestionDemande>
+    Gestion des demandes
 </ng-template>
 
 

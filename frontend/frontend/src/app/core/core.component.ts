@@ -27,20 +27,19 @@ export class CoreComponent implements OnInit, OnDestroy {
               private auth: AuthService,
               private router: Router) {}
 
-  message = 'Merci d\'utiliser Pickseat !';
+  private coordonnees = { lat: 0, lng: 0};
   private pointImportant = false;
   private itineraire = false;
   private routing = null;
   private covoiturage = false;
   private boutonStartEnd = false;
   private boutonSonner = false;
-  usersData = {};
+
+  message = 'Merci d\'utiliser Pickseat !';
+  usersData = { nom: '', prenom: '', email: '', numero: '', typeUser: '' };
   trajet = [];
+  demandes = [];
   isTrajet = false;
-  private coordonnees = {
-    lat: 0,
-    lng: 0
-  };
   map: L.Map;
 
 
@@ -49,6 +48,9 @@ export class CoreComponent implements OnInit, OnDestroy {
     this.locateUser(true);
 
     // *pour récupérer la position de l'utilisateur toutes les 10 secondes
+    // TODO: méthode pas conseillé, la batterie de l'user se videra bcp + vite,
+    // TODO: faut lancer cet interval quand un trajet est lancé/débute
+
     setInterval(() => {
       this.locateUser(false);
       this.onBoutonSonner();
@@ -367,7 +369,7 @@ export class CoreComponent implements OnInit, OnDestroy {
         longitude : this.mapService.getCoordonne().longitude
       };
 
-      this.db.alarme(this.auth.getData().email,coords.latitude, coords.longitude).subscribe((result) => {
+      this.db.alarme(this.auth.getData().email, coords.latitude, coords.longitude).subscribe((result) => {
         console.log('Result : ' + result.isDist);
         if (result.isDist === true) {
           console.log('Faire sonner');
@@ -437,7 +439,6 @@ export class CoreComponent implements OnInit, OnDestroy {
       });
     }
   }
-
 
   //#endregion
 
@@ -589,9 +590,9 @@ export class CoreComponent implements OnInit, OnDestroy {
     let status = '';
 
     if (this.covoiturage === true) {
-      status = 'Covoiturage activé';
+      status = 'Activé';
     } else {
-      status = 'Covoiturage désactivé';
+      status = 'Désactivé';
     }
 
     return status;
@@ -601,6 +602,7 @@ export class CoreComponent implements OnInit, OnDestroy {
     this.covoiturage = !this.covoiturage;
   }
   //#endregion
+
 
   //#region demandes
   registerDemande(emailChauffeur, adresseDepart, adresseArrive, dateTrajet, heureTrajet, tarif) {
@@ -635,13 +637,25 @@ export class CoreComponent implements OnInit, OnDestroy {
             }
           });
 
-    } else {
+        } else {
 
-      this.message = 'Vous devez vous connectez ';
-    }
+        this.message = 'Vous devez vous connectez ';
+        }
     }
   }
+
+  redirectionDemande() {
+
+    this.router.navigate(['gerer-demandes']);
+  }
+
+  redirectionDemandeUser() {
+
+    this.router.navigate(['gerer-demandes-user']);
+  }
+
   //#endregion
+
 
   ngOnDestroy() {
 

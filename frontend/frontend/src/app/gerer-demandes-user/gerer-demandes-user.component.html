@@ -19,6 +19,7 @@
         <th>Heure</th>
         <th>Tarif</th>
         <th>Status</th>
+        <th *ngIf="getIsChauffeur()">Options</th>
     </tr>
 
 
@@ -46,6 +47,20 @@
 
         <td>{{item.status_demande}}</td>
 
+        <td *ngIf="getIsChauffeur()">
+            <button (click)="updateDemande(item.id_demande, 'refuser')" [ngbTooltip] = "tooltipRefuserDemande"><i class="fas fa-times"></i></button>
+            <button (click)="updateDemande(item.id_demande, 'accepter')" [ngbTooltip] = "tooltipAccepterDemande"><i class="fas fa-check-circle"></i></button>
+        </td>
+
     </tr>
 
 </table>
+
+<ng-template #tooltipAccepterDemande>
+    Accepter la demande
+</ng-template>
+
+<ng-template #tooltipRefuserDemande>
+    Refuser la demande
+</ng-template>
+

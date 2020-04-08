@@ -7,37 +7,6 @@
 }
 
 
-table {
-    border-collapse: collapse;
-}
-
-th,
-td {
-    border: 1px solid black;
-    padding: 0.5%;
-    text-align: center;
-    width: 4%;
-}
-
-tr {
-    color: black;
-}
-
-
-tr:nth-child(odd),
-tr:nth-child(odd) button {
-    background-color: #c8d6e5;
-    color: black;
-}
-
-
-table .colorie {
-    background-color: #17c0eb;
-    color: white;
-}
-
-
-
 button {
     border: 1px solid black;
     background-color: white;

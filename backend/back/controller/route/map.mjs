@@ -25,7 +25,9 @@ import {
     codeUpdateTrajet,
     codeDeleteTrajet,
     codeRegisterDemande,
-    codeGetDemande
+    codeGetDemandeUser,
+    codeGetDemande,
+    codeUpdateDemandeStatus
 } from '../../serviceLayer/code_map.mjs';
 
 const route = express.Router();
@@ -45,19 +47,19 @@ route.post("/contactUs", async (req, res) => {
 
     try {
 
-        res.status(200);
-
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if (verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         }  else {
 
+            res.status(200);
             codeRegisterMessage(email, message).then((result) => {
                 res.send({
                     message: result
@@ -85,18 +87,19 @@ route.post("/getPointImportant", async (req, res) => {
 
     try {
 
-        res.status(200);
-
         const verifData = await verif(authorization, email);
         // * la fonction verfi vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message: verifData.message
             });
 
         } else {
+
+            res.status(200);
 
              // return les points importants
             codeGetPointImportant(email).then((result) => {
@@ -123,18 +126,19 @@ route.post("/pointImportant", async (req, res) => {
     const {email, message, latitude, longitude, sonner} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if (verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
         } else {
+
+            res.status(200);
 
             // * enregistrer le point 
             codePointImportant(email, message, latitude, longitude, sonner).then((result) => {
@@ -160,19 +164,20 @@ route.post("/updatePoint", async (req, res) => {
     const {id, email, message, sonner} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
+
+            res.status(200);
 
             codeUpdatePointImportant(id, message, sonner).then((result) => {
                 res.send({
@@ -197,19 +202,20 @@ route.post("/deletePoint", async (req, res) => {
     const {id, email} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
+
+            res.status(200);
 
             codeDeletePointImportant(id).then( (result) => {
                 res.send({
@@ -231,25 +237,27 @@ route.post("/deletePoint", async (req, res) => {
 
 route.post("/alarme", async (req, res) => {
     
+    // * cette route permet de savoir si la position reçue est proche d'un des points importants de l'utilisateur
+
     const authorization = req.headers.authorization.valueOf('authorization');
     const {email, latitude, longitude} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
 
-            
+            res.status(200);
+
             codeAlarme(email, parseFloat(latitude), parseFloat(longitude)).then( (result) => {
                 res.send({
                     isDist : result.isDist,
@@ -281,19 +289,20 @@ route.post("/getTrajet", async (req, res) => {
     const {email} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
+
+            res.status(200);
 
             codeGetTrajet(email).then((result) => {
                 res.send({
@@ -320,19 +329,20 @@ route.post("/rechercherTrajet", async (req, res) => {
     const {email, adresseDepart, adresseArrive} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
+
+            res.status(200);
 
             codeRechercherTrajet(email, adresseDepart, adresseArrive).then( (result) => {
                 res.send({
@@ -358,19 +368,20 @@ route.post("/enregistrerTrajet", async (req, res) => {
     const {nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale, tarifTotal, tarifEscale} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
+
+            res.status(200);
 
             codeEnregistrerTrajet(nom, prenom, email, numero, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale, tarifTotal, tarifEscale).then((result) => {
                 res.send({
@@ -396,19 +407,20 @@ route.post("/updateTrajet", async (req, res) => {
     const {id, email, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale, tarifTotal, tarifEscale} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
+
+            res.status(200);
 
             codeUpdateTrajet(id, adresseDepart, adresseArrive, heureTrajet, dateTrajet, options, escale, tarifTotal, tarifEscale).then((result) => {
                 res.send({
@@ -433,19 +445,20 @@ route.post("/deleteTrajet", async (req, res) => {
     const {id, email} = req.body;
 
     try {
-
-        res.status(200);
         
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
+
+            res.status(200);
 
             codeDeleteTrajet(id).then((result) => {
                 res.send({
@@ -475,19 +488,20 @@ route.post('/registerDemande', async (req, res) => {
 
     try {
 
-        res.status(200);
-
         const verifData = await verif(authorization, emailVoyageur);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
         // * on vérifie ici avec l'email du voyageur car il c'est normalement que lui qui peut enregistrer une demande
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
+
+            res.status(200);
 
             codeRegisterDemande(emailChauffeur, emailVoyageur, adresseDepart, adresseArrive, dateTrajet, heureTrajet, tarif).then ( (result) => {
 
@@ -505,27 +519,28 @@ route.post('/registerDemande', async (req, res) => {
     }
 });
 
-route.post('/getDemande', async (req, res) => {
+route.post('/getDemandeUser', async (req, res) => {
 
     const authorization = req.headers.authorization.valueOf('authorization');
     const {email, typeUser} = req.body;
 
     try {
-        
-        res.status(200);
 
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
+            res.status(400);
             res.send({
                 message : verifData.message
             });
 
         } else {
 
-            codeGetDemande(email, typeUser).then( (result) => {
+            res.status(200);
+
+            codeGetDemandeUser(email, typeUser).then( (result) => {
                 res.send({
                     message : result
                 });
@@ -538,6 +553,77 @@ route.post('/getDemande', async (req, res) => {
         return error;
     }
 });
+
+route.post('/getDemande', async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email} = req.body;
+
+    try {
+
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            codeGetDemande().then( (result) => {
+                res.send({
+                    message : result
+                });
+            });
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Get demande error : ' + error);
+        return error;
+    }
+});
+
+route.post('/updateDemande', async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, id, status} = req.body;
+
+    try {
+
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            codeUpdateDemandeStatus(id, status).then( (result) => {
+                res.send({
+                    message : result
+                });
+            });
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Get demande error : ' + error);
+        return error;
+    }
+});
+
 //#endregion
 
 
