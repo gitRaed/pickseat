@@ -27,7 +27,8 @@ import {
     codeRegisterDemande,
     codeGetDemandeUser,
     codeGetDemande,
-    codeUpdateDemandeStatus
+    codeUpdateDemandeStatus,
+    codeNotification
 } from '../../serviceLayer/code_map.mjs';
 
 const route = express.Router();
@@ -626,6 +627,44 @@ route.post('/updateDemande', async (req, res) => {
 
 //#endregion
 
+
+//#region notifications
+
+route.post('/notifications', async (req, res) => {
+
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, typeUser} = req.body;
+
+    try {
+        
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            codeNotification(email, typeUser).then( (result) => {
+
+                res.send({
+                    length : result
+                });
+            });
+
+        }
+
+    } catch (error) {
+        console.log('Notification error : ' + error);
+    }
+});
+//#endregion
 
 export {
     route as map

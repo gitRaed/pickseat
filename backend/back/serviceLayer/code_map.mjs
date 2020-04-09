@@ -17,7 +17,9 @@ import {
     getDemandeChauffeur,
     getDemandeVoyageur,
     getDemande,
-    updateDemandeStatus
+    updateDemandeStatus,
+    notificationChauffeur,
+    notificationVoyageur
 } from '../dataAccessLayer/requete_map.mjs';
 
 import {
@@ -329,6 +331,24 @@ export async function codeUpdateDemandeStatus(id, status) {
     return message;
 }
 
+//#endregion
+
+
+//#region notifications
+
+export async function codeNotification(email, typeUser) {
+
+    if(typeUser === 'chauffeur') {
+
+        return await notificationChauffeur(email); 
+        //* retourne le nombre de demandes du chauffeur avec un status 'attente'
+
+    } else if (typeUser === 'voyageur') {
+
+        return await notificationVoyageur(email);
+        //* retourne le nombre de demandes du voyageur avec un status 'accepter'
+    }   
+}
 //#endregion
 
 

@@ -429,4 +429,25 @@ export class DbService {
   }
   //#endregion
 
+
+  //#region notifications
+
+  notification(email, typeUser) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post<any>('http://localhost:9500/map/notifications', {
+      email,
+      typeUser
+    }, optionsHeader);
+  }
+  //#endregion
 }

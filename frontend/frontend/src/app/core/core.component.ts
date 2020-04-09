@@ -39,11 +39,12 @@ export class CoreComponent implements OnInit, OnDestroy {
   usersData = { nom: '', prenom: '', email: '', numero: '', typeUser: '' };
   trajet = [];
   demandes = [];
+  length = 0;
   isTrajet = false;
   map: L.Map;
 
 
-  ngOnInit(): void {
+  ngOnInit() {
 
     this.locateUser(true);
 
@@ -62,6 +63,10 @@ export class CoreComponent implements OnInit, OnDestroy {
     // *récupérer les données de l'utilisateur
     this.usersData = this.auth.getData();
     console.log(this.usersData);
+
+    setInterval(() => {
+      this.getNotificationLength(); // *elle notifie l'utilisateur s'il a une nouvele demande/demande acceptée
+    }, 1000);
 
   }
 
@@ -656,6 +661,52 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   //#endregion
 
+
+  //#region notifications
+
+
+  getNotificationLength() {
+
+    // * retourne le nombre de demandes:
+    // * accepter, pour un voyageur
+    // * en attente pour un chauffeur
+
+    this.db.notification(this.usersData.email, this.usersData.typeUser).subscribe( (result) => {
+
+      if (this.length !== result.length) {
+
+        this.length = result.length;
+        this.showNotification();
+      }
+
+    });
+
+  }
+
+  async showNotification() {
+
+    const permission = await Notification.requestPermission();
+
+    if (this.usersData.typeUser === 'chauffeur') {
+
+      const notification = new Notification('Pickseat', {
+        body: 'Vous avez ' + this.length + ' demandes en attente',
+        icon: '../assets/img/favicon.png',
+        vibrate: [150, 50, 150]
+      });
+
+    } else if (this.usersData.typeUser === 'voyageur') {
+
+      const notification = new Notification('Pickseat', {
+        body: 'Vous avez ' + this.length + ' demandes acceptées',
+        icon: '../assets/img/favicon.png',
+        vibrate: [150, 50, 150]
+      });
+    }
+  }
+
+
+  //#endregion
 
   ngOnDestroy() {
 

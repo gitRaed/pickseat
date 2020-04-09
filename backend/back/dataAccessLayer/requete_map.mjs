@@ -384,3 +384,42 @@ export async function updateDemandeStatus(id, status) {
 
 //#endregion
 
+
+//#region notification
+
+export async function notificationChauffeur(email) {
+
+    try {
+        
+        const status = 'attente';
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                                    .input('email', email)
+                                    .input('status', status)
+                                .query('SELECT * FROM demandes WHERE email_chauffeur=@email and status_demande=@status');
+        
+        return result.recordsets.length;
+
+    } catch (error) {
+        console.log('Requête notification chauffeur error : ' + error);
+    }
+}
+
+export async function notificationVoyageur(email) {
+
+    try {
+        
+        const status = 'accepter';
+        const pool = await new sql.ConnectionPool(config).connect();
+        const result = await pool.request()
+                                    .input('email', email)
+                                    .input('status', status)
+                                .query('SELECT * FROM demandes WHERE email_voyageur=@email and status_demande=@status');
+        
+        return result.recordsets.length;
+
+    } catch (error) {
+        console.log('Requête notification chauffeur error : ' + error);
+    }
+}
+//#endregion
