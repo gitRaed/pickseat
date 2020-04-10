@@ -42,7 +42,6 @@
 
         <td>
             <button (click)="modal(modifierTrajet)" [ngbTooltip] = "tooltipModifier" title="Modifier le trajet"><i class="fas fa-retweet"></i></button>
-            <button (click)="modal(supprimerTrajet)" [ngbTooltip] = "tooltipSupprimer" title="Supprimer le trajet"><i class="fas fa-trash"></i></button>
         </td>
 
         <ng-template #modifierTrajet let-modal>
@@ -83,34 +82,8 @@
             </div>
         </ng-template>
 
-        <ng-template #supprimerTrajet let-modal>
-
-            <div class="modal-header">
-                <h4 id="modal-basic-title">Supprimer trajet</h4>
-                <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-        
-            <div class="modal-body">
-            <p><strong>Etes-vous sûr de vouloir supprimer ce trajet?</strong></p>
-                <p>Toutes informations relatives à ce trajet sera supprimées de façon permanente
-                <span class="text-danger">Cette opération ne peut pas être annulée !!</span>
-                </p>
-            </div>
-            
-            <div class="modal-footer">
-                <button type="button" class="btn btn-outline-dark" (click) = "deleteTrajet(item.id_trajet)">Supprimer</button>
-            </div>
-
-        </ng-template>
-
         <ng-template #tooltipModifier>
             Modifier le trajet d'index {{i}}
-        </ng-template>
-
-        <ng-template #tooltipSupprimer>
-            Supprimer le trajet d'index {{i}}
         </ng-template>
 
         <ng-template #tooltipTarif>

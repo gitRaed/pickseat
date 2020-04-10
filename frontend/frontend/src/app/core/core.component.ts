@@ -39,6 +39,7 @@ export class CoreComponent implements OnInit, OnDestroy {
   usersData = { nom: '', prenom: '', email: '', numero: '', typeUser: '' };
   trajet = [];
   demandes = [];
+  libelle = '';
   length = 0;
   isTrajet = false;
   map: L.Map;
@@ -48,13 +49,11 @@ export class CoreComponent implements OnInit, OnDestroy {
 
     this.locateUser(true);
 
-    // *pour récupérer la position de l'utilisateur toutes les 10 secondes
-    // TODO: méthode pas conseillé, la batterie de l'user se videra bcp + vite,
-    // TODO: faut lancer cet interval quand un trajet est lancé/débute
+    // *pour récupérer la position de l'utilisateur et notifier l'utilisateur toutes les 10 secondes
 
     setInterval(() => {
-      this.locateUser(false);
-      this.onBoutonSonner();
+      this.onBoutonSonner(); // * notifie l'utilisateur s'il est proche d'un de ses points important
+      this.getNotificationLength(); // *elle notifie l'utilisateur s'il a une nouvelle demande/demande acceptée
     }, 10000);
 
     // *afficher les points importants
@@ -64,9 +63,6 @@ export class CoreComponent implements OnInit, OnDestroy {
     this.usersData = this.auth.getData();
     console.log(this.usersData);
 
-    setInterval(() => {
-      this.getNotificationLength(); // *elle notifie l'utilisateur s'il a une nouvele demande/demande acceptée
-    }, 1000);
 
   }
 
@@ -369,18 +365,25 @@ export class CoreComponent implements OnInit, OnDestroy {
 
     if (this.boutonSonner === true) {
 
+      this.locateUser(false);
       const coords = {
         latitude : this.mapService.getCoordonne().latitude,
         longitude : this.mapService.getCoordonne().longitude
       };
 
       this.db.alarme(this.auth.getData().email, coords.latitude, coords.longitude).subscribe((result) => {
-        console.log('Result : ' + result.isDist);
-        if (result.isDist === true) {
-          console.log('Faire sonner');
-          // *Vibre coomme l'intro de super mario
-          navigator.vibrate([125, 75, 125, 275, 200, 275, 125, 75, 125, 275, 200, 600, 200, 600]);
-          window.alert('Vous êtes à proximité du point ' + result.libelle);
+        console.log('Result on bouton sonner : ' + result.isDist);
+        if (result.isDist === true && this.libelle !== result.libelle) {
+
+          console.log('This.libelle : ' + this.libelle);
+          this.libelle = result.libelle;
+
+          const notification = new Notification('Pickseat', {
+            body: 'Vous êtes à proximité du point ' + result.libelle,
+            icon: '../assets/img/favicon.png',
+            vibrate: [125, 75, 125, 275, 200, 275, 125, 75, 125, 275, 200, 600, 200, 600]
+              // *Vibre coomme l'intro de super mario
+          });
         }
 
       });
@@ -707,6 +710,7 @@ export class CoreComponent implements OnInit, OnDestroy {
 
 
   //#endregion
+
 
   ngOnDestroy() {
 

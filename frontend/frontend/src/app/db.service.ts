@@ -193,7 +193,8 @@ export class DbService {
   };
 
     return this.http.post<any>('http://localhost:9500/map/deletePoint', {
-      id
+      id,
+      email : this.auth.getData().email
     }, options);
   }
 
@@ -308,24 +309,6 @@ export class DbService {
       escale,
       tarifTotal,
       tarifEscale
-    }, optionsHeader);
-  }
-
-  supprimerTrajet(id, email) {
-
-    const headers = new HttpHeaders({
-      'Content-Type': 'application/json',
-      authorization : 'Bearer ' + this.auth.getData().token,
-    });
-
-    const optionsHeader = {
-      headers,
-      observable : 'response',
-    };
-
-    return this.http.post<any>('http://localhost:9500/map/deleteTrajet', {
-      id,
-      email
     }, optionsHeader);
   }
 

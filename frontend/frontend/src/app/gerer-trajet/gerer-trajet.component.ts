@@ -105,16 +105,5 @@ export class GererTrajetComponent implements OnInit {
     }
   }
 
-  deleteTrajet(id) {
-
-    const email = this.auth.getData().email;
-    this.db.supprimerTrajet(id, email).subscribe( (result) => {
-
-      this.message = 'Trajet supprimé!';
-      this.getTrajet();
-    });
-  }
-
-
 
 }
