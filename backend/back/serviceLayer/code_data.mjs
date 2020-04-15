@@ -7,20 +7,28 @@ import {
     authDbEmail,
     statusDb
 } from '../dataAccessLayer/requete_data.mjs';
+
 import {
-    decrypt
+    decrypt,
+    encrypt
 } from './service/crypter.mjs';
 
+import {
+    admin,
+    superAdmin
+} from './service/isAdmin.mjs';
 
-export function getUser() {
 
-    return getUserData().then((result) => {
-        
-        for(let i = 0, n = result.length; i < n; i++) {
-            result[i].motDePasse = 'null';
-        }
-        return result;
-    });
+export async function getUser() {
+
+    const result = await getUserData();
+
+    for(let i = 0, n = result.length; i < n; i++) {
+
+        result[i].motDePasse = 'null';
+    }
+
+    return result;
 }
 
 export function updateUser(id, nom, prenom, email, numero, typeUser) {
@@ -34,32 +42,47 @@ export function deleteUser(id) {
     return deleteDbUser(id);
 }
 
-export function authCode(email, motDePasse) {
+export async function authCode(email, motDePasse) {
 
     let data = {
         auth : false,
     };
 
     // check le mot de passe et l'email
-    return getUserData().then( (result) => {
+    const result =  await getUserData();
 
-        for (let i = 0, n  = result.length; i < n && !data.auth; i++) {
+    for (let i = 0, n  = result.length; i < n && !data.auth; i++) {
 
-            result[i].motDePasse = decrypt(result[i].motDePasse);
+        const mdp = decrypt(result[i].motDePasse);
+        const emailDB = result[i].email;
 
-            if(result[i].email === email && result[i].motDePasse === motDePasse) {
-                data.auth = true;
-                data.id = result[i].id_utilisateur;
-                data.nom = result[i].nom;
-                data.prenom = result[i].prenom;
-                data.email = result[i].email;
-                data.numero = result[i].numero;
-                data.typeUser = result[i].typeUser;
+        if(emailDB === email && mdp === motDePasse) {
+
+            const isAdmin = await admin(email);
+            const isSuperAdmin = await superAdmin(email);
+
+            data.auth = true;
+            data.id = result[i].id_utilisateur;
+            data.nom = result[i].nom;
+            data.prenom = result[i].prenom;
+            data.email = result[i].email;
+            data.numero = result[i].numero;
+            data.typeUser = result[i].typeUser;
+
+            if (isAdmin === true){
+                data.admin = true;
             }
-                
+
+            if (isSuperAdmin === true){
+                data.super = true;
+            }
+            
         }
-        return data;
-    });
+            
+    }
+
+
+    return data;
 }
 
 export async function authCodeEmail(email) {
@@ -74,7 +97,6 @@ export async function authCodeEmail(email) {
 
         if (verif[i].email === email) {
             data.auth = true;
-        
         }
     }
 

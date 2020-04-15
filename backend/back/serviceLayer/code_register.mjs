@@ -8,7 +8,7 @@ import {
     encrypt
 } from './service/crypter.mjs';
 
-export async function registerData(nom, prenom, email, numero, typeUser, status_validation, status_compte, motDePasse) {
+export function registerData(nom, prenom, email, numero, typeUser, status_validation, status_compte, motDePasse) {
 
 
     motDePasse = encrypt(motDePasse);
@@ -17,12 +17,12 @@ export async function registerData(nom, prenom, email, numero, typeUser, status_
 
 }
 
-export async function registerFinalCode(email, status_validation, status_compte) {
+export function registerFinalCode(email, status_validation, status_compte) {
 
     return registerFinal(email, status_validation, status_compte);
 }
 
-export async function resetPasswordcode(email, motDePasse) {
+export function resetPasswordcode(email, motDePasse) {
 
     motDePasse = encrypt(motDePasse);
     return resetPasswordDb(email, motDePasse);

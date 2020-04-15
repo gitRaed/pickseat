@@ -40,17 +40,26 @@ import {
 // * enregistrer message de contactUs du front
 export async function codeRegisterMessage(email, message) {
 
-    return registerMessage(email, message);
+    try {
+        
+        return registerMessage(email, message);
+
+    } catch (error) {
+
+        console.log('Code register message : ' + error);
+    }
 }
 
 //#region pointImportant
 
 export async function codeGetPointImportant(email) {
 
-    return getPointImportant(email).then( (result) => {
+    try {
+        
+        const result = await getPointImportant(email);
 
-        let data = [];
-
+        const data = [];
+    
         for(let i = 0, n = result.length; i < n; i++) {
 
             data.push({
@@ -61,62 +70,94 @@ export async function codeGetPointImportant(email) {
                 sonner : result[i].sonner 
             });
         }
+    
+            return data;
 
-        return data;
-    });
+    } catch (error) {
+
+        console.log('Code get point important error : ' + error);
+    }
 }
 
 
-export async function codePointImportant(email, message, latitude, longitude, sonner) {
+export function codePointImportant(email, message, latitude, longitude, sonner) {
 
-    return registerPointImportant(email, message, latitude, longitude, sonner);
+    try {
+        
+        return registerPointImportant(email, message, latitude, longitude, sonner);
+
+    } catch (error) {
+
+        console.log('code point important error ' + error);   
+    }
 }
 
 
-export async function codeUpdatePointImportant(id, message, sonner) {
+export function codeUpdatePointImportant(id, message, sonner) {
 
-    return updatePointImportant(id, message, sonner);
+    try {
+
+        return updatePointImportant(id, message, sonner);
+
+    } catch (error) {
+
+        console.log('code update point important error : ' + error);
+    }
 }
 
 
-export async function codeDeletePointImportant(id) {
+export function codeDeletePointImportant(id) {
 
-    return deletePointImportant(id);
+    try {
+
+        return deletePointImportant(id);
+
+    } catch (error) {
+
+        console.log('code delete point important erro : ' + error);
+    }
 }
 
 
 export async function codeAlarme(email, latitude_user, longitude_user) {
 
-    const resultatAlarme = await alarme(email);
-    let bool = false;
-    let libelle = '';
+    try {
+        
+        const resultatAlarme = await alarme(email);
+        let bool = false;
+        let libelle = '';
 
-    const coords_user = {
-        lat : latitude_user,
-        lng : longitude_user
-    };
-
-    for (let i = 0, n = resultatAlarme.length; i < n; i++) {
-
-        let coords_point = {
-            lat : resultatAlarme[i].latitude,
-            lng: resultatAlarme[i].longitude
+        const coords_user = {
+            lat : latitude_user,
+            lng : longitude_user
         };
 
-        let isDist = await distanceForAlarm(coords_user, coords_point);
+        for (let i = 0, n = resultatAlarme.length; i < n; i++) {
 
-        if (isDist === true) {
-            bool = true;
-            libelle = resultatAlarme[i].message;
-            console.log('Faire sonner le téléphone');
+            let coords_point = {
+                lat : resultatAlarme[i].latitude,
+                lng: resultatAlarme[i].longitude
+            };
+
+            let isDist = await distanceForAlarm(coords_user, coords_point);
+
+            if (isDist === true) {
+                bool = true;
+                libelle = resultatAlarme[i].message;
+                console.log('Faire sonner le téléphone');
+            }
+
         }
 
-    }
+        return {
+            isDist : bool,
+            libelle : libelle
+        };
 
-    return {
-        isDist : bool,
-        libelle : libelle
-    };
+    } catch (error) {
+        
+        console.log('code alarem : ' + error);
+    }
 }
 //#endregion
 
@@ -125,127 +166,168 @@ export async function codeAlarme(email, latitude_user, longitude_user) {
 
 export async function codeGetTrajet(email) {
 
-    const val = await compareTrajet(email); // * 'supprime' les vieux trajets
+    try {
+        
+        const val = await compareTrajet(email); // * 'supprime' les vieux trajets
     
-    const trajet = await getTrajet(email); // * retourne la liste des trajets de l'utilisateur filtrée, anciennes dates supprimées
+        const trajet = await getTrajet(email); // * retourne la liste des trajets de l'utilisateur filtrée, anciennes dates supprimées
+    
+        if (val === true) {
+    
+            return trajet;
+        }
 
-
-    if (val === true) {
-
-        return trajet;
+    } catch (error) {
+        
+        console.log('code get trajet error : ' + error);
     }
 }
 
 
 export async function codeRechercherTrajet(email, adresse_depart_user, adresse_arrive_user) {
 
-    await compareTrajet(email); // * 'supprime' les vieux trajets
+    try {
+        
+        await compareTrajet(email); // * 'supprime' les vieux trajets
 
-    const trajet = [];
-
-    // * result = trajet chauffeur
-    const result = await rechercherTrajet1(adresse_depart_user, adresse_arrive_user);
-
-        if(result.length === 0) {
-
-            // * s'il n'y a pas de trajet dans résult, chercher des trajets qui ont pour escale adresse_arrive_user
-            // * s'occupe aussi d'ajouter les coordonnées des adresses du voyageur et du chauffeur au résultat
-            return codeRechercherEscale(adresse_depart_user, adresse_arrive_user);
-
-        } else {
-
-            // * cas où le chauffeur et le voyageur ont le même trajet
-            // * ajouter les coordonnées des adresses du voyageur et du chauffeur au résultat
-
-            for(let i = 0, n = result.length; i < n; i++) {
-                
-                // * si le trajet n'est pas périmé
-                if (result[i].validite === 0) {
-
-                    result[i].coords_depart_user = await addressToCoordinate(adresse_depart_user);
-                    result[i].coords_arrive_user =  await addressToCoordinate(adresse_arrive_user);
-                    result[i].coords_depart_chauffeur = await addressToCoordinate(result[i].adresse_depart);
-                    result[i].coords_arrive_chauffeur = await addressToCoordinate(result[i].adresse_arrive);
-                    result[i].tarif = result[i].tarif_total;
-                    trajet.push(result[i]);
+        const trajet = [];
+    
+        // * result = trajet chauffeur
+        const result = await rechercherTrajet1(adresse_depart_user, adresse_arrive_user);
+    
+            if(result.length === 0) {
+    
+                // * s'il n'y a pas de trajet dans résult, chercher des trajets qui ont pour escale adresse_arrive_user
+                // * s'occupe aussi d'ajouter les coordonnées des adresses du voyageur et du chauffeur au résultat
+                return codeRechercherEscale(adresse_depart_user, adresse_arrive_user);
+    
+            } else {
+    
+                // * cas où le chauffeur et le voyageur ont le même trajet
+                // * ajouter les coordonnées des adresses du voyageur et du chauffeur au résultat
+    
+                for(let i = 0, n = result.length; i < n; i++) {
+                    
+                    // * si le trajet n'est pas périmé
+                    if (result[i].validite === 0) {
+    
+                        result[i].coords_depart_user = await addressToCoordinate(adresse_depart_user);
+                        result[i].coords_arrive_user =  await addressToCoordinate(adresse_arrive_user);
+                        result[i].coords_depart_chauffeur = await addressToCoordinate(result[i].adresse_depart);
+                        result[i].coords_arrive_chauffeur = await addressToCoordinate(result[i].adresse_arrive);
+                        result[i].tarif = result[i].tarif_total;
+                        trajet.push(result[i]);
+                    }
                 }
+    
+                return trajet;
             }
 
-            return trajet;
-        }
-
+    } catch (error) {
+        
+        console.log('code rechercehr trajet error : ' + error);
+    }
 }
 
 
 async function codeRechercherEscale(adresse_depart_user, adresse_arrive_user) {
 
-    let tableau = [];
+    try {
 
-    const result = await rechercherEscale();    // * result = trajet du chauffeur
+        let tableau = [];
 
-    for(let i = 0, n = result.length; i < n; i++) {
+        const result = await rechercherEscale();    // * result = trajet du chauffeur
 
-        let trajet = result[i];
-        let escale = trajet.escale;
-        let depart_chauffeur = trajet.adresse_depart;
-        let arrive_chauffeur = escale; // * arrive = escale car on ne veut afficher au front que le départ et l'escale, l'arrive du chauffeur ne regarde pas le voyageur
-        let isDist = await distance(adresse_depart_user, adresse_arrive_user, depart_chauffeur, arrive_chauffeur);
+        for(let i = 0, n = result.length; i < n; i++) {
 
-        const escaleTr = escale.toLowerCase().split(' ');
-        const arriver_userTr = adresse_arrive_user.toLowerCase().split(' ');
+            let trajet = result[i];
+            let escale = trajet.escale;
+            let depart_chauffeur = trajet.adresse_depart;
+            let arrive_chauffeur = escale; 
+            // * arrive = escale car on ne veut afficher au front que le départ et l'escale, l'arrive du chauffeur ne regarde pas le voyageur
+            let isDist = await distance(adresse_depart_user, adresse_arrive_user, depart_chauffeur, arrive_chauffeur);
 
-        const verif = await verifierEscaleEtArrive(escaleTr, arriver_userTr);
+            const escaleTr = escale.toLowerCase().split(' ');
+            const arriver_userTr = adresse_arrive_user.toLowerCase().split(' ');
 
-        // * ajoute les coordonnées du voyageur et chauffeur si les conditions sont respectées
-        if (verif === true && isDist.bool === true && trajet.validite === 0){
+            const verif = await verifierEscaleEtArrive(escaleTr, arriver_userTr);
 
-            trajet.coords_depart_user = isDist.depart_user;
-            trajet.coords_arrive_user = isDist.arrive_user;
-            trajet.coords_depart_chauffeur = isDist.depart_chauffeur;
-            trajet.coords_arrive_chauffeur = isDist.arrive_chauffeur;
-            trajet.tarif = trajet.tarif_escale;
+            // * ajoute les coordonnées du voyageur et chauffeur si les conditions sont respectées
+            if (verif === true && isDist.bool === true && trajet.validite === 0){
 
-            tableau.push(trajet);
-        }          
+                trajet.coords_depart_user = isDist.depart_user;
+                trajet.coords_arrive_user = isDist.arrive_user;
+                trajet.coords_depart_chauffeur = isDist.depart_chauffeur;
+                trajet.coords_arrive_chauffeur = isDist.arrive_chauffeur;
+                trajet.tarif = trajet.tarif_escale;
+
+                tableau.push(trajet);
+            }          
+        }
+
+        return tableau;
+
+    } catch (error) {
+        
+        console.log('code rechercher escale error : ' + error);
     }
-
-    return tableau;
-
 }
 
 async function verifierEscaleEtArrive(escale, arriver_user) {
 
-    // * Cette fonction vérifier si l'escale du chauffeur correspond à celui du voyageur
+    // * Cette fonction vérifie si l'escale du chauffeur correspond à celui du voyageur
 
     // * Pourquoi faire une fonction juste pour sa? ben imagine si pour chercher 'solibra' le mec tape sa : Société de Limonaderies et Brasseries d'Afrique Solibra, Rue des Brasseurs, Arras, Zone 3, Treichville, Abidjan, 26, Côte d'Ivoire
     // * même si le chauffeur a une escale a solibra, l'algorithme ne vas pas encoyer au voyageur le chauffeur en question
     // * donc on fait un check pour voir si ya un mot dans l'adresse du voyageur qui correspond à l'escale du chauffeur
 
-    // ! cette fonction ne marche pas avec la ponctuation, pour que l'exemple dans haut marche, faut retirer les virgules
-    for(let j = 0, m = escale.length; j < m ; j++) {
+    
+    try {
 
-        for(let k = 0, o = arriver_user.length; k < o; k++) {
+        // ! cette fonction ne marche pas avec la ponctuation, pour que l'exemple dans haut marche, faut retirer les virgules
+        for(let j = 0, m = escale.length; j < m ; j++) {
 
-            console.log(escale[j], arriver_user[k]);
-            if (escale[j] === arriver_user[k]){
-                console.log('True');
-                return true;
-            }                
+            for(let k = 0, o = arriver_user.length; k < o; k++) {
+    
+                console.log(escale[j], arriver_user[k]);
+                if (escale[j] === arriver_user[k]){
+                    console.log('True');
+                    return true;
+                }                
+            }
         }
+
+    } catch (error) {
+        
+        console.log('code verifier escale et arrive error : ' + error);
     }
     
 }
 
 
-export async function codeEnregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale) {
+export function codeEnregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale) {
 
-    return enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale);
+    try {
+
+        return enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email_chauffeur, numero_chauffeur, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale);
+
+    } catch (error) {
+
+        console.log('code enregistrer trajet error : ' + error);
+    }
 }
 
 
-export async function codeUpdateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale) {
+export function codeUpdateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale) {
 
-    return updateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale);
+    try {
+
+        return updateTrajet(id, adresse_depart, adresse_arrive, heure_trajet, date_trajet, options, escale, tarif_total, tarif_escale);
+
+    } catch (error) {
+
+        console.log('code update trajet error : ' + error);
+    }
 }
 
 
@@ -266,6 +348,7 @@ export async function codeRegisterDemande(email_chauffeur, email_voyageur, adres
                                                 adresse_depart, adresse_arrive, date_trajet, heure_trajet, tarif);
 
         return requete;
+
     } catch (error) {
         console.log('Code register demande error : ' + error);
     }
@@ -273,57 +356,77 @@ export async function codeRegisterDemande(email_chauffeur, email_voyageur, adres
 
 export async function codeGetDemandeUser(email, type) {
 
-    await codeGetDemande(); // * 'supprime' les vieilles demandes
+    try {
 
-    if(type === 'chauffeur') {
+        await codeGetDemande(); // * 'supprime' les vieilles demandes
 
-        const demandeChauffeur = await getDemandeChauffeur(email);
+        if(type === 'chauffeur') {
 
-        return demandeChauffeur;
+            const demandeChauffeur = await getDemandeChauffeur(email);
 
-    } else if (type === 'voyageur') {
+            return demandeChauffeur;
 
-        const demandeVoyageur = await getDemandeVoyageur(email);
+        } else if (type === 'voyageur') {
 
-        return demandeVoyageur;
+            const demandeVoyageur = await getDemandeVoyageur(email);
+
+            return demandeVoyageur;
+        }
+    } catch (error) {
+        
+        console.log('code get demande user error : ' + error);
     }
 }
 
 export async function codeGetDemande() {
 
-    await compareDemande(); // * 'supprime' les vieilles demandes
+    try {
 
-    const listeDemande = await getDemande();
+        await compareDemande(); // * 'supprime' les vieilles demandes
 
-    if (listeDemande.length === 0 ) {
+        const listeDemande = await getDemande();
+    
+        if (listeDemande.length === 0 ) {
+    
+            return 'Pas de demandes';
+    
+        } else {
+    
+            return listeDemande;
+        }
 
-        return 'Pas de demandes';
+    } catch (error) {
 
-    } else {
-
-        return listeDemande;
+        console.log('code get demande error : ' + error);
     }
 }
 
 export async function codeUpdateDemandeStatus(id, status) {
 
-    let message = 'Vous devez accepter ou refuser la demande et rien d\'autre! ';
-    
-    if (status === 'accepter' || status === 'refuser') {
+    try {
 
-        await updateDemandeStatus(id, status);
+        let message = 'Vous devez accepter ou refuser la demande et rien d\'autre! ';
+        
+        if (status === 'accepter' || status === 'refuser') {
+
+            await updateDemandeStatus(id, status);
+        }
+
+        if (status === 'accepter') {
+
+            message = 'Demande acceptée ';
+
+        } else if (status === 'refuser') {
+
+            message = 'Demande refusée ';
+        }
+        
+        return message;
+
+    } catch (error) {
+        
+        console.log('code update demande status error : ' + error);
     }
-
-    if (status === 'accepter') {
-
-        message = 'Demande acceptée ';
-
-    } else if (status === 'refuser') {
-
-        message = 'Demande refusée ';
-    }
-    
-    return message;
 }
 
 //#endregion
@@ -333,22 +436,29 @@ export async function codeUpdateDemandeStatus(id, status) {
 
 export async function codeNotification(email, typeUser) {
 
-    if(typeUser === 'chauffeur') {
+    try {
 
-        let test = await notificationChauffeur(email); 
-        if (test <= 1) {
+        if(typeUser === 'chauffeur') {
 
-            test = 0;
-        }
+            let test = await notificationChauffeur(email); 
+            if (test <= 1) {
+    
+                test = 0;
+            }
+    
+            return test;
+            //* retourne le nombre de demandes du chauffeur avec un status 'attente'
+    
+        } else if (typeUser === 'voyageur') {
+    
+            return await notificationVoyageur(email);
+            //* retourne le nombre de demandes du voyageur avec un status 'accepter'
+        }   
 
-        return test;
-        //* retourne le nombre de demandes du chauffeur avec un status 'attente'
+    } catch (error) {
 
-    } else if (typeUser === 'voyageur') {
-
-        return await notificationVoyageur(email);
-        //* retourne le nombre de demandes du voyageur avec un status 'accepter'
-    }   
+        console.log('code notification error : ' + error);
+    }
 }
 //#endregion
 

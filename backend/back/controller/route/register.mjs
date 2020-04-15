@@ -28,6 +28,8 @@ route.use(bodyParser.urlencoded({
 })); // suuport url-encoded bodies
 route.use(express.json()); // to support json-encoded bodies
 
+
+//#region enregistrement
 route.post("/", async (req, res, next) => {
 
     nom = req.body.nom;
@@ -95,6 +97,7 @@ route.get('/verify', async function (req, res) {
         });
     }
 });
+//#endregion
 
 route.post('/forgotPassword', async (req, res, next) => {
 
