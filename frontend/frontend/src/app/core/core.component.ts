@@ -36,11 +36,13 @@ export class CoreComponent implements OnInit, OnDestroy {
   private boutonSonner = false;
 
   message = 'Merci d\'utiliser Pickseat !';
-  usersData = { nom: '', prenom: '', email: '', numero: '', typeUser: '' };
+  usersData = { nom: '', prenom: '', email: '', numero: '', typeUser: '',
+                statusValidation : '', statusCompte : '',
+                superAdmin : false, admin : false };
   trajet = [];
   demandes = [];
   libelle = '';
-  length = 0;
+  notifLength = 0;
   isTrajet = false;
   map: L.Map;
 
@@ -53,7 +55,7 @@ export class CoreComponent implements OnInit, OnDestroy {
 
     setInterval(() => {
       this.onBoutonSonner(); // * notifie l'utilisateur s'il est proche d'un de ses points important
-      this.getNotificationLength(); // *elle notifie l'utilisateur s'il a une nouvelle demande/demande acceptée
+      this.getNotificationLength(); // *elle notifie l'utilisateur s'il a une demande en attente/demande acceptée
     }, 10000);
 
     // *afficher les points importants
@@ -62,7 +64,6 @@ export class CoreComponent implements OnInit, OnDestroy {
     // *récupérer les données de l'utilisateur
     this.usersData = this.auth.getData();
     console.log(this.usersData);
-
 
   }
 
@@ -107,7 +108,6 @@ export class CoreComponent implements OnInit, OnDestroy {
   }
 
 
-
   //#region mapFunction
   onMapReady(map: L.Map) {
 
@@ -143,17 +143,14 @@ export class CoreComponent implements OnInit, OnDestroy {
     new GeoSearchControl({
       provider,
       searchLabel: 'Entrer une addresse',
-      style: 'bar',
-      classNames: {
-
-      }
+      style: 'bar'
     }).addTo(this.map);
 
   }
 
   findItineraire() {
 
-    // *marche malgré les erreurs
+    // ! marche malgré les erreurs
     // TODO: trouver pourquoi il y'a 2 erreurs ici
     this.routing = L.Routing.control({
       geocoder: L.Control.Geocoder.nominatim(),
@@ -241,6 +238,7 @@ export class CoreComponent implements OnInit, OnDestroy {
   }
 
   getPointImportant() {
+
     return this.pointImportant;
   }
 
@@ -319,6 +317,7 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   onClickLocation(event) {
 
+    // * cette fonction permet d'afficher l'aide de remplissage rapide des routes à l'appui du bouton "git"
     if (this.boutonStartEnd === true) {
 
       const container = L.DomUtil.create('div');
@@ -441,9 +440,14 @@ export class CoreComponent implements OnInit, OnDestroy {
     this.message = this.user.test(data, [], 'update');
 
     if (this.message === 'Utilisateur ' + data.nom + ' ' + data.prenom + ' modifié!') {
-      this.db.updateUser(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
+
+      const email = this.auth.getData().email;
+      this.db.updateUser(email, data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
+
         console.log('Data Updated!');
-        this.auth.setData(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser, this.auth.getData().token);
+        this.auth.setData(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser, 
+                          this.auth.getData().statusValidation, this.auth.getData().statusCompte,
+                          this.auth.getData().token, this.auth.getData().admin, this.auth.getData().superAdmin);
       });
     }
   }
@@ -473,7 +477,7 @@ export class CoreComponent implements OnInit, OnDestroy {
       tarif_escale : ''
     };
 
-    // fonction anonyme qui s'exécute automatiquement
+    // *fonction anonyme qui check les valeurs de escale et tarif escale
     (() => {
 
       const escaleValue = target.querySelector('#escale').value;
@@ -485,6 +489,7 @@ export class CoreComponent implements OnInit, OnDestroy {
         data.tarif_escale = tarifEscale;
 
       } else {
+
         data.escale = 'non';
         data.tarif_escale = 'Pas d\'escale';
       }
@@ -515,6 +520,7 @@ export class CoreComponent implements OnInit, OnDestroy {
 
               this.message = Result.message;
             });
+
         } else {
 
           this.message = 'Email non existant';
@@ -562,10 +568,13 @@ export class CoreComponent implements OnInit, OnDestroy {
               .subscribe((Result) => {
 
                 if (Result.message === 'Pas de trajet similaire avec ses données') {
+
                   this.trajet.push({
                     message: Result.message
                   });
+
                 } else {
+
                   this.isTrajet = true;
                   this.trajet = Result.message;
                   this.message = 'Chauffeurs trouvés!';
@@ -582,6 +591,7 @@ export class CoreComponent implements OnInit, OnDestroy {
 
         this.message = 'Vous devez vous connectez ';
       }
+
     } else {
       this.message = 'Vous devez activer le covoiturage pour utiliser la recherche de trajet';
     }
@@ -591,22 +601,23 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   //#region covoiturage
   getCovoiturage() {
+
     return this.covoiturage;
   }
 
   getCovoiturageStatus() {
-    let status = '';
+
+    let status = 'Désactivé';
 
     if (this.covoiturage === true) {
       status = 'Activé';
-    } else {
-      status = 'Désactivé';
     }
 
     return status;
   }
 
   setCovoiturage() {
+
     this.covoiturage = !this.covoiturage;
   }
   //#endregion
@@ -676,9 +687,9 @@ export class CoreComponent implements OnInit, OnDestroy {
 
     this.db.notification(this.usersData.email, this.usersData.typeUser).subscribe( (result) => {
 
-      if (this.length !== result.length) {
+      if (this.notifLength !== result.length) {
 
-        this.length = result.length;
+        this.notifLength = result.length;
         this.showNotification();
       }
 
@@ -693,7 +704,7 @@ export class CoreComponent implements OnInit, OnDestroy {
     if (this.usersData.typeUser === 'chauffeur') {
 
       const notification = new Notification('Pickseat', {
-        body: 'Vous avez ' + this.length + ' demandes en attente',
+        body: 'Vous avez ' + this.notifLength + ' demandes en attente',
         icon: '../assets/img/favicon.png',
         vibrate: [150, 50, 150]
       });
@@ -701,7 +712,7 @@ export class CoreComponent implements OnInit, OnDestroy {
     } else if (this.usersData.typeUser === 'voyageur') {
 
       const notification = new Notification('Pickseat', {
-        body: 'Vous avez ' + this.length + ' demandes acceptées',
+        body: 'Vous avez ' + this.notifLength + ' demandes acceptées',
         icon: '../assets/img/favicon.png',
         vibrate: [150, 50, 150]
       });
@@ -709,6 +720,58 @@ export class CoreComponent implements OnInit, OnDestroy {
   }
 
 
+  //#endregion
+
+
+  //#region droits
+
+  isChauffeur() {
+
+    let status = false;
+
+    if (this.usersData.typeUser === 'chauffeur' && this.usersData.statusCompte === 'Actif' || this.usersData.superAdmin === true) {
+
+      status = true;
+    }
+
+    return status;
+  }
+
+  isVoyageur() {
+
+    let status = false;
+
+    if (this.usersData.typeUser === 'voyageur' && this.usersData.statusCompte === 'Actif' || this.usersData.superAdmin === true) {
+
+      status = true;
+    }
+
+    return status;
+  }
+
+  isAdmin() {
+
+    let status = false;
+
+    if (this.usersData.admin === true || this.usersData.superAdmin === true) {
+
+      status = true;
+    }
+
+    return status;
+  }
+
+  checkStatus() {
+
+    let status = false;
+
+    if (this.usersData.statusCompte === 'Actif') {
+
+      status = true;
+    }
+
+    return status;
+  }
   //#endregion
 
 

@@ -425,9 +425,9 @@ export async function notificationChauffeur(email) {
         const result = await pool.request()
                                     .input('email', email)
                                     .input('status', status)
-                                .query('SELECT * FROM demandes WHERE email_chauffeur=@email and status_demande=@status');
+                                .query('SELECT * FROM demandes WHERE email_chauffeur=@email and status_demande=@status and validite=1');
         
-        return result.recordsets.length;
+        return result.recordsets[0].length;
 
     } catch (error) {
         console.log('Requête notification chauffeur error : ' + error);
@@ -443,9 +443,9 @@ export async function notificationVoyageur(email) {
         const result = await pool.request()
                                     .input('email', email)
                                     .input('status', status)
-                                .query('SELECT * FROM demandes WHERE email_voyageur=@email and status_demande=@status');
+                                .query('SELECT * FROM demandes WHERE email_voyageur=@email and status_demande=@status and validite=1');
         
-        return result.recordsets.length;
+        return result.recordsets[0].length;
 
     } catch (error) {
         console.log('Requête notification chauffeur error : ' + error);

@@ -441,10 +441,6 @@ export async function codeNotification(email, typeUser) {
         if(typeUser === 'chauffeur') {
 
             let test = await notificationChauffeur(email); 
-            if (test <= 1) {
-    
-                test = 0;
-            }
     
             return test;
             //* retourne le nombre de demandes du chauffeur avec un status 'attente'

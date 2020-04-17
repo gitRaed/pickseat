@@ -19,16 +19,39 @@ import {
 } from './service/isAdmin.mjs';
 
 
-export async function getUser() {
+export async function getUser(email) {
 
-    const result = await getUserData();
+    const table = [];
+    const result = await getUserData(); // * toutes les données de tout les utilisateurs
+    const isAdmin = await admin(email);
+    const isSuperAdmin = await superAdmin(email);
 
     for(let i = 0, n = result.length; i < n; i++) {
 
+        const current_user_email = result[i].email;
+        const isCurrentAdmin = await admin(current_user_email);
+        const isCurrentSuper = await superAdmin(current_user_email);
+
         result[i].motDePasse = 'null';
+
+        if (isAdmin === true && (isCurrentAdmin !== true && isCurrentSuper !== true)) {
+
+            table.push(result[i]);
+
+        } else if (isSuperAdmin === true && isCurrentSuper !== true) {
+
+            if (isCurrentAdmin === true) {
+
+                result[i].typeUser += " et admin";
+                // * pour signaler au super admin que l'utilisateur en question est un admin
+            }
+
+            table.push(result[i]);
+        }
+
     }
 
-    return result;
+    return table;
 }
 
 export function updateUser(id, nom, prenom, email, numero, typeUser) {
@@ -68,13 +91,18 @@ export async function authCode(email, motDePasse) {
             data.email = result[i].email;
             data.numero = result[i].numero;
             data.typeUser = result[i].typeUser;
+            data.statusValidation = result[i].status_validation;
+            data.statusCompte = result[i].status_compte;
+            data.admin = false;
+            data.superAdmin = false;
 
             if (isAdmin === true){
                 data.admin = true;
             }
 
             if (isSuperAdmin === true){
-                data.super = true;
+                data.admin = true;
+                data.superAdmin = true;
             }
             
         }

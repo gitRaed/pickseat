@@ -45,13 +45,40 @@ export class AuthentificationComponent implements OnInit {
     this.user.appelUnicite(data.email, data.password, 'auth').subscribe( (result) => {
 
       if (result.auth === true) {
-        this.auth.setData(result.id, result.nom, result.prenom, result.email, result.numero, result.typeUser, result.token);
+        this.auth.setData(result.id, result.nom, result.prenom, result.email, result.numero, result.typeUser, 
+                          result.statusValidation, result.statusCompte,
+                          result.token, result.admin, result.superAdmin);
         this.auth.setLogStatus(true);
-        this.router.navigate(['/map']);
+        this.checkStatusValidation(result.statusValidation);
+        this.checkStatusCompte(result.statusCompte);
+
       } else {
+
         this.message = 'Email ou mot de passe non existant';
       }
     });
+  }
+
+
+  checkStatusCompte(status) {
+
+    if (status === 'Banni') {
+
+      this.router.navigate(['**']);
+
+    } else {
+
+      this.router.navigate(['/map']);
+    }
+  }
+
+  checkStatusValidation(status) {
+
+    if (status === 'Attente') {
+
+      window.alert('Veuillez valider votre compte en cliquant le lien dans l\'email qu\'on vous a envoyé, ' +
+                  'vous ne pourrez pas utiliser toutes les fonctionnalités de pickseat sinon!');
+    }
   }
 
   mdpForgot(event) {

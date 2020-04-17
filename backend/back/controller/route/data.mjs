@@ -13,13 +13,13 @@ import {
     normalCode
 } from '../../serviceLayer/code_data.mjs';
 
+import {
+    verif
+} from '../../serviceLayer/service/verif.mjs';
+
 import { createAccessToken } from '../../serviceLayer/service/token.mjs';
 
 const route = express.Router();
-
-//#region variables
-let id, nom, prenom, email, numero, typeUser, motDePasse, type;
-//#endregion
 
 route.use(bodyParser.urlencoded({
     extended: true
@@ -27,101 +27,235 @@ route.use(bodyParser.urlencoded({
 route.use(express.json());
 
 
-route.get("/getData", async function (req, res) {
+route.post("/getData", async function (req, res) {
 
-    res.status(200);
-    getUser().then((result) => {
-        res.send(result);
-    });
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email} = req.body;
+
+    try {
+
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            getUser(email).then((result) => {
+                res.send(result);
+            });
+        }
+
+    } catch (error) {
+
+        res.status(500);
+        console.log('Get data error : ' + error);
+    }
 
 });
 
 
-//#region route-options
+//#region optionsUser
 route.post('/ban', async function (req, res) {
 
-    id = req.body.id;
-    nom = req.body.nom;
-    prenom = req.body.prenom;
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, id, nom, prenom} = req.body;
 
-    res.status(200);
+    try {
 
-    banCode(id).then(() =>
-        res.json({
-            message: 'Utilisateur banni : ' + nom + ' ' + prenom
-        }));
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            banCode(id).then(() => {
+                res.json({
+                    message: 'Utilisateur banni : ' + nom + ' ' + prenom
+                });
+            });
+            
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Ban user error : ' + error);
+    }
+
 });
 
 route.post('/suspend', async function (req, res) {
 
-    id = req.body.id;
-    nom = req.body.nom;
-    prenom = req.body.prenom;
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, id, nom, prenom} = req.body;
 
-    res.status(200);
+    try {
 
-    suspendCode(id).then(() =>
-        res.json({
-            message: 'Utilisateur suspendu : ' + nom + ' ' + prenom
-        }));
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            suspendCode(id).then(() => {
+
+                res.json({
+                    message: 'Utilisateur suspendu : ' + nom + ' ' + prenom
+                });
+            });
+
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Suspendre user error : ' + error);
+    }
+
 });
 
 route.post('/normal', async function (req, res) {
 
-    id = req.body.id;
-    nom = req.body.nom;
-    prenom = req.body.prenom;
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, id, nom, prenom} = req.body;
 
-    res.status(200);
+    try {
 
-    normalCode(id).then(() =>
-        res.json({
-            message: 'Utilisateur remis actif : ' + nom + ' ' + prenom
-        }));
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            normalCode(id).then(() => {
+
+                res.json({
+                    message: 'Utilisateur remis actif : ' + nom + ' ' + prenom
+                });
+            });
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Normal user error : ' + error);
+    }
+
 });
 
 route.post('/updateData', async function (req, res) {
 
-    id = req.body.id;
-    nom = req.body.nom;
-    prenom = req.body.prenom;
-    email = req.body.email;
-    numero = req.body.numero;
-    typeUser = req.body.typeUser;
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {emailVerif, id, nom, prenom, email,numero, typeUser} = req.body;
 
-    res.status(200);
+    try {
 
-    // console.log(id, nom, prenom, email, numero, typeUser, motDePasse);
-    updateUser(id, nom, prenom, email, numero, typeUser).then(() =>
-        res.json({
-            message: 'Donnée reçues et modifiées !' + nom + ' ' + prenom
-        }));
+        const verifData = await verif(authorization, emailVerif);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            // console.log(id, nom, prenom, email, numero, typeUser, motDePasse);
+            updateUser(id, nom, prenom, email, numero, typeUser).then(() => {
+
+                res.json({
+                    message: 'Données de ' + nom + ' ' + prenom + ' modifiées ! '
+                });
+            });
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Update data error : ' + error);
+    }
 
 });
 
 route.post('/deleteData', async function (req, res) {
 
-    id = req.body.id;
-    nom = req.body.nom;
-    prenom = req.body.prenom;
+    const authorization = req.headers.authorization.valueOf('authorization');
+    const {email, id, nom, prenom} = req.body;
 
-    res.status(200);
+    try {
 
-    deleteUser(id).then(() =>
-        res.json({
-            message: 'Utilisateur ' + nom + ' ' + prenom + ' supprimé !'
-        }));
+        const verifData = await verif(authorization, email);
+        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+
+        if(verifData.bool === false) {
+
+            res.status(400);
+            res.send({
+                message : verifData.message
+            });
+
+        } else {
+
+            res.status(200);
+
+            deleteUser(id).then(() => {
+
+                res.json({
+                    message: 'Utilisateur ' + nom + ' ' + prenom + ' supprimé !'
+                });
+            });
+
+        }
+
+    } catch (error) {
+        res.status(500);
+        console.log('Delete user error : ' + error);
+    }
+
 });
 
 //#endregion
 
-// la premiere condition gère les authentification et la deuxieme les enregistrements
+
+// *la premiere condition gère les authentification et la deuxieme les enregistrements
 // TODO: Séparer authentification et register en 2 routes distinctes
 route.get('/auth/:email/:mdp/:type', async function (req, res) {
 
-    email = req.params.email;
-    motDePasse = req.params.mdp;
-    type = req.params.type;
+    const email = req.params.email;
+    const motDePasse = req.params.mdp;
+    const type = req.params.type;
     
     // si type === auth, check si le mdp et email sont bien disponible, 
     // si type === register, juste check si l'email est disponible
@@ -135,6 +269,7 @@ route.get('/auth/:email/:mdp/:type', async function (req, res) {
 
             res.send(result);
         });
+
     } else if (type === 'register') {
 
         authCodeEmail(email).then((result) => {

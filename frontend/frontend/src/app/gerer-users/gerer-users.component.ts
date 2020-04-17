@@ -15,11 +15,13 @@ import { Router } from '@angular/router';
 export class GererUsersComponent implements OnInit {
 
   constructor(private user: UserService,
+              private auth: AuthService,
               private modalService: NgbModal,
               private db: DbService) { }
 
   data = [];
   message = '';
+  private email = this.auth.getData().email;
 
   ngOnInit() {
     this.getData();
@@ -47,7 +49,10 @@ export class GererUsersComponent implements OnInit {
     this.message = this.user.test(data, [], 'update');
 
     if (this.message === 'Utilisateur ' + data.nom + ' ' + data.prenom + ' modifié!') {
-        this.db.updateUser(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
+
+        const email = this.auth.getData().email;
+
+        this.db.updateUser(email, data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
           console.log('Data Updated! ');
           this.getData();
         });
@@ -57,7 +62,7 @@ export class GererUsersComponent implements OnInit {
 
   delete(id: any, nom: string, prenom: string) {
 
-    this.db.deleteUser(id).subscribe(() => {
+    this.db.deleteUser(this.email, id).subscribe(() => {
 
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' supprimé !';
       console.log('User deleted !');
@@ -67,7 +72,7 @@ export class GererUsersComponent implements OnInit {
 
   ban(id: any, nom: string, prenom: string) {
 
-    this.db.banUser(id, nom, prenom).subscribe(() => {
+    this.db.banUser(this.email, id, nom, prenom).subscribe(() => {
 
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' banni !';
       console.log('User banned!');
@@ -77,7 +82,7 @@ export class GererUsersComponent implements OnInit {
 
   suspend(id: any, nom: string, prenom: string) {
 
-    this.db.suspendUser(id, nom, prenom).subscribe(() => {
+    this.db.suspendUser(this.email, id, nom, prenom).subscribe(() => {
 
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' suspendu !';
       console.log('User suspended!');
@@ -87,7 +92,7 @@ export class GererUsersComponent implements OnInit {
 
   normal(id: any, nom: string, prenom: string) {
 
-    this.db.normalUser(id, nom, prenom).subscribe(() => {
+    this.db.normalUser(this.email, id, nom, prenom).subscribe(() => {
 
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' est de retour !';
       console.log('User is back!');
@@ -97,7 +102,9 @@ export class GererUsersComponent implements OnInit {
 
   getData() {
 
-    this.db.getUsersData().subscribe( (result) => {
+    const email = this.auth.getData().email; // *envoie de l'email de l'utilisateur
+
+    this.db.getUsersData(email).subscribe( (result) => {
       this.data = result;
     });
   }

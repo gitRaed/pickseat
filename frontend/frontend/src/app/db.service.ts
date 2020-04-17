@@ -11,6 +11,7 @@ export class DbService {
   constructor(private http: HttpClient, private auth: AuthService) {}
 
 
+  //#region users
   registerUser(nom: string, prenom: string, email: string, numero: string, typeUser: string, mdp: string) {
 
     return this.http.post < any > ('http://localhost:9500/register', {
@@ -25,9 +26,21 @@ export class DbService {
   }
 
 
-  getUsersData() {
+  getUsersData(email: string) {
 
-    return this.http.get <any>('http://localhost:9500/data/getData');
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
+    return this.http.post <any>('http://localhost:9500/data/getData', {
+      email
+    }, optionsHeader);
   }
 
 
@@ -50,53 +63,108 @@ export class DbService {
       motDePasse
     });
   }
+  //#endregion
 
-  //#region options
-  banUser(id: any, nom: string, prenom: string) {
+
+  //#region options users
+  banUser(email: string, id: any, nom: string, prenom: string) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
 
     return this.http.post('http://localhost:9500/data/ban', {
+      email, // * pour la vérification
       id,
       nom,
       prenom
-    });
+    }, optionsHeader);
   }
 
-  suspendUser(id: any, nom: string, prenom: string) {
+  suspendUser(email: string, id: any, nom: string, prenom: string) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
 
     return this.http.post('http://localhost:9500/data/suspend', {
+      email, // * pour la vérification
       id,
       nom,
       prenom
-    });
+    }, optionsHeader);
   }
 
-  normalUser(id: any, nom: string, prenom: string) {
+  normalUser(email: string, id: any, nom: string, prenom: string) {
 
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
     return this.http.post('http://localhost:9500/data/normal', {
+      email, // * pour la vérification
       id,
       nom,
       prenom
-    });
+    }, optionsHeader);
   }
 
-  updateUser(id: any, nom: string, prenom: string, email: string, numero: string, typeUser: string) {
+  updateUser(emailVerif: string, id: any, nom: string, prenom: string, email: string, numero: string, typeUser: string) {
 
-    console.log('Update user : ' + id, nom, prenom, email, numero, typeUser);
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
+
     return this.http.post<any>('http://localhost:9500/data/updateData', {
+      emailVerif, // * pour la vérification
       id,
       nom : '' + nom,
       prenom: '' + prenom,
       email: '' + email,
       numero: '' + numero,
       typeUser: '' + typeUser
-    });
+    }, optionsHeader);
   }
 
-  deleteUser(id: any) {
+  deleteUser(email: string, id: any) {
+
+    const headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+      authorization : 'Bearer ' + this.auth.getData().token,
+    });
+
+    const optionsHeader = {
+      headers,
+      observable : 'response',
+    };
 
     return this.http.post('http://localhost:9500/data/deleteData', {
+      email, // * pour la vérification
       id
-    });
+    }, optionsHeader);
   }
 
   //#endregion
