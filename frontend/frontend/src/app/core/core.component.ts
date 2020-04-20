@@ -1,7 +1,7 @@
 import 'leaflet-control-geocoder';
 import 'leaflet-routing-machine';
 
-import * as L from 'leaflet';
+declare const L: any;
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -150,8 +150,6 @@ export class CoreComponent implements OnInit, OnDestroy {
 
   findItineraire() {
 
-    // ! marche malgré les erreurs
-    // TODO: trouver pourquoi il y'a 2 erreurs ici
     this.routing = L.Routing.control({
       geocoder: L.Control.Geocoder.nominatim(),
       router: L.Routing.mapbox('pk.eyJ1Ijoib3JmZXIiLCJhIjoiY2s4OXk3NngwMGF3ZTNpbXBhaTM1NTBhYiJ9.HzQ7as1fZfYpzZSLRFvY7Q'),
@@ -445,7 +443,7 @@ export class CoreComponent implements OnInit, OnDestroy {
       this.db.updateUser(email, data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
 
         console.log('Data Updated!');
-        this.auth.setData(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser, 
+        this.auth.setData(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser,
                           this.auth.getData().statusValidation, this.auth.getData().statusCompte,
                           this.auth.getData().token, this.auth.getData().admin, this.auth.getData().superAdmin);
       });
