@@ -26,8 +26,6 @@ export class UserService {
 
     let errors = [];
 
-    console.log('auth : ' + auth);
-
     if (password !== confirmPassword) {
         errors = [];
         errors.push('Vos deux mots de passe ne sont pas identiques');

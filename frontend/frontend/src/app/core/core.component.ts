@@ -63,7 +63,6 @@ export class CoreComponent implements OnInit, OnDestroy {
 
     // *récupérer les données de l'utilisateur
     this.usersData = this.auth.getData();
-    console.log(this.usersData);
 
   }
 
@@ -369,10 +368,9 @@ export class CoreComponent implements OnInit, OnDestroy {
       };
 
       this.db.alarme(this.auth.getData().email, coords.latitude, coords.longitude).subscribe((result) => {
-        console.log('Result on bouton sonner : ' + result.isDist);
+
         if (result.isDist === true && this.libelle !== result.libelle) {
 
-          console.log('This.libelle : ' + this.libelle);
           this.libelle = result.libelle;
 
           const notification = new Notification('Pickseat', {
@@ -442,7 +440,6 @@ export class CoreComponent implements OnInit, OnDestroy {
       const email = this.auth.getData().email;
       this.db.updateUser(email, data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
 
-        console.log('Data Updated!');
         this.auth.setData(data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser,
                           this.auth.getData().statusValidation, this.auth.getData().statusCompte,
                           this.auth.getData().token, this.auth.getData().admin, this.auth.getData().superAdmin);

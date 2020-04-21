@@ -30,7 +30,6 @@ export class GererDemandeComponent implements OnInit {
       } else {
 
         this.demandes = result.message[0];
-        console.log(this.demandes);
       }
     });
   }

@@ -14,7 +14,6 @@ export class AuthentificationService {
 
   registerUser(nom: string, prenom: string, email: string, numero: string, typeUser: string, mdp: string) {
 
-    console.log(nom, prenom, email, numero, typeUser, mdp);
     return this.http.post < any > ('http://localhost:9500/register', {
       nom : '' + nom,
       prenom: '' + prenom,
@@ -33,7 +32,6 @@ export class AuthentificationService {
 
   updateUser(id: any, nom: string, prenom: string, email: string, numero: string, typeUser: string, mdp: string) {
 
-  console.log(id, nom, prenom, email, numero, typeUser, mdp);
   return this.http.post<any>('http://localhost:9500/data/updateData', {
     id,
     nom : '' + nom,

@@ -53,7 +53,6 @@ export class GererUsersComponent implements OnInit {
         const email = this.auth.getData().email;
 
         this.db.updateUser(email, data.id, data.nom, data.prenom, data.email, data.numero, data.typeUser).subscribe(() => {
-          console.log('Data Updated! ');
           this.getData();
         });
       }
@@ -65,7 +64,6 @@ export class GererUsersComponent implements OnInit {
     this.db.deleteUser(this.email, id).subscribe(() => {
 
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' supprimé !';
-      console.log('User deleted !');
       this.getData();
     });
   }
@@ -75,7 +73,6 @@ export class GererUsersComponent implements OnInit {
     this.db.banUser(this.email, id, nom, prenom).subscribe(() => {
 
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' banni !';
-      console.log('User banned!');
       this.getData();
     });
   }
@@ -85,7 +82,6 @@ export class GererUsersComponent implements OnInit {
     this.db.suspendUser(this.email, id, nom, prenom).subscribe(() => {
 
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' suspendu !';
-      console.log('User suspended!');
       this.getData();
     });
   }
@@ -95,7 +91,6 @@ export class GererUsersComponent implements OnInit {
     this.db.normalUser(this.email, id, nom, prenom).subscribe(() => {
 
       this.message = 'Utilisateur ' + nom + ' ' + prenom + ' est de retour !';
-      console.log('User is back!');
       this.getData();
     });
   }

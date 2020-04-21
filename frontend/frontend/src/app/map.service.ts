@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import * as L from 'leaflet';
 import { AuthService } from './auth.service';
 import { DbService } from './db.service';
-
+import 'leaflet/dist/images/marker-shadow.png';
 @Injectable({
   providedIn: 'root'
 })
@@ -63,7 +63,15 @@ export class MapService {
   }
 
   setLayersControl(libelle, latitude, longitude, message) {
-    this.layersControl.overlays[libelle] = L.marker([latitude, longitude]).bindPopup(message);
+
+    this.layersControl.overlays[libelle] = L.marker([latitude, longitude], {
+      icon: L.icon({
+        iconSize: [ 25, 41 ],
+        iconAnchor: [ 13, 41 ],
+        iconUrl: 'leaflet/marker-icon.png',
+        shadowUrl: 'leaflet/marker-shadow.png'
+      })
+    }).bindPopup(message);
   }
 
 //#endregion
