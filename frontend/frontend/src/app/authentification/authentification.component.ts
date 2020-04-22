@@ -26,10 +26,21 @@ export class AuthentificationComponent implements OnInit {
   ngOnInit() {
 
     this.auth.setLogStatus(false);
+    this.StatusHeader(); // * affiche ou non le header
   }
 
   modal(content: any) {
     this.modalService.open(content, {ariaLabelledBy: 'modal-basic-title'});
+  }
+
+  StatusHeader() {
+
+    const status = this.auth.getHeaderStatus();
+
+    if (status === false) {
+
+      this.auth.setHeaderStatus();
+    }
   }
 
   authentification(event) {
@@ -45,10 +56,13 @@ export class AuthentificationComponent implements OnInit {
     this.user.appelUnicite(data.email, data.password, 'auth').subscribe( (result) => {
 
       if (result.auth === true) {
+
         this.auth.setData(result.id, result.nom, result.prenom, result.email, result.numero, result.typeUser, 
                           result.statusValidation, result.statusCompte,
                           result.token, result.admin, result.superAdmin);
+
         this.auth.setLogStatus(true);
+        this.auth.setHeaderStatus();
         this.checkStatusValidation(result.statusValidation);
         this.checkStatusCompte(result.statusCompte);
 

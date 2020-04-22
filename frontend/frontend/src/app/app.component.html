@@ -10,23 +10,15 @@
   </head>
   <body>
 
-    <header>
+    <header *ngIf="status">
+
         <img src="assets/img/linkedin_banner_pickseat.png" alt="Logo de Pickseat" class="logo">
         
         <div class="ecriture">
-          <span> Pickseat - votre partenaire covoiturage</span>
-        </div>
-        
-        <div class="auth">
-          <span>{{data.nom}} <br> {{data.prenom}}</span>
+          <span> {{message}} </span>
         </div>
 
     </header>
-
-    <!--
-      <router-outlet></router-outlet>
-      <app-core></app-core>
-    -->
     
     <router-outlet></router-outlet>
 

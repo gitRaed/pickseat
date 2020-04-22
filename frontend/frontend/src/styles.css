@@ -6,6 +6,14 @@ html, body {
 
 }
 
+#map > div.leaflet-control-container > div.leaflet-top.leaflet-left > div.geosearch.leaflet-bar.leaflet-control.leaflet-control-geosearch.bar.active > a,
+#map > div.leaflet-control-container > div.leaflet-top.leaflet-left > div.geosearch.leaflet-bar.leaflet-control.leaflet-control-geosearch.bar > a {
+
+	display: none;
+}
+
+
+
 
 #map > div.leaflet-control-container > div.bar {
 
@@ -26,7 +34,6 @@ html, body {
 	font-size: 12px;
 	height: 30px;
 	margin: 0;
-	min-width: 200px;
 	outline: none;
 	padding: 0;
 	text-indent: 8px;
@@ -85,6 +92,11 @@ html, body {
 	color: white;
 }
 
+h3 {
+
+	padding-top: 33px;
+	text-align: center;
+}
 
 .retour {
 	background-color: white;
@@ -94,8 +106,8 @@ html, body {
 	cursor: pointer;
 	padding: 1%;
 	position: absolute;
-	left: 93%;
-	top: 16%;
+	left: 1%;
+	top: 75px;
 }
 
 .retour:hover {
@@ -111,9 +123,9 @@ table {
 th,
 td {
     border: 1px solid black;
-    padding: 0.5%;
+    padding: 10px;
     text-align: center;
-    width: 4%;
+    width: 50%;
 }
 
 tr {
@@ -146,4 +158,47 @@ button:hover, tr:nth-child(odd) button:hover {
     background-color: #48dbfb;
     border-radius: 5px;
     color: white;
+}
+
+
+/* * media */
+
+@media screen and (max-width: 425px) {
+
+	#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > a{
+
+		background-color: white;
+		box-shadow: 0 0 2px black;
+		right: 128px;
+	}
+
+	#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar {
+
+		left: -27px;
+	}
+}
+
+
+@media screen and (max-width: 375px) {
+
+
+	#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > a{
+
+		background-color: white;
+		box-shadow: 0 0 2px black;
+		right: 115px;
+	}
+}
+
+@media screen and (max-width: 320px) {
+
+
+	#map > div.leaflet-control-container > div.leaflet-control-geosearch.bar > form > a{
+
+		background-color: white;
+		box-shadow: 0 0 2px black;
+		right: 97px;
+	}
+
+	
 }

@@ -35,6 +35,7 @@
 <button class = "mapDeuxBoutons" (click) = "setBoutonStartEnd()" [ngbTooltip] = "tooltipDeuxBoutons" [hidden] = "!getItineraire()"><i class="fas fa-code-branch"></i></button>
 <button class = "mapSonner" (click) = "setBoutonSonner()" [ngbTooltip] = "tooltipBoutonSonner" [hidden] = "!getItineraire()"><i class="fas fa-bell"></i></button>
 
+
 <ng-template #ContactUs let-modal>
     <div class="modal-header">
         <h4 id="modal-basic-title">Contact Us</h4>
@@ -175,7 +176,8 @@
             Enregistrez soigneusement votre trajet, ces données seront utilisées par les autres voyageurs pour la recherche de covoiturage
         </p>
         <p>
-            Plus vous entrerez des détails pour vos adresses, plus détaillée sera la rechercher pour les autres utilisateurs
+            Plus vous entrerez des détails pour vos adresses, plus détaillée sera la rechercher pour les autres utilisateurs,
+            <b>Mais</b>, ne mettez pas de ponctuations
         </p>
 
     </div>

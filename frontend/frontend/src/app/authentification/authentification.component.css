@@ -76,9 +76,8 @@
 }
 
 
-.form p a:first-child{
-    margin-left: 2%;
-    margin-right: 33%;
+.form a:last-child{
+    margin-left: 152px;
 }
 
 
@@ -120,4 +119,32 @@
 
 .modal-footer button:hover {
 	color:white;
+}
+
+
+/* media */
+
+
+@media screen and (max-width: 425px) {
+
+	.form a:last-child {
+
+		margin-left: 127px;
+	}
+}
+
+@media screen and (max-width: 375px) {
+
+	.form a:last-child{
+
+		margin-left: 77px;
+	}
+}
+
+@media screen and (max-width: 320px) {
+
+	.form a:last-child {
+
+		margin-left: 11px;
+	}
 }

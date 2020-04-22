@@ -22,6 +22,10 @@ export class AuthService {
     superAdmin: false
   };
 
+  private headerStatus = true;
+
+
+
   getLogStatus(): boolean {
 
     return this.logStatus;
@@ -52,6 +56,17 @@ export class AuthService {
   getData() {
 
     return this.data;
+  }
+
+  getHeaderStatus() {
+
+    return this.headerStatus;
+  }
+
+  setHeaderStatus() {
+
+    this.headerStatus = !this.headerStatus;
+    console.log(this.headerStatus);
   }
 
 }

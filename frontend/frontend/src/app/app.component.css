@@ -7,7 +7,7 @@ header{
     background-color:#ffffff;
     border: 1px solid #dfe4ea;
     box-shadow: 0 0 5px 4px #dfe4ea;
-    margin-bottom:3%;
+    margin-bottom:4%;
     height: 70px;
     z-index: 999;
 }
@@ -15,7 +15,7 @@ header{
 .logo {
     position: absolute;
     padding: 1%;
-    width: 10%;
+    width: 130px;
     overflow: auto;
 }
 
@@ -26,6 +26,14 @@ header{
     position: relative;
     text-align: center;
     width: 35%;
+}
+
+@media screen and (max-width: 320px) {
+
+    .ecriture {
+
+        left: 50%;
+    }
 }
 
 .auth {

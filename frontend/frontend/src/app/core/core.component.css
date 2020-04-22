@@ -1,7 +1,12 @@
-#map {
-    bottom: 30px;
-    height: 100%;
+body {
     margin: 0;
+    padding: 0;
+}
+
+
+html, body, #map {
+    
+    height: 100%;
     width: 100%;
 }
 
@@ -22,17 +27,17 @@
 .mapSonner {
     background-color: white;
     box-shadow: 0 0 2px black;
-    border: none;
+    border-color: black;
     color: #48dbfb;
+    padding: 4px;
     position: absolute;
     z-index: 999;
 }
 
 .contactUs {
     border-radius: 10px;
-    padding: 0.5%;
     right: 10px;
-    top: 100%;
+    top: 90%;
 }
 
 
@@ -66,55 +71,54 @@
 .mapGestionDemandeUser,
 .mapGestionDemande {
     border-radius: 2px;
-    left: 9px;
-    padding: 0.3%;
+    left: 11px;
     width: 30px;
 }
 
 .mapOptionsSetPoint {
-    top: 26%;
+    top: 16%;
 }
 
 .mapOptionsGererPoint {
-    top: 30.5%;
+    top: 21.5%;
 }
 
 .mapOptionsSearch {
-    top: 38%;
+    top: 29%;
 }
 
 .mapCovoiturage {
-    top: 45%;
+    top: 36%;
 }
 
 .mapRechercherTrajet {
 
-    top: 49.5%;
+    top: 41.5%;
 }
 
 .mapEnregistrerTrajet {
 
-    top: 58%;
+    top: 49%;
 }
 
 .mapGestionTrajet {
-    top: 62.5%;
+    top: 54.5%;
 }
 
 .mapGestionDemandeUser{
-    top: 71%;
+    top: 62%;
 }
 
 .mapGestionProfil {
-    top: 75.5%;
+    top: 67.5%;
 }
 
 .mapGestionDemande{
-    top: 84%;
+    top: 75%;
 }
 
 .mapOptionsProfil {
-    top: 88.5%;
+    top: 80.5%;
 }
 
 .mapDeuxBoutons,
@@ -122,15 +126,17 @@
     border-radius: 2px;
     padding: 0.3%;
     width: 30px;
-    top: 90px;
+    top: 2%;
 }
 
 .mapDeuxBoutons {
-    right: 13%;
+    margin-left: 1%;
+    right: 10%;
 }
 
 .mapSonner {
-    right: 18%;
+    margin-right: 1%;
+    right: 16%;
 }
 
 /* Fenetre modal */
@@ -362,4 +368,18 @@ form select:focus
     color: white;
 }
 
+/* * media  */
 
+@media screen and (max-width: 425px) {
+
+    .mapSonner {
+
+        right: 30%;
+    }
+
+    .mapDeuxBoutons {
+
+        right: 19%;
+    }
+
+}
