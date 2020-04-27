@@ -19,7 +19,6 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
 
     const mobile = this.isMobile();
-    console.log(mobile);
 
     if (mobile === true) {
 

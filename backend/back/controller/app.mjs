@@ -1,5 +1,8 @@
 "use strict";
 import * as env from 'dotenv';
+import compression from 'compression';
+import helmet from 'helmet';
+
 env.config();
 import {
     data
@@ -31,7 +34,8 @@ app.use(function (req, res, next) { //permet le cross origin
     }
 });
 
-
+app.use(helmet()); // * protège l'application contre certaines vulnérabilités http
+app.use(compression()); // *compresse toutes les routes pour que le client est sa réponse + vite
 
 
 app.use("/data", data);

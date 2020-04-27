@@ -37,11 +37,11 @@ route.post("/getData", async function (req, res) {
         const verifData = await verif(authorization, email);
         // * la fonction verif vérifie si le token existe et si l'utilisateur existe
 
-        if(verifData.bool === false) {
+        if(verifData !== '') {
 
             res.status(400);
             res.send({
-                message : verifData.message
+                message : verifData
             });
 
         } else {

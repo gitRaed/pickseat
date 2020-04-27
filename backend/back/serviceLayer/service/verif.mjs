@@ -14,23 +14,21 @@ export async function verif(token, email, response) {
         const verifEmail = await authCodeEmail(email);
 
         const result = {
-            bool : true,
+            bool: false,
             message : ''
         };
 
         if (verifToken.message !== '') {
 
             result.message = verifToken.message;
-            result.bool = false;
         } 
         
         if (verifEmail.auth === false) {
 
-            result.message = 'L\'utilisateur n\'existe pas';
-            result.bool = false;
+            result.message += 'L\'utilisateur n\'existe pas';
         } 
 
-        return result;
+        return result.message;
 
     } catch (error) {
         console.log('Service verif error : ' + error);

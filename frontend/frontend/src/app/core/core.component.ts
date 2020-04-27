@@ -2,6 +2,8 @@ import 'leaflet-control-geocoder';
 import 'leaflet-routing-machine';
 
 declare const L: any;
+import { icon, Marker } from 'leaflet';
+import 'leaflet/dist/images/marker-icon.png';
 import { GeoSearchControl, OpenStreetMapProvider } from 'leaflet-geosearch';
 
 import { Component, OnDestroy, OnInit } from '@angular/core';
@@ -142,9 +144,16 @@ export class CoreComponent implements OnInit, OnDestroy {
     new GeoSearchControl({
       provider,
       searchLabel: 'Entrer une addresse',
-      style: 'bar'
-    }).addTo(this.map);
-
+      style: 'bar',
+      marker: {
+        icon: new L.icon({
+          iconSize: [ 25, 41 ],
+          iconAnchor: [ 13, 41 ],
+          iconUrl: 'leaflet/marker-icon.png',
+          shadowUrl: 'leaflet/marker-shadow.png'
+        })
+      }
+      }).addTo(this.map);
   }
 
   findItineraire() {

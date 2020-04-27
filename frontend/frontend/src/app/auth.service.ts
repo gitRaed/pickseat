@@ -66,7 +66,6 @@ export class AuthService {
   setHeaderStatus() {
 
     this.headerStatus = !this.headerStatus;
-    console.log(this.headerStatus);
   }
 
 }
