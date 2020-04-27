@@ -1,2 +1,2 @@
-# pixil
+# pickseat
 Ma première application ! 
