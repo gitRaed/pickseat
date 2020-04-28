@@ -2,6 +2,7 @@
 import * as env from 'dotenv';
 import compression from 'compression';
 import helmet from 'helmet';
+import xss from 'xss-clean';
 
 env.config();
 import {
@@ -19,7 +20,7 @@ import {
 import express from "express";
 const app = express();
 
-app.use(function (req, res, next) { //permet le cross origin        
+app.use(function (req, res, next) { // *permet le cross origin        
     //console.log('request', req.url, req.body, req.method);
     res.header("Access-Control-Allow-Origin", "*");
     res.header("Access-Control-Allow-Credentials", "true");
@@ -35,7 +36,9 @@ app.use(function (req, res, next) { //permet le cross origin
 });
 
 app.use(helmet()); // * protège l'application contre certaines vulnérabilités http
-app.use(compression()); // *compresse toutes les routes pour que le client est sa réponse + vite
+app.use(compression()); // *compresse toutes les routes pour que le client ait sa réponse + vite
+app.use(express.json({ limit: '10kb' })); // *limite la réponse à 10 kb
+app.use(xss()); // *Data Sanitization against XSS
 
 
 app.use("/data", data);
