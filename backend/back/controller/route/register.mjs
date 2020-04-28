@@ -14,8 +14,8 @@ const route = express.Router();
 let smtpTransport = nodemailer.createTransport({
     service: "Gmail",
     auth: {
-        user: "applicationPixil@gmail.com",
-        pass: "pixilMotDePasse"
+        user: "pickseat.rf@gmail.com",
+        pass: "pickseatMotDePasse"
     }
 });
 let rand, mailOptions, host, link;
@@ -30,7 +30,7 @@ route.use(express.json()); // to support json-encoded bodies
 
 
 //#region enregistrement
-route.post("/", async (req, res, next) => {
+route.post("/", async (req, res) => {
 
     nom = req.body.nom;
     prenom = req.body.prenom;
@@ -50,10 +50,9 @@ route.post("/", async (req, res, next) => {
     link = "http://localhost:9500/register/verify?id=" + rand;
     mailOptions = {
         to: email,
-        subject: "Please confirm your Email account",
-        html: "Hello " + nom +" " + prenom + ",<br> Please Click on the link bellow to validate your account.<br><a href=" + link + ">Click here to verify</a>"
+        subject: "Confirmez votre compte",
+        html: "Bonjour " + nom +" " + prenom + ", merci d\'utiliser pickseat !<br>Cliquez sur le lien ci-dessous pour valider votre compte.<br><a href=" + link + ">Click here to verify</a>"
     };
-    // console.log('mailOptions.to : ' + mailOptions.to + ' \n mailOptions.subject ' + mailOptions.subject +' \n mailOptions.html' + mailOptions.html);
 
     smtpTransport.sendMail(mailOptions, function (error, response) {
 
@@ -69,20 +68,20 @@ route.post("/", async (req, res, next) => {
 
 route.get('/verify', async function (req, res) {
 
-    // console.log(req.protocol + ":/" + req.get('host'));
 
     if ((req.protocol + "://" + req.get('host')) == ("http://" + host)) {
-        // console.log("Domain is matched. Information is from Authentic email");
+
         if (req.query.id == rand) {
     
             status_validation = "Accepté";
             status_compte = "Actif";
             link =  "http://localhost:4200"; 
             registerFinalCode(email, status_validation, status_compte).then ( () => {
-                res.send('Your account has been registered ! \n Click <a href=' + link + '> here </a> to authenticate urself');
+                res.send('Votre compte a été enregistré ! \n Cliquez <a href=' + link + '> ici </a> pour vous authentifier');
             });
             
         } else {
+
             status_validation = "Rejeté";
             status_compte = "Banni";
             registerFinalCode(email, status_validation, status_compte).then ( () => {
@@ -91,6 +90,7 @@ route.get('/verify', async function (req, res) {
                 });
             });
         }
+
     } else {
         res.json({
             message: "Request is from unknow source",
@@ -99,26 +99,33 @@ route.get('/verify', async function (req, res) {
 });
 //#endregion
 
+
+
+//#region mot de passe
 route.post('/forgotPassword', async (req, res, next) => {
 
     email = req.body.email;
-    res.status(200);
 
     host = req.get('host');
     link = "http://localhost:4200/mdpForgot/" + email;
     mailOptions = {
         to: email,
         subject: "Reset password",
-        html: "Hello,<br> Please Click on the link bellow to reset your password<br><a href=" + link + ">Click here</a>"
+        html: "Bonjour,<br> Cliquez sur le lien en dessous pour modifier votre mot de passe<br><a href=" + link + ">Click here</a>"
     };
     // console.log('mailOptions.to : ' + mailOptions.to + ' \n mailOptions.subject ' + mailOptions.subject +' \n mailOptions.html' + mailOptions.html);
 
-    smtpTransport.sendMail(mailOptions, function (error, response) {
+    smtpTransport.sendMail(mailOptions, function (error) {
 
         if (error) {
+
+            res.status(400);
             console.log('Erreur sendMail forgot password: ' + error + ' \n');
             res.end("error");
+
         } else {
+
+            res.status(200);
             res.end("sent");
         }
     });
@@ -126,16 +133,25 @@ route.post('/forgotPassword', async (req, res, next) => {
 
 route.post('/resetPassword', async (req, res, next) => {
 
-    res.status(200);
+    try {
 
-    email = req.body.email;
-    motDePasse = req.body.motDePasse;
-    link = "http://localhost:4200";
+        res.status(200);
 
-    resetPasswordcode(email, motDePasse).then( () => {
-        res.send(email + ', votre mot de passe a été modifié ! Appuyer <a href=' + link + '>ici</a> pour vous authentifier ! ');
-    });
+        email = req.body.email;
+        motDePasse = req.body.motDePasse;
+        link = "http://localhost:4200";
+    
+        resetPasswordcode(email, motDePasse).then( () => {
+            res.send(email + ', votre mot de passe a été modifié ! Appuyer <a href=' + link + '>ici</a> pour vous authentifier ! ');
+        });
+
+    } catch (error) {
+        
+        res.status(400);
+        console.log('Reset password error : ' + error);
+    }
 });
+//#endregion
 
 export {
     route as register
