@@ -4,8 +4,8 @@ import {
     registerFinalCode,
     resetPasswordcode
 } from '../../serviceLayer/code_register.mjs';
-import * as nodemailer from 'nodemailer';
 
+import * as nodemailer from 'nodemailer';
 import express from "express";
 import bodyParser from "body-parser";
 const route = express.Router();
@@ -25,10 +25,11 @@ let nom, prenom, email, numero, typeUser,status_validation, status_compte, motDe
 
 route.use(bodyParser.urlencoded({
     extended: true
-})); // suuport url-encoded bodies
+})); // to suport url-encoded bodies
 route.use(express.json()); // to support json-encoded bodies
 
 
+// TODO: rajouter un try-catch, vérifier les données reçues du front (pour toutes les routes)
 //#region enregistrement
 route.post("/", async (req, res) => {
 

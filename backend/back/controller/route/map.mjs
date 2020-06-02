@@ -2,9 +2,7 @@
 import express from "express";
 import bodyParser from "body-parser";
 
-import {
-    verif
-} from '../../serviceLayer/service/verif.mjs';
+import { verif } from '../../serviceLayer/service/verif.mjs';
 
 import {
     codeGetPointImportant,
@@ -32,7 +30,9 @@ route.use(bodyParser.urlencoded({
 }));
 route.use(express.json());
 
-
+// TODO 1 : Vérifier toutes les données reçues du front
+// TODO 2 : Mettre un interceptor pour toutes les routes et celui-ci décidera quelle route emprunter
+// TODO 3 : Voir pourquoi la vérification de la fonction 'verif' n'utilise pas la même condition que celle du fichier data
 
 route.post("/contactUs", async (req, res) => {
 
@@ -42,7 +42,7 @@ route.post("/contactUs", async (req, res) => {
     try {
 
         const verifData = await verif(authorization, email);
-        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+        // * la fonction 'verif' vérifie si le token existe et si l'utilisateur existe
 
         if (verifData.bool === false) {
 
@@ -63,11 +63,12 @@ route.post("/contactUs", async (req, res) => {
 
     } catch (error) {
 
+        res.status(500);
         console.log('Contact us error : ' + error);
         res.send({
             message: error
         });
-        res.status(500);
+
     }
 });
 
@@ -446,8 +447,8 @@ route.post('/registerDemande', async (req, res) => {
     try {
 
         const verifData = await verif(authorization, emailVoyageur);
-        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
-        // * on vérifie ici avec l'email du voyageur car il c'est normalement que lui qui peut enregistrer une demande
+        // * la fonction 'verif' vérifie si le token existe et si l'utilisateur existe
+        // * on vérifie ici avec l'email du voyageur car c'est normalement que lui qui peut enregistrer une demande
 
         if(verifData.bool === false) {
 

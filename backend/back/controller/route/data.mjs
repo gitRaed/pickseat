@@ -13,10 +13,7 @@ import {
     normalCode
 } from '../../serviceLayer/code_data.mjs';
 
-import {
-    verif
-} from '../../serviceLayer/service/verif.mjs';
-
+import { verif } from '../../serviceLayer/service/verif.mjs';
 import { createAccessToken } from '../../serviceLayer/service/token.mjs';
 
 const route = express.Router();
@@ -26,8 +23,10 @@ route.use(bodyParser.urlencoded({
 }));
 route.use(express.json());
 
+// TODO 1 : Vérifier toutes les données reçues du front
+// TODO 2 : Mettre un interceptor pour toutes les routes et celui-ci décidera quelle route emprunter
 
-route.post("/getData", async function (req, res) {
+route.post('/getData', async function (req, res) {
 
     const authorization = req.headers.authorization.valueOf('authorization');
     const {email} = req.body;
@@ -35,7 +34,7 @@ route.post("/getData", async function (req, res) {
     try {
 
         const verifData = await verif(authorization, email);
-        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+        // * la fonction 'verif' vérifie si le token existe et si l'utilisateur existe
 
         if(verifData !== '') {
 
@@ -71,7 +70,7 @@ route.post('/ban', async function (req, res) {
     try {
 
         const verifData = await verif(authorization, email);
-        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+        // * la fonction 'verif' vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
@@ -107,7 +106,7 @@ route.post('/suspend', async function (req, res) {
     try {
 
         const verifData = await verif(authorization, email);
-        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+        // * la fonction 'verif' vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
@@ -144,7 +143,7 @@ route.post('/normal', async function (req, res) {
     try {
 
         const verifData = await verif(authorization, email);
-        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+        // * la fonction 'verif' vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
@@ -180,7 +179,7 @@ route.post('/updateData', async function (req, res) {
     try {
 
         const verifData = await verif(authorization, emailVerif);
-        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+        // * la fonction 'verif' vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
@@ -217,7 +216,7 @@ route.post('/deleteData', async function (req, res) {
     try {
 
         const verifData = await verif(authorization, email);
-        // * la fonction verif vérifie si le token existe et si l'utilisateur existe
+        // * la fonction 'verif' vérifie si le token existe et si l'utilisateur existe
 
         if(verifData.bool === false) {
 
@@ -257,12 +256,13 @@ route.get('/auth/:email/:mdp/:type', async function (req, res) {
     const motDePasse = req.params.mdp;
     const type = req.params.type;
     
-    // si type === auth, check si le mdp et email sont bien disponible, 
-    // si type === register, juste check si l'email est disponible
+    // *si type === auth, check si le mdp et email sont bien disponibles, 
+    // *si type === register, juste check si l'email est disponible
     if (type === 'auth') {
+
         authCode(email, motDePasse).then((result) => {
 
-            // si le user est authentifié, envoyer un accessToken en reponse normal
+            // si le user est authentifié, envoyer un accessToken en réponse normal
             if (result.auth === true) {
                 result.token = createAccessToken();
             }

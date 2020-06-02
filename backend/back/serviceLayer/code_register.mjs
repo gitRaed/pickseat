@@ -1,18 +1,20 @@
 "use strict";
+
 import {
     registerUser,
     registerFinal,
     resetPasswordDb
 } from "../dataAccessLayer/requete_register.mjs";
-import {
-    encrypt
-} from './service/crypter.mjs';
+
+import { encrypt } from './service/crypter.mjs';
+
+
 
 export function registerData(nom, prenom, email, numero, typeUser, status_validation, status_compte, motDePasse) {
 
 
     motDePasse = encrypt(motDePasse);
-    // console.log(nom, prenom, email, numero, typeUser, motDePasse);
+    
     return registerUser(nom, prenom, email, numero, typeUser, status_validation, status_compte, motDePasse);
 
 }

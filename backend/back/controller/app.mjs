@@ -5,20 +5,13 @@ import helmet from 'helmet';
 import xss from 'xss-clean';
 
 env.config();
-import {
-    data
-} from './route/data.mjs';
 
-import {
-    register
-} from './route/register.mjs';
-
-import {
-    map
-} from './route/map.mjs';
+import { data } from './route/data.mjs';
+import { register } from './route/register.mjs';
+import { map } from './route/map.mjs';
 
 import express from "express";
-const app = express();
+const app = express(); // * Créer l'application
 
 app.use(function (req, res, next) { // *permet le cross origin        
     //console.log('request', req.url, req.body, req.method);

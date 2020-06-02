@@ -16,7 +16,7 @@ const adminTable = [
 
 export async function admin(email) {
 
-    // * cette fonction check si l'email correspond à celui d'un admin (flow)
+    // * cette fonction check si l'email correspond à celui d'un admin
 
     let bool = false;
 
@@ -36,7 +36,7 @@ export async function admin(email) {
 
 export function superAdmin(email) {
 
-    // * cette fonction check si l'email correspond à celui d'un super admin (moi)
+    // * cette fonction check si l'email correspond à celui d'un super admin
 
     let bool = false;
 

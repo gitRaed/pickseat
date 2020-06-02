@@ -23,8 +23,8 @@ export async function getUser(email) {
 
     const table = [];
     const result = await getUserData(); // * toutes les données de tout les utilisateurs
-    const isAdmin = await admin(email);
-    const isSuperAdmin = await superAdmin(email);
+    const isAdmin = await admin(email); // *vérifie si l'utilisateur est un admin
+    const isSuperAdmin = await superAdmin(email); // * vérifie si l'utilisateur est un super admin
 
     for(let i = 0, n = result.length; i < n; i++) {
 

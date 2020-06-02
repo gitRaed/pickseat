@@ -1,12 +1,8 @@
 "use strict";
-import {
-    isAuth
-} from '../../serviceLayer/service/isAuth.mjs';
-import {
-    authCodeEmail
-} from '../../serviceLayer/code_data.mjs';
+import { isAuth } from '../../serviceLayer/service/isAuth.mjs';
+import { authCodeEmail } from '../../serviceLayer/code_data.mjs';
 
-export async function verif(token, email, response) {
+export async function verif(token, email) {
 
     try {
         

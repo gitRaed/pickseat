@@ -16,13 +16,16 @@ var config = {
 export async function registerMessage(email, message) {
 
     try {
+
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
             .input('email', email)
             .input('message', message)
             .query('INSERT INTO contactUs VALUES (@email, @message)');
             return 'Message enregistrée!';
+
     } catch (error) {
+
         console.log('Register Message, erreur : ' + error);
         return 'Register message erreur,' + error;
     }
@@ -40,7 +43,9 @@ export async function getPointImportant(email) {
                         .input('email', email)
                         .query('SELECT * FROM pointImportant WHERE email_user=@email');
         return result.recordset;
+
     } catch (error) {
+
         console.log('Requete_map, get point important error : ' + error);
         return error;
     }
@@ -49,6 +54,7 @@ export async function getPointImportant(email) {
 export async function registerPointImportant(email, message, latitude, longitude, sonner) {
 
     try {
+
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
             .input('email', email)
@@ -58,7 +64,9 @@ export async function registerPointImportant(email, message, latitude, longitude
             .input('sonner', sonner)
             .query('INSERT INTO pointImportant VALUES (@email, @message, @latitude, @longitude, @sonner)');
             return 'Point important enregistré!';
+
     } catch (error) {
+
         console.log('Register point important error : ' + error);
         return 'Register point important error : ' + error;
     }
@@ -67,6 +75,7 @@ export async function registerPointImportant(email, message, latitude, longitude
 export async function updatePointImportant(id, message, sonner) {
 
     try {
+
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
                 .input('id', id)
@@ -74,7 +83,9 @@ export async function updatePointImportant(id, message, sonner) {
                 .input('sonner', sonner)
                 .query('UPDATE pointImportant SET message=@message, sonner=@sonner WHERE id_points=@id');
         return 'Point modifié!';
+
     } catch (error) {
+
         console.log("update point important error : " + error);
         return error;
     }
@@ -83,12 +94,15 @@ export async function updatePointImportant(id, message, sonner) {
 export async function deletePointImportant(id) {
 
     try {
+
         const pool = await new sql.ConnectionPool(config).connect();
         await pool.request()
             .input('id', id)
             .query('DELETE pointImportant WHERE id_points=@id');
         return 'Point supprimé!';
+
     } catch (error) {
+
         console.log('Delete point important error : ' + error);
         return error;
     }
@@ -97,7 +111,7 @@ export async function deletePointImportant(id) {
 export async function alarme(email) {
 
     try {
-        
+
         const sonner = 'oui';
         const pool = await new sql.ConnectionPool(config).connect();
         const result = await pool.request()
@@ -107,6 +121,7 @@ export async function alarme(email) {
         return result.recordset;
 
     } catch (error) {
+
         console.log('Requête alarme error : ' + error);
         return error;
     }
@@ -128,6 +143,7 @@ export async function getTrajet(email) {
         return result.recordset;
 
     } catch (error) {
+
         console.log('Requête getTrajet error : ' + error);
         return error;
     }
@@ -145,6 +161,7 @@ export async function rechercherTrajet1(adresse_depart, adresse_arrive) {
         return result.recordset;
 
     } catch (error) {
+
         console.log('Rerchercher trajet error : ' + error);
         return error;
     }
@@ -153,13 +170,16 @@ export async function rechercherTrajet1(adresse_depart, adresse_arrive) {
 export async function rechercherEscale() {
 
     try {
+
         const options = 'oui';
         const pool = await new sql.ConnectionPool(config).connect();
         const result = await pool.request()
                                     .input('options', options)
                                     .query('SELECT * FROM trajet WHERE options=@options');
         return result.recordset;
+
     } catch (error) {
+
         console.log('Requête rechercher escale error : ' + error);
         return error;
     }
@@ -190,6 +210,7 @@ export async function enregistrerTrajet(nom_chauffeur, prenom_chauffeur, email, 
         return 'Trajet enregistré !';
 
     } catch (error) {
+
         console.log('Requête enregistrer trajet error : ' + error);
         return error;
     }
@@ -212,7 +233,9 @@ export async function updateTrajet(id, adresse_depart, adresse_arrive, heure_tra
                     .input('tarif_escale', tarif_escale)
                 .query('UPDATE trajet SET adresse_depart = @adresse_depart, adresse_arrive = @adresse_arrive, heure_trajet = @heure_trajet, date_trajet = @date_trajet, options = @options, escale = @escale, tarif_total = @tarif_total, tarif_escale = @tarif_escale WHERE id_trajet = @id');
         return 'Trajet modifié !';
+
     } catch (error) {
+
         console.log('Requête update trajet error : ' + error);
         return error;
     }
@@ -235,6 +258,7 @@ export async function getTrajetDate(email) {
         return result.recordset;
 
     } catch (error) {
+
         console.log('Requête getTrajet error : ' + error);
         return error;
     }
@@ -300,7 +324,6 @@ export async function registerDemande(nom_chauffeur, prenom_chauffeur, numero_ch
 
     } catch (error) {
         console.log('Requête register demande error : ' + error);
-
     }
 }
 

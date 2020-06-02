@@ -35,7 +35,7 @@ export async function compareTrajet(email) {
 
 export async function compareDemande() {
 
-    // * cette fonction s'occupe de vérifier si une des demandes  est périmée, et change la valeur de validité à 1 si c'est le cas
+    // * cette fonction s'occupe de vérifier si une des demandes est périmée, et change la valeur de validité à 1 si c'est le cas
 
     const listeDemandes = await getDemandeDate(); // * liste des dates des demandes par rapport à la date
 

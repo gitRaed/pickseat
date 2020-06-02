@@ -38,6 +38,8 @@ import {
 
 
 // * enregistrer message de contactUs du front
+// TODO 1: envoyer un email un pickseat quand on reçoit un message, function en bas a modifier
+// TODO 2 : vérifier les données reçues 
 export async function codeRegisterMessage(email, message) {
 
     try {

@@ -1,10 +1,6 @@
 "use strict";
-import {
-    createServer
-} from 'http';
-import {
-    app
-} from './app';
+import { createServer } from 'http';
+import { app } from './app';
 
 var port = process.env.PORT || 9500;
 
