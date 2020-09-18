@@ -5,9 +5,7 @@ There's still a lot of rooms for upgrade, but i prefered to let the app like tha
 
 I am sorry, my app is in french(it is my native langage) hope you don't mind using google translate ! 
 
-I did my best to present an intuitive and pretty UI using leaflet and bootstrap. I also tried to secure my back as much as i could think of at the moment.
+I did my best to present an intuitive and pretty UI using angular 8, leaflet.Js and bootstrap. I also tried to secure my back as much as i could think of at the moment.
 I also downloaded a SSL certificate in case it'll be published.
 
 If you want to test it out, clone it and enter "npm start" in the terminal. 
-
-Hope you'll like it as much as i did !
