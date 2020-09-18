@@ -11,4 +11,5 @@ I am sorry, my app is in french (it is my native langage), hope you don't mind u
 I did my best to present an intuitive and pretty UI using angular 8, leaflet.Js and bootstrap. I also tried to secure my back as much as i could think of at the moment.
 I also downloaded a SSL certificate in case it'll be published.
 
-If you want to test it out, clone it and enter "npm start" in the terminal. 
+If you want to test it out, clone it, open both front and back end folders, and enter "npm start" in their respective terminal.
+Please, do consider that the database is not online.
